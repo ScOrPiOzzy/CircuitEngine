@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ElecCompDef model="NBE7-C25-3P" name="低压断路器（3P）" desc="低压断路器在电路中用QF表示，集控制和多种保护功能于一身，一般由触头系统、灭弧系统、操作机构、脱扣器、外壳等构成，除了能完成接触和分断电路外，尚能对电路或电气设备发生的短路、严重过载及欠电压等进行保护，同时也可以用于不频繁地启动电动机。">
+	<Terminal id="1" name="1" mdlName="1" direction="Z-" team="in" />
+	<Terminal id="3" name="3" mdlName="3" direction="Z-" team="in" />
+	<Terminal id="5" name="5" mdlName="5" direction="Z-" team="in" />
+	<Terminal id="2" name="2" mdlName="2" direction="Z+" team="out" />
+	<Terminal id="4" name="4" mdlName="4" direction="Z+" team="out" />
+	<Terminal id="6" name="6" mdlName="6" direction="Z+" team="out" />
+	<Magnetism>
+		<ControlIO type="input" interact="click" name="开关" mdlName="NBE7-C25-3P_43" motion="rotate" switchIn="off,on" motionParams="0,-78" axis="x">
+			<Param key="sound" value="me/Interface/sound/control/press.wav"/>
+		</ControlIO>
+	</Magnetism>
+	<ResisState id="off" isDef="1">
+	</ResisState>
+	<ResisState id="on">
+		<ResisRelation term1Id="1" term2Id="2" value="0" />
+		<ResisRelation term1Id="3" term2Id="4" value="0" />
+		<ResisRelation term1Id="5" term2Id="6" value="0" />
+	</ResisState>
+	<Params>
+		<Param key="shell" value="NBE7-C25-3P_76,NBE7-C25-3P_44,NBE7-C25-3P_19,NBE7-C25-3P_11,NBE7-C25-3P_72,NBE7-C25-3P_39,NBE7-C25-3P_07,NBE7-C25-3P_84,NBE7-C25-3P_52,NBE7-C25-3P_19,NBE7-C25-3P_69,NBE7-C25-3P_36,NBE7-C25-3P_04,NBE7-C25-3P_30,NBE7-C25-3P_63,NBE7-C25-3P_95" />
+	</Params>
+</ElecCompDef>

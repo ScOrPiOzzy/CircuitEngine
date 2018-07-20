@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ElecCompDef name="交流接触器" model="CJX2-1210" desc="接触器在电路中用KM表示，主要用于交流50Hz或60Hz，额定绝缘电压为660V-1000V，在AC-3使用类别下额定工作电压为380V时，额定工作电流为9A-475A的电力线路中。电磁接触器主要由传动装置（电磁机构）、触头装置（执行机构）和灭弧装置组成,作为供远距离接通和分断电路之用，并适用于控制交流电动机的起动、停止及反转。">
+	<Base pulgTermIds="2/T1,4/T2,6/T3" tenons="F4"/>
+
+	<Terminal id="1/L1" name="1/L1" mdlName="1/L1" direction="Z-" />
+	<Terminal id="3/L2" name="3/L2" mdlName="3/L2" direction="Z-" />
+	<Terminal id="5/L3" name="5/L3" mdlName="5/L3" direction="Z-" />
+	<Terminal id="13NO" name="13NO" mdlName="13NO" direction="Z-" />
+	<Terminal id="2/T1" name="2/T1" mdlName="2/T1" direction="Z+" />
+	<Terminal id="4/T2" name="4/T2" mdlName="4/T2" direction="Z+" />
+	<Terminal id="6/T3" name="6/T3" mdlName="6/T3" direction="Z+" />
+	<Terminal id="14NO" name="14NO" mdlName="14NO" direction="Z+" />
+	<Terminal id="A1" name="A1" mdlName="A1" direction="Z-" />
+	<Terminal id="A2_1" name="A2" mdlName="A2_1" direction="Z-" />
+	<Terminal id="A2_2" name="A2" mdlName="A2_2" direction="Z+" />
+
+	<CircuitElm>
+		<!-- poleCount表示有几组线圈,每一个线圈对应一组NC、NO、COM -->
+		<!-- coilR表示线圈电阻 -->
+		<RelayElm coilTerm1="A1" coilTerm2="A2_1" coilR="1800">
+		</RelayElm>
+	</CircuitElm>
+
+	<Magnetism>
+		<VoltageIO type="input" term1Id="A1" term2Id="A2_1" value="380" deviation="10" />
+		<ControlIO type="input,output" interact="press" name="触点架" mdlName="CJX2-1210_07" switchIn="off,on" motion="move" motionParams="0,-0.00125" axis="y">
+		</ControlIO>
+	</Magnetism>
+	<ResisState isDef="1">
+		<ResisRelation term1Id="A1" term2Id="A2_1" value="1800" />
+		<ResisRelation term1Id="A2_1" term2Id="A2_2" value="0" />
+	</ResisState>
+	<ResisState id="off" isDef="1">
+	</ResisState>
+	<ResisState id="on">
+		<ResisRelation term1Id="1/L1" term2Id="2/T1" value="0" />
+		<ResisRelation term1Id="3/L2" term2Id="4/T2" value="0" />
+		<ResisRelation term1Id="5/L3" term2Id="6/T3" value="0" />
+		<ResisRelation term1Id="13NO" term2Id="14NO" value="0" />
+	</ResisState>
+	<Params>
+		<Param key="shell" value="CJX2-1210_37,CJX2-1210_36,CJX2-1210_12,CJX2-1210_11,CJX2-1210_05,CJX2-1210_03,CJX2-1210_02,CJX2-1210_01,CJX2-1210_00" />
+	</Params>
+</ElecCompDef>

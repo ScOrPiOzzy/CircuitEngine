@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ElecCompDef name="时间继电器底座（8孔）" model="CZS08X-E" desc="继电器无法直接连接电路工作，需要配合使用继电器插座，完成接线。">
+	<Terminal id="3" name="NO1" mdlName="3" direction="Z-" />
+	<Terminal id="6" name="NO2" mdlName="6" direction="Z-" />
+	<Terminal id="4" name="NC1" mdlName="4" direction="Z-" />
+	<Terminal id="5" name="NC2" mdlName="5" direction="Z-" />
+	<Terminal id="1" name="COM1" mdlName="1" direction="Z+" />
+	<Terminal id="8" name="COM2" mdlName="8" direction="Z+" />
+	<Terminal id="2" name="IN_1" mdlName="2" direction="Z+" />
+	<Terminal id="7" name="IN_2" mdlName="7" direction="Z+" />
+	<Params>
+		<Param key="shell" value="CZS08X-E_00,CZS08X-E_18" />
+	</Params>
+</ElecCompDef>

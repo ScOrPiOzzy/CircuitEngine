@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ElecCompDef name="热继电器" model="NR2-25" desc="热继电器在电路中用FR表示，它的工作原理是利用流入热元件的电流产生的热量，使有不同膨胀系数的双金属片发生形变，当形变达到一定距离时，就推动连杆动作，使控制电路断开，从而使接触器失电，断开主电路，实现过载保护。">	
+	<RelyOn type="1" localTranslation="0,0,0" localRotation="0,0,0" relyIds="2/T1,4/T2,6/T3"/>
+
+	<Terminal id="2/T1" name="2/T1" mdlName="2/T1" direction="Z+" />
+	<Terminal id="4/T2" name="4/T2" mdlName="4/T2" direction="Z+" />
+	<Terminal id="6/T3" name="6/T3" mdlName="6/T3" direction="Z+" />
+	<Terminal id="96" name="NC1" mdlName="96" direction="Z+" /><!--D1-->
+	<Terminal id="95" name="NC2" mdlName="95" direction="Z+" /><!--D2-->
+	<Terminal id="97" name="NO1" mdlName="97" direction="Z+" /><!--C1-->
+	<Terminal id="98" name="NO2" mdlName="98" direction="Z+" /><!--C2-->
+	
+	<!-- stop 需要再一种状态 -->
+	<Magnetism>
+		<ControlIO type="input" interact="press" name="RESET" mdlName="RESET" motion="move" switchIn="off" motionParams="0,-0.005" axis="z">
+			sound=me/Interface/sound/control/press.wav
+		</ControlIO>
+		<ControlIO type="input" interact="press" name="TEST" mdlName="TEST" motion="move" switchIn="off,on" motionParams="0,-0.005" axis="z">
+			sound=me/Interface/sound/control/press.wav
+		</ControlIO>
+		<ControlIO type="input" interact="press" name="STOP" mdlName="STOP" motion="move" switchIn="off" motionParams="0,-0.005" axis="z">
+			sound=me/Interface/sound/control/press.wav
+		</ControlIO>
+	</Magnetism>
+<!--<ResisState isDef="1">											-->
+<!--	<ResisRelation term1Id="2/T1_1" term2Id="2/T1" value="0" /> -->
+<!--	<ResisRelation term1Id="4/T2_1" term2Id="4/T2" value="0" /> -->
+<!--	<ResisRelation term1Id="6/T3_1" term2Id="6/T3" value="0" /> -->
+<!--</ResisState>													-->
+	<ResisState id="off" isDef="1">
+		<ResisRelation term1Id="96" term2Id="95" value="0" />
+	</ResisState>
+	<ResisState id="on">
+		<ResisRelation term1Id="97" term2Id="98" value="0" />
+	</ResisState>
+	<Params>
+		<Param key="shell" value="NR2-25_36,NR2-25_15" />
+	</Params>
+</ElecCompDef>

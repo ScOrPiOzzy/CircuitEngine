@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ElecCompDef name="熔断器座" model="RT28N-32X" desc="通过熔断器座可安装多种规格熔体，可提供非常出色的导线保护、小型电机负载保护和小型电机负载群组保护。">
+	<Terminal id="1" name="1" mdlName="1" direction="Z-" />
+	<Terminal id="1_1" name="1_1" mdlName="1_1"/>
+	<Terminal id="2" name="2" mdlName="2" direction="Z+" />
+	<Terminal id="2_1" name="2_1" mdlName="2_1" />
+
+	<!-- fixme -->
+	<Magnetism>
+		<ControlIO type="input" interact="click" name="熔体腔" mdlName="RT28N-32X_06" motion="rotate" switchIn="off,on" motionParams="0,78" axis="x">
+			<Params>
+				<Param key="sound" value="me/Interface/sound/control/press.wav"/>
+			</Params>
+		</ControlIO>
+	</Magnetism>
+	<!-- <ResisState isDef="1"> -->
+	<!-- <ResisRelation term1Id="3" term2Id="4" value="4700" /> -->
+	<!-- <ResisRelation term1Id="1" term2Id="3" value="0" /> -->
+	<!-- <ResisRelation term1Id="2" term2Id="4" value="0" /> -->
+	<!-- </ResisState> -->
+	<ResisState id="off" isDef="1">
+	</ResisState>
+	<ResisState id="on">
+		<ResisRelation term1Id="1" term2Id="2" value="0" />
+	</ResisState>
+	<Params>
+		<Param key="shell" value="RT28N-32X_03,RT28N-32X_00" />
+	</Params>
+</ElecCompDef>

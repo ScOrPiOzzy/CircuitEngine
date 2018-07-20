@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 行程开关 (三种位置关系) -->
+<ElecCompDef name="行程开关" model="YBLX-K1/111" desc="行程开关在在电路中用SQ表示">
+	<Terminal id="1" name="NC_1" mdlName="1" />
+	<Terminal id="2" name="NC_2" mdlName="2" />
+	<Terminal id="3" name="NO_1" mdlName="3" />
+	<Terminal id="4" name="NO_2" mdlName="4" />
+	<Magnetism>
+		<ControlIO type="input" interact="press" name="撞杆" mdlName="z001" motion="move" switchIn="off,on" motionParams="60,0,-60" axis="z">
+			sound=me/Interface/sound/control/press.wav
+		</ControlIO>
+	</Magnetism>
+	<ResisState id="off" isDef="1">
+		<ResisRelation term1Id="1" term2Id="2" value="0" />
+	</ResisState>
+	<ResisState id="on">
+		<ResisRelation term1Id="3" term2Id="4" value="0" />
+	</ResisState>
+	<Params>
+		<Param key="shell" value="YBLX-K1_03,YBLX-K1_04,YBLX-K1_15,YBLX-K1_01" />
+	</Params>
+</ElecCompDef>

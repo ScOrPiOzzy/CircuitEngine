@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ElecCompDef name="时间继电器" model="JSZ3" desc="热继电器在电路中用FR表示，它的工作原理是">
+	<Terminal id="" name="2/T1_1" mdlName="2/T1_1" combine="2/T1"/><!--1/L1-->
+	<Terminal id="" name="4/T2_1" mdlName="4/T2_1" combine="4/T2" /><!--3/L2-->
+	<Terminal id="" name="6/T3_1" mdlName="6/T3_1" combine="6/T3" /><!--5/L3-->
+	<Terminal id="" name="2/T1" mdlName="2/T1" direction="Z+" />
+	<Terminal id="" name="4/T2" mdlName="4/T2" direction="Z+" />
+	<Terminal id="" name="6/T3" mdlName="6/T3" direction="Z+" />
+	<Terminal id="" name="NC1" mdlName="96" direction="Z+" /><!--D1-->
+	<Terminal id="" name="NC2" mdlName="95" direction="Z+" /><!--D2-->
+	
+	
+	
+	<!-- stop 需要再一种状态 -->
+	<Magnetism>
+		<ControlIO type="input" interact="press" name="RESET" mdlName="RESET" motion="move" switchIn="off" motionParams="0,-0.005" axis="z">
+			sound=me/Interface/sound/control/press.wav
+		</ControlIO>
+		<ControlIO type="input" interact="press" name="TEST" mdlName="TEST" motion="move" switchIn="off,on" motionParams="0,-0.005" axis="z">
+			sound=me/Interface/sound/control/press.wav
+		</ControlIO>
+		<ControlIO type="input" interact="press" name="STOP" mdlName="STOP" motion="move" switchIn="off" motionParams="0,-0.005" axis="z">
+			sound=me/Interface/sound/control/press.wav
+		</ControlIO>
+	</Magnetism>
+	<ResisState isDef="1">
+		<ResisRelation term1Id="2/T1_1" term2Id="2/T1" value="0" />
+		<ResisRelation term1Id="4/T2_1" term2Id="4/T2" value="0" />
+		<ResisRelation term1Id="6/T3_1" term2Id="6/T3" value="0" />
+	</ResisState>
+	<ResisState id="off" isDef="1">
+		<ResisRelation term1Id="96" term2Id="95" value="0" />
+	</ResisState>
+	<ResisState id="on">
+		<ResisRelation term1Id="97" term2Id="98" value="0" />
+	</ResisState>
+	<Params>
+		<Param key="shell" value="NR2-25_36,NR2-25_15" />
+	</Params>
+</ElecCompDef>

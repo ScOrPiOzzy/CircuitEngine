@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ElecCompDef name="继电器底座（8孔）" model="CZY08A" desc="继电器无法直接连接电路工作，需要配合使用继电器插座，完成接线。">
+	<Base pulgTermIds="1,3,9,4,8,12,13,14" />
+
+	<Terminal id="1" name="NC1" mdlName="1" direction="Z-"  />
+	<Terminal id="5" name="NO1" mdlName="5" direction="Z-"  />
+	<Terminal id="9" name="COM1" mdlName="9" direction="Z+"  />
+	<Terminal id="4" name="NC2" mdlName="4" direction="Z-"  />
+
+	<Terminal id="8" name="NO2" mdlName="8" direction="Z-"  />
+	<Terminal id="12" name="COM2" mdlName="12" direction="Z+"  />
+	<Terminal id="13" name="IN_1" mdlName="13" direction="Z+"  />
+	<Terminal id="14" name="IN_2" mdlName="14" direction="Z+"  />
+	<Params>
+		<Param key="shell" value="CZY08A_04,CZY08A_09" />
+	</Params>
+</ElecCompDef>

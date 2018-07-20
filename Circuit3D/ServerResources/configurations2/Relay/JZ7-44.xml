@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ElecCompDef name="中间继电器" model="JZ7-44" desc="继电器在电路中用KA表示，是一种电控制器件，当输入量的变化达到规定要求时，在电气输出电路中使被控量发生预定的阶跃变化的一种电器。它具有控制系统（输入回路）和被控制系统（输出回路）之间的互动关系，通常应用于自动化的控制电路中，在电路中起着自动调节、安全保护、转换电路等作用。">
+	<Terminal id="11" name="11" mdlName="11" direction="Z+" />
+	<Terminal id="12" name="12" mdlName="12" direction="Z-" />
+	<Terminal id="23" name="23" mdlName="23" direction="Z+" />
+	<Terminal id="24" name="24" mdlName="24" direction="Z-" />
+	<Terminal id="31" name="31" mdlName="31" direction="Z+" />
+	<Terminal id="32" name="32" mdlName="32" direction="Z-" />
+	<Terminal id="43" name="43" mdlName="43" direction="Z+" />
+	<Terminal id="44" name="44" mdlName="44" direction="Z-" />
+	<Terminal id="51" name="51" mdlName="51" direction="Z+" />
+	<Terminal id="52" name="52" mdlName="52" direction="Z-" />
+	<Terminal id="63" name="63" mdlName="63" direction="Z+" />
+	<Terminal id="64" name="64" mdlName="64" direction="Z-" />
+	<Terminal id="71" name="71" mdlName="71" direction="Z+" />
+	<Terminal id="72" name="72" mdlName="72" direction="Z-" />
+	<Terminal id="83" name="83" mdlName="83" direction="Z+" />
+	<Terminal id="84" name="84" mdlName="84" direction="Z-" />
+	<Terminal id="A1" name="A1" mdlName="A1" direction="Z+" />
+	<Terminal id="A2" name="A2" mdlName="A2" direction="Z-" />
+
+	<CircuitElm>
+		<!-- coil: 两个值，用英文的逗号隔开',' -->
+		<!-- post: 继电器上的普通端子，按照COM,NC,NO|COM,NC,NO的顺序填写,每4个连接头为一组, 多组连接头之间用竖线‘|’分割 -->
+		<AuxiliaryRelayElm 
+			id="km" 
+			coil="A1,A2"
+			ciolR="1900"
+			post="11,12,23,24|31,32,43,44|51,52,63,64|71,72,83,84|" />
+	</CircuitElm>
+
+	<ControlIO interact="press" name="按钮" mdlName="NP4-11BN_05" effect="km" >
+
+	</ControlIO>
+
+	<Params>
+		<Param key="shell" value="JZ7-44_12,JZ7-44_15,JZ7-44_93" />
+	</Params>
+</ElecCompDef>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 按钮 -->
+<ElecCompDef name="按钮" model="NP4-11BN" desc="按钮开关在在电路中用SB表示，">
+	<Terminal id="1" name="NC_1" mdlName="1" direction="X+" />
+	<Terminal id="2" name="NC_2" mdlName="2" direction="X-" />
+	<Terminal id="3" name="NO_1" mdlName="3" direction="X-" />
+	<Terminal id="4" name="NO_2" mdlName="4" direction="X+" />
+	<Magnetism>
+		<ControlIO type="input" interact="press" name="按钮" mdlName="NP4-11BN_05" motion="move" switchIn="off,on" motionParams="0,-0.0025" axis="Y">
+			sound=me/Interface/sound/control/press.wav
+		</ControlIO>
+	</Magnetism>
+	<ResisState id="off" isDef="1">
+		<ResisRelation term1Id="1" term2Id="2" value="0" />
+	</ResisState>
+	<ResisState id="on">
+		<ResisRelation term1Id="3" term2Id="4" value="0" />
+	</ResisState>
+	<Params>
+		<Param key="shell" value="NP4-11BN_00,NP4-11BN_03,NP4-11BN_04,NP4-11BN_17,NP4-11BN_08,NP4-11BN_12,NP4-11BN_18" />
+	</Params>
+</ElecCompDef>

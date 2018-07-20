@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ElecCompDef name="直流24V继电器" model="JZX-22F(D)-2Z(DC)" desc="继电器在电路中用KA表示，是一种电控制器件，当输入量的变化达到规定要求时，在电气输出电路中使被控量发生预定的阶跃变化的一种电器。它具有控制系统（输入回路）和被控制系统（输出回路）之间的互动关系，通常应用于自动化的控制电路中，在电路中起着自动调节、安全保护、转换电路等作用。">
+	<RelyOn type="1" localTranslation="0,0,0" localRotation="0,0,0" relyIds="1,5,9,4,8,12,13,14"/>
+
+	<Terminal id="1" name="NC1" mdlName="1" />
+	<Terminal id="5" name="NO1" mdlName="5" />
+	<Terminal id="9" name="COM1" mdlName="9" />
+	<Terminal id="4" name="NC2" mdlName="4" />
+	<Terminal id="8" name="NO2" mdlName="8" />
+	<Terminal id="12" name="COM2" mdlName="12" />
+	<Terminal id="13" name="DCIN+" mdlName="13" />
+	<Terminal id="14" name="DCIN-" mdlName="14" />
+
+	<CircuitElm>
+		<!-- coil: 两个值，用英文的逗号隔开',' -->
+		<!-- post: 继电器上的普通端子，按照COM,NC,NO|COM,NC,NO的顺序填写,每3个连接头为一组, 多组连接头之间用竖线‘|’分割 -->
+		<RelayElm 
+			id="km" 
+			coil="13,14"
+			ciolR="1900"
+			post="9,1,5|12,4,8" />
+	</CircuitElm>
+
+	<ControlIO interact="press" name="按钮" mdlName="NP4-11BN_05" effect="km" >
+
+	</ControlIO>
+
+	<LightIO name="继电器指示灯" mdlName="L1" glowColor="0,1,0,1" />
+</ElecCompDef>

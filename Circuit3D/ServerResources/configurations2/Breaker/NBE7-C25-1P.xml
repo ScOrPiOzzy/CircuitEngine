@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ElecCompDef model="NBE7-C25-1P" name="低压断路器（1P）" desc="低压断路器在电路中用QF表示，集控制和多种保护功能于一身，一般由触头系统、灭弧系统、操作机构、脱扣器、外壳等构成，除了能完成接触和分断电路外，尚能对电路或电气设备发生的短路、严重过载及欠电压等进行保护，同时也可以用于不频繁地启动电动机。">
+	<Terminal id="1" name="1" mdlName="1" direction="Z-" team="in" />
+	<Terminal id="2" name="2" mdlName="2" direction="Z+" team="out" />
+	<Magnetism>
+		<ControlIO type="input" interact="click" name="开关" mdlName="NBE7-C25-1P_11" motion="rotate" switchIn="off,on" motionParams="0,-78" axis="x">
+			<Param key="sound" value="me/Interface/sound/control/press.wav"/>
+		</ControlIO>
+	</Magnetism>
+	<ResisState id="off" isDef="1">
+	</ResisState>
+	<ResisState id="on">
+		<ResisRelation term1Id="1" term2Id="2" value="0" />
+	</ResisState>
+	<Params>
+		<Param key="shell" value="NBE7-C25-1P_07,NBE7-C25-1P_12,NBE7-C25-1P_20,NBE7-C25-1P_04,NBE7-C25-1P_31" />
+	</Params>
+
+	<MachStates>
+		<MachState mdlName="NBE7-C25-1P_03" location="-0.0028039557, 0.053419627, -0.0012232747" rotation="45.000004, 0.0, 0.0" scale="1,1,1" />
+		<MachState mdlName="NBE7-C25-1P_30" location="-9.295724E-4, 0.051884755, -0.013566877" rotation="17.0, 0.0, 0.0" scale="1,1,1" />
+	</MachStates>
+
+
+</ElecCompDef>

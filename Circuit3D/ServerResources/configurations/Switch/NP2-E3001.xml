@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 按钮盒 -->
+<ElecCompDef name="按钮盒" model="NP2-E3001" desc="按钮开关在在电路中用SB表示，">
+	<Terminal id="1" name="NO_3" mdlName="SB1_3" />
+	<Terminal id="2" name="NO_4" mdlName="SB1_4" />
+	<Terminal id="3" name="NO_3" mdlName="SB2_3" />
+	<Terminal id="4" name="NO_4" mdlName="SB2_4" />
+	<Terminal id="5" name="NC_1" mdlName="SB3_1" />
+	<Terminal id="6" name="NC_2" mdlName="SB3_2" />
+	<Magnetism>
+		<ControlIO type="input" interact="press" name="SB1" mdlName="SB1" motion="move" switchIn="off1,on1" motionParams="0,-0.005" axis="Y">
+			sound=me/Interface/sound/control/press.wav
+		</ControlIO>
+		<ControlIO type="input" interact="press" name="SB2" mdlName="SB2" motion="move" switchIn="off2,on2" motionParams="0,-0.005" axis="Y">
+			sound=me/Interface/sound/control/press.wav
+		</ControlIO>
+		<ControlIO type="input" interact="press" name="SB3" mdlName="SB3" motion="move" switchIn="off3,on3" motionParams="0,-0.005" axis="Y">
+			sound=me/Interface/sound/control/press.wav
+		</ControlIO>
+	</Magnetism>
+	<ResisState id="off1" isDef="1">
+	</ResisState>
+	<ResisState id="on1">
+		<ResisRelation term1Id="1" term2Id="2" value="0" />
+	</ResisState>
+	<ResisState id="off2" isDef="1">
+	</ResisState>
+	<ResisState id="on2">
+		<ResisRelation term1Id="3" term2Id="4" value="0" />
+	</ResisState>
+	<ResisState id="off3" isDef="1">
+		<ResisRelation term1Id="5" term2Id="6" value="0" />
+	</ResisState>
+	<ResisState id="on3">
+	</ResisState>
+	<Params>
+		<Param key="shell" value="NP2-E3001_00,NP2-E3001_01,NP2-E3001_30,NP2-E3001_35,NP2-E3001_42,NP2-E3001_07,NP2-E3001_47,NP2-E3001_23,NP2-E3001_11,NP2-E3001_41,NP2-E3001_36,NP2-E3001_05,NP2-E3001_06,NP2-E3001_03,NP2-E3001_04" />
+	</Params>
+</ElecCompDef>
