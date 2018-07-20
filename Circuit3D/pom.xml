@@ -1,0 +1,142 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.cas.circuit</groupId>
+	<artifactId>Circuit3D</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>engine</module>
+	</modules>
+	<properties>
+		<!-- 文件拷贝时的编码 -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!-- 编译时的编码 -->
+		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+		<!-- 引擎版本号 -->
+		<engine.version>3.2.1-stable</engine.version>
+	</properties>
+
+	<!-- 发布设置 -->
+	<distributionManagement>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>simulation elevator project snapshots version</name>
+			<url>http://172.16.30.2:8081/repository/maven-snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>releases</id>
+			<name>simulation elevator project releases version</name>
+			<url>http://172.16.30.2:8081/repository/maven-releases/</url>
+		</repository>
+	</distributionManagement>
+
+
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305 -->
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- jMonkeyEngine3 -->
+		<!-- https://mvnrepository.com/artifact/org.jmonkeyengine/jme3-core -->
+		<dependency>
+			<groupId>org.jmonkeyengine</groupId>
+			<artifactId>jme3-core</artifactId>
+			<version>${engine.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.jmonkeyengine/jme3-desktop -->
+		<dependency>
+			<groupId>org.jmonkeyengine</groupId>
+			<artifactId>jme3-desktop</artifactId>
+			<version>${engine.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.jmonkeyengine/jme3-blender -->
+		<dependency>
+			<groupId>org.jmonkeyengine</groupId>
+			<artifactId>jme3-blender</artifactId>
+			<version>${engine.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.jmonkeyengine/jme3-lwjgl3 -->
+		<dependency>
+			<groupId>org.jmonkeyengine</groupId>
+			<artifactId>jme3-lwjgl3</artifactId>
+			<version>${engine.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.jmonkeyengine/jme3-effects -->
+		<dependency>
+			<groupId>org.jmonkeyengine</groupId>
+			<artifactId>jme3-effects</artifactId>
+			<version>${engine.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.jmonkeyengine/jme3-networking -->
+		<dependency>
+			<groupId>org.jmonkeyengine</groupId>
+			<artifactId>jme3-networking</artifactId>
+			<version>${engine.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jmonkeyengine</groupId>
+			<artifactId>jme3-plugins</artifactId>
+			<version>${engine.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.20</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.21</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.21</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.2</version>
+				<configuration>
+					<encoding>UTF-8</encoding><!-- 指定编码格式，否则在DOS下运行mvn compile命令时会出现莫名的错误，因为系统默认使用GBK编码 -->
+					<testCompilerArgument>
+					</testCompilerArgument>
+				</configuration>
+			</plugin>
+			<!-- 发布源码插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
