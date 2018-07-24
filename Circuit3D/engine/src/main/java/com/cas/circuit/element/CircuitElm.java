@@ -162,7 +162,7 @@ public abstract class CircuitElm {
 		if (this instanceof RelayElm) {
 			info = new ArrayList<>();
 			buildInfo();
-			log.info(info.toString());
+//			log.info(info.toString());
 		}
 	};
 

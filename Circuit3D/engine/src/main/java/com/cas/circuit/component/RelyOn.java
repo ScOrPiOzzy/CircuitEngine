@@ -24,10 +24,11 @@ public class RelyOn {
 	private int type;
 	@XmlAttribute
 	@XmlJavaTypeAdapter(Vector3fAdapter.class)
-	private Vector3f localTranslation;
+	private Vector3f translation;
+	@Deprecated
 	@XmlAttribute
 	@XmlJavaTypeAdapter(QuaternionAdapter.class)
-	private Quaternion localRotation;
+	private Quaternion rotation;
 	@XmlAttribute
 	@XmlJavaTypeAdapter(StringArrayAdapter.class)
 	private String[] relyIds;

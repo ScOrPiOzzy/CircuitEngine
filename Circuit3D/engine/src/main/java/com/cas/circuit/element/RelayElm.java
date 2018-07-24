@@ -49,12 +49,12 @@ public class RelayElm extends CircuitElm implements ISwitch {
 	protected int nCoil1, nCoil2;
 	protected List<Terminal> posts;
 
-	private double delta = 0;
-	private boolean lock;
+	protected double delta = 0;
+	protected boolean lock;
 
 	protected ControlIO button;
 
-	private boolean force;
+	protected boolean force;
 
 	public RelayElm() {
 		noDiagonal = true;
@@ -162,7 +162,6 @@ public class RelayElm extends CircuitElm implements ISwitch {
 	public void startIteration() {
 		if (force) {
 			i_position = 1;
-
 			return;
 		}
 
