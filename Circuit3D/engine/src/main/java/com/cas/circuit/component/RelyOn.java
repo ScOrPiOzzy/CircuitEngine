@@ -5,9 +5,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.cas.circuit.xml.adapter.FloatArrayAdapter;
+import com.cas.circuit.xml.adapter.QuaternionAdapter;
 import com.cas.circuit.xml.adapter.StringArrayAdapter;
 import com.cas.circuit.xml.adapter.Vector3fAdapter;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 
 import lombok.Getter;
@@ -25,8 +26,8 @@ public class RelyOn {
 	@XmlJavaTypeAdapter(Vector3fAdapter.class)
 	private Vector3f localTranslation;
 	@XmlAttribute
-	@XmlJavaTypeAdapter(FloatArrayAdapter.class)
-	private float[] localRotation;
+	@XmlJavaTypeAdapter(QuaternionAdapter.class)
+	private Quaternion localRotation;
 	@XmlAttribute
 	@XmlJavaTypeAdapter(StringArrayAdapter.class)
 	private String[] relyIds;

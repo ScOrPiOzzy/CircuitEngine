@@ -1,11 +1,12 @@
 package com.cas.circuit;// circuit.CirSim.java (c) 2010 by Paul Falstad
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
 import com.cas.circuit.component.Terminal;
 import com.cas.circuit.component.Wire;
@@ -16,18 +17,22 @@ import com.cas.circuit.element.RailElm;
 import com.cas.circuit.element.VoltageElm;
 import com.cas.circuit.util.Util;
 
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CirSim {
+
+	@Getter
 	@Setter
-	private boolean analyzeFlag;
 	private double t;
+
+	private boolean analyzeFlag;
+
 	private String stopMessage;
 
-	@Setter
-	private Vector<CircuitElm> elmList;
+	private List<CircuitElm> elmList = new ArrayList<>();
 	private double circuitMatrix[][], circuitRightSide[], origMatrix[][], origRightSide[];
 	private RowInfo circuitRowInfo[];
 	private int circuitPermute[];
@@ -36,26 +41,31 @@ public class CirSim {
 	private boolean circuitNeedsMap;
 
 	private long lastFrameTime, lastIterTime;
-	private Vector<CircuitNode> nodeList;
+	private List<CircuitNode> nodeList;
 
 	private CircuitElm voltageSources[];
 
 	@Setter
 	private boolean converged;
+	@Getter
+	private double timeStep;
 
 	public void updateCircuit(double timeStep) {
-//		System.out.println(timeStep);
+		this.timeStep = timeStep;
+
 		if (analyzeFlag) {
 			analyzeCircuit();
 			analyzeFlag = false;
 		}
 		try {
-			runCircuit();
+			runCircuit(timeStep);
 		} catch (Exception e) {
 			e.printStackTrace();
 			analyzeFlag = true;
 			return;
 		}
+
+		elmList.forEach(CircuitElm::printInfo);
 		t += timeStep;
 	}
 
@@ -63,26 +73,19 @@ public class CirSim {
 		if (n >= nodeList.size()) {
 			return null;
 		}
-		return nodeList.elementAt(n);
-	}
-
-	private CircuitElm getElm(int n) {
-		if (n >= elmList.size()) {
-			return null;
-		}
-		return elmList.elementAt(n);
+		return nodeList.get(n);
 	}
 
 	private void printMatrix() {
-		StringBuffer buf = new StringBuffer();
-		buf.append("\r\n");
-		for (int i = 0; i < circuitMatrix.length; i++) {
-			for (int j = 0; j < circuitMatrix[i].length; j++) {
-				buf.append("\t").append(String.format("%.10f", circuitMatrix[i][j]));
-			}
-			buf.append("\r\n");
-		}
-		log.info(buf.toString());
+//		StringBuffer buf = new StringBuffer();
+//		buf.append("\r\n");
+//		for (int i = 0; i < circuitMatrix.length; i++) {
+//			for (int j = 0; j < circuitMatrix[i].length; j++) {
+//				buf.append("\t").append(String.format("%.10f", circuitMatrix[i][j]));
+//			}
+//			buf.append("\r\n");
+//		}
+//		log.info(buf.toString());
 	}
 
 	private void printRightMatrix() {
@@ -101,12 +104,12 @@ public class CirSim {
 //		}
 	}
 
-	public void analyzeCircuit() {
+	protected void analyzeCircuit() {
 		if (elmList.isEmpty()) {
 			return;
 		}
 		stopMessage = null;
-		nodeList = new Vector<CircuitNode>();
+		nodeList = new ArrayList<CircuitNode>();
 
 		// System.out.println("ac1");
 		// look for voltage or ground element
@@ -118,7 +121,7 @@ public class CirSim {
 
 		shrinkWire(elmList);
 
-		log.info(isoElectricTerminalMap.toString());
+//		log.info(isoElectricTerminalMap.toString());
 
 		// System.out.println("ac2");
 		// allocate nodes and voltage sources
@@ -135,7 +138,7 @@ public class CirSim {
 
 		// stamp linear circuit elements
 		for (int i = 0; i != elmList.size(); i++) {
-			CircuitElm ce = getElm(i);
+			CircuitElm ce = getCircuitElm(i);
 			ce.stamp();
 //			System.out.println(ce);
 		}
@@ -144,7 +147,6 @@ public class CirSim {
 		// determine nodes that are unconnected
 		determineNodeUnconnected();
 		// System.out.println("ac5");
-		printMatrix();
 
 		findPathInfo();
 
@@ -152,7 +154,6 @@ public class CirSim {
 		// simplify the matrix; this speeds things up quite a bit
 //		log.info("simplify the matrix; this speeds things up quite a bit");
 		simplifyMatrix();
-		printRow();
 
 		// System.out.println("ac7");
 		// find size of new matrix
@@ -212,7 +213,7 @@ public class CirSim {
 		while (changed) {
 			changed = false;
 			for (int i = 0; i != elmList.size(); i++) {
-				CircuitElm ce = getElm(i);
+				CircuitElm ce = getCircuitElm(i);
 				// loop through all ce's nodes to see if they are connected to other nodes not in closure
 				for (int psotIndex = 0; psotIndex < ce.getPostCount(); psotIndex++) {
 					if (!closure[ce.getNodeIndex(psotIndex)]) {
@@ -227,6 +228,9 @@ public class CirSim {
 						}
 						int kn = ce.getNodeIndex(k);
 						if (ce.getConnection(psotIndex, k) && !closure[kn]) {
+//							if (ce instanceof com.cas.circuit.element.RelayElm) {
+//								log.info("{} - {} : connected {}", psotIndex, k, kn);
+//							}
 							closure[kn] = true;
 							changed = true;
 						}
@@ -252,7 +256,7 @@ public class CirSim {
 
 	private void findPathInfo() {
 		for (int i = 0; i != elmList.size(); i++) {
-			CircuitElm ce = getElm(i);
+			CircuitElm ce = getCircuitElm(i);
 			// look for inductors with no current path
 //			if (ce instanceof InductorElm) {
 //				FindPathInfo fpi = new FindPathInfo(FindPathInfo.INDUCT, ce, ce.getNodeIndex(1), nodeList.size(), elmList);
@@ -469,7 +473,7 @@ public class CirSim {
 		nonLinearCircuit = false;
 		int vscount = 0;
 		for (int i = 0; i != elmList.size(); i++) {
-			CircuitElm ce = getElm(i);
+			CircuitElm ce = getCircuitElm(i);
 			if (ce.nonLinear()) {
 				nonLinearCircuit = true;
 			}
@@ -487,7 +491,7 @@ public class CirSim {
 	private Set<Terminal> passedTerminal = new HashSet<>();
 	private Terminal ground;
 
-	private void shrinkWire(Vector<CircuitElm> elmList) {
+	private void shrinkWire(List<CircuitElm> elmList) {
 		elmList.forEach(e -> {
 			int postCnt = e.getPostCount();
 			for (int i = 0; i < postCnt; i++) {
@@ -528,11 +532,11 @@ public class CirSim {
 		});
 	}
 
-	private int allocateNodeAndVoltageSource(Vector<CircuitElm> elmList) {
+	private int allocateNodeAndVoltageSource(List<CircuitElm> elmList) {
 		int vscount = 0, nodeIdx, posts;
 
 		for (int elmIdx = 0; elmIdx != elmList.size(); elmIdx++) {
-			CircuitElm elm = getElm(elmIdx);
+			CircuitElm elm = getCircuitElm(elmIdx);
 //			元器件内部节点数
 //			int ivs = elm.getVoltageSourceCount();
 			posts = elm.getPostCount();
@@ -562,7 +566,7 @@ public class CirSim {
 					node.setNum(terminal.getIsoElectricNum());
 					node.addTerminal(terminal);
 					elm.setNode(postIdx, nodeList.size()); // 元器件每一个post对应的节点Node在集合中的序号
-					nodeList.addElement(node);
+					nodeList.add(node);
 				} else {
 					getCircuitNode(nodeIdx).addTerminal(terminal);
 					elm.setNode(postIdx, nodeIdx);
@@ -595,13 +599,13 @@ public class CirSim {
 
 //	private Terminal ground;
 
-	private void lookForVoltOrGroundElm(Vector<CircuitElm> elmList) {
+	private void lookForVoltOrGroundElm(List<CircuitElm> elmList) {
 		boolean gotGround = false;
 		boolean gotRail = false;
 		CircuitElm volt = null;
 
 		for (int i = 0; i != elmList.size(); i++) {
-			CircuitElm ce = getElm(i);
+			CircuitElm ce = getCircuitElm(i);
 			if (ce instanceof GroundElm) {
 				gotGround = true;
 				break;
@@ -624,7 +628,7 @@ public class CirSim {
 		}
 		ground.setNode(cn);
 
-		nodeList.addElement(cn);
+		nodeList.add(cn);
 	}
 
 	private void stop(String s, CircuitElm ce) {
@@ -758,7 +762,7 @@ public class CirSim {
 		}
 	}
 
-	public void runCircuit() {
+	protected void runCircuit(double timeStep) {
 		if (circuitMatrix == null || elmList.size() == 0) {
 			circuitMatrix = null;
 			return;
@@ -777,7 +781,7 @@ public class CirSim {
 		for (int iter = 1;; iter++) {
 			int subiter;
 			for (int i = 0; i != elmList.size(); i++) {
-				CircuitElm ce = getElm(i);
+				CircuitElm ce = getCircuitElm(i);
 				ce.startIteration();
 			}
 			final int subiterCount = 5000;
@@ -800,7 +804,7 @@ public class CirSim {
 					}
 				}
 				for (int i = 0; i != elmList.size(); i++) {
-					CircuitElm ce = getElm(i);
+					CircuitElm ce = getCircuitElm(i);
 					ce.doStep();
 				}
 				if (!validate()) {
@@ -933,12 +937,22 @@ public class CirSim {
 		return null;
 	}
 
-	public double getT() {
-		return t;
+	public void needAnalyze() {
+		analyzeFlag = true;
 	}
 
-	public void setT(double t) {
-		this.t = t;
+	public void addCircuitElm(CircuitElm elm) {
+		this.elmList.add(elm);
 	}
 
+	public CircuitElm getCircuitElm(int n) {
+		if (n >= elmList.size()) {
+			return null;
+		}
+		return elmList.get(n);
+	}
+
+	public boolean removeCircuitElm(CircuitElm elm) {
+		return this.elmList.remove(elm);
+	}
 }

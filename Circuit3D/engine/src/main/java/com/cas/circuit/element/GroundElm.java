@@ -31,9 +31,9 @@ public class GroundElm extends CircuitElm {
 	}
 
 	@Override
-	public void getInfo(String arr[]) {
-		arr[0] = "ground";
-		arr[1] = "I = " + getCurrentText(getCurrent());
+	void buildInfo() {
+		info.add("ground");
+		info.add(String.format("I = %s", getCurrentText(getCurrent())));
 	}
 
 	@Override

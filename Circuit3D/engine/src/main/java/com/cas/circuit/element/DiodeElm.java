@@ -51,11 +51,11 @@ public class DiodeElm extends CircuitElm {
 	}
 
 	@Override
-	public void getInfo(String arr[]) {
-		arr[0] = "diode";
-		arr[1] = "I = " + getCurrentText(getCurrent());
-		arr[2] = "Vd = " + getVoltageText(getVoltageDiff());
-		arr[3] = "P = " + getUnitText(getPower(), "W");
-		arr[4] = "Vf = " + getVoltageText(fwdrop);
+	void buildInfo() {
+		info.add("diode");
+		info.add(String.format("I = %s", getCurrentText(getCurrent())));
+		info.add(String.format("Vd = %s", getVoltageText(getVoltageDiff())));
+		info.add(String.format("P = %s", getUnitText(getPower(), "W")));
+		info.add(String.format("Vf = %s", getVoltageText(fwdrop)));
 	}
 }

@@ -1,5 +1,12 @@
 package com.cas.circuit.element;
 
+import java.util.Map;
+import java.util.function.Function;
+
+import javax.xml.bind.Unmarshaller;
+
+import com.cas.circuit.component.Terminal;
+
 // 0 = switch
 // 1 = switch end 1
 // 2 = switch end 2
@@ -18,6 +25,10 @@ public class AuxiliaryRelayElm extends RelayElm {
 	public AuxiliaryRelayElm() {
 		super();
 		pairs = 4;
+	}
+
+	public AuxiliaryRelayElm(Unmarshaller u, Function<String, Terminal> f, Map<String, String> params) {
+		super(u, f, params);
 	}
 
 	@Override
@@ -55,5 +66,10 @@ public class AuxiliaryRelayElm extends RelayElm {
 				switchCurrent[p] = 0;
 			}
 		}
+	}
+
+	@Override
+	public boolean getConnection(int n1, int n2) {
+		return n1 < pairs * getPostCount() && n2 < pairs * getPostCount() && n1 / 2 == n2 / 2;
 	}
 }

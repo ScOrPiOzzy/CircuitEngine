@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.xml.bind.PropertyException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -36,21 +35,21 @@ public class CircuitExchange {
 	private CircuitElm circuitElm;
 
 	public void afterUnmarshal(Unmarshaller u, Object parent) {
-		log.info("afterUnmarshal");
 		ElecCompDef elecCompDef = (ElecCompDef) parent;
 		Function<String, Terminal> f = (key) -> {
-			return elecCompDef.getTerminalMap().get(key);
+			Terminal term = elecCompDef.getTerminalMap().get(key);
+			log.debug(String.format("%s:%s", key, term == null ? "Not Fount!" : term.toString()));
+			return term;
 		};
 
 		try {
-			Class<?> clazz = Class.forName(String.format("circuit.element.%s", type));
+			Class<?> clazz = Class.forName(String.format("com.cas.circuit.element.%s", type));
 			Constructor<?> c = clazz.getDeclaredConstructor(new Class[] { Unmarshaller.class, Function.class, Map.class });
 			circuitElm = (CircuitElm) c.newInstance(u, f, params);
 			elecCompDef.putCircuitElm(id, circuitElm);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 }

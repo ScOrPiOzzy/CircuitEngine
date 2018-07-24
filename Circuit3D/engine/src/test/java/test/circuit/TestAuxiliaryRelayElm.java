@@ -2,7 +2,6 @@ package test.circuit;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +15,7 @@ import com.cas.circuit.component.Wire;
 import com.cas.circuit.element.AuxiliaryRelayElm;
 import com.cas.circuit.element.CircuitElm;
 import com.cas.circuit.element.LEDElm;
+import com.cas.circuit.element.RelayElm;
 import com.cas.circuit.element.ResistorElm;
 import com.cas.circuit.element.SwitchElm;
 import com.cas.circuit.element.VoltageElm;
@@ -57,7 +57,7 @@ public class TestAuxiliaryRelayElm {
 				switchWire.bind(switchTerm);
 				System.out.println("bind");
 			}
-			sim.setAnalyzeFlag(true);
+			sim.needAnalyze();
 			System.out.println("s.toggle()");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,14 +67,14 @@ public class TestAuxiliaryRelayElm {
 	private void sw(CirSim sim) {
 //		模拟开关闭合
 		try {
-			switchElm.doSwitch();
-			sim.setAnalyzeFlag(true);
+			switchElm.doSwitch(false);
+			sim.needAnalyze();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void prepareCircuit(Vector<CircuitElm> elmList) {
+	private void prepareCircuit(CirSim sim) {
 		VoltageElm ac = new VoltageElm(1);
 		Terminal ac_0 = new Terminal("ac_0");
 		Terminal ac_1 = new Terminal("ac_1");
@@ -88,7 +88,7 @@ public class TestAuxiliaryRelayElm {
 		sw.setPostPoint(0, sw_0);
 		sw.setPostPoint(1, sw_1);
 
-		AuxiliaryRelayElm relay = new AuxiliaryRelayElm();
+		RelayElm relay = new AuxiliaryRelayElm();
 		Terminal coil_0 = new Terminal("coil_0");
 		Terminal coil_1 = new Terminal("coil_1");
 		Terminal nc0 = new Terminal("nc0");
@@ -101,9 +101,7 @@ public class TestAuxiliaryRelayElm {
 		post1.add(nc1);
 		post1.add(no0);
 		post1.add(no1);
-
 		terms.add(post1);
-
 		relay.setPosts(coil_0, coil_1, terms);
 
 		VoltageElm dc = new VoltageElm(0);
@@ -163,30 +161,31 @@ public class TestAuxiliaryRelayElm {
 		wire.bind(sw_1);
 		wire.bind(ac_0);
 
-		elmList.add(ac);
-		elmList.add(sw);
-		elmList.add(relay);
-		elmList.add(dc);
-		elmList.add(resis);
-		elmList.add(led);
+		sim.addCircuitElm(ac);
+		sim.addCircuitElm(sw);
+		sim.addCircuitElm(relay);
+		sim.addCircuitElm(dc);
+		sim.addCircuitElm(resis);
+		sim.addCircuitElm(led);
 	}
 
 	private void startTest() {
 		CirSim sim = new CirSim();
 		CircuitElm.initClass(sim);
-		Vector<CircuitElm> elmList = new Vector<>();
-		sim.setElmList(elmList);
 
-		prepareCircuit(elmList);
+		prepareCircuit(sim);
 		// preapreRail(elmList);
 		// prepareCircuit(elmList);
 
-		sim.setAnalyzeFlag(true);
+		sim.needAnalyze();
 
 		// SwitchElm s = (SwitchElm) elmList.get(1);
 		// s.toggle();
 		ScheduledExecutorService pool = Executors.newScheduledThreadPool(2);
 		pool.scheduleAtFixedRate(() -> {
+
+			accept();
+
 			// System.out.println("TestRelay.startTest()");
 			try {
 				sim.updateCircuit(5e-6);
@@ -194,10 +193,8 @@ public class TestAuxiliaryRelayElm {
 				e.printStackTrace();
 			}
 //			elmList.forEach(e -> {
-//			CircuitElm e = elmList.get(5);
-//			String[] info = new String[8];
-//			e.getInfo(info);
-//			System.out.println(Arrays.toString(info));
+			CircuitElm e = sim.getCircuitElm(5);
+			e.printInfo();
 //			e = elmList.get(2);
 //			info = new String[8];
 //			e.getInfo(info);
@@ -211,8 +208,17 @@ public class TestAuxiliaryRelayElm {
 //			wire(sim);
 //		}, 3, TimeUnit.SECONDS);
 		pool.scheduleAtFixedRate(() -> {
-			sw(sim);
+			events.add(() -> sw(sim));
 //			wire(sim);
 		}, 3, 3, TimeUnit.SECONDS);
+	}
+
+	List<Runnable> events = new ArrayList<>();
+
+	private void accept() {
+		if (events.size() > 0) {
+			events.forEach(e -> e.run());
+			events.clear();
+		}
 	}
 }

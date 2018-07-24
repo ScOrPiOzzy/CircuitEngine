@@ -2,7 +2,6 @@ package com.cas.circuit.component;
 
 import java.io.IOException;
 
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -15,11 +14,13 @@ import com.jme3.export.Savable;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Spatial;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Getter
 @XmlAccessorType(XmlAccessType.NONE)
-public class LightIO implements Savable {// extends BaseVO<LightIOPO> {
+public class LightIO implements Savable {
 	@XmlAttribute
 	private String name;
 	@XmlAttribute
@@ -29,10 +30,6 @@ public class LightIO implements Savable {// extends BaseVO<LightIOPO> {
 	private ColorRGBA glowColor;
 
 	private Spatial spatial;
-
-	public void beforeUnmarshal(Unmarshaller u, Object parent) {
-		log.info("afterUnmarshal");
-	}
 
 	public void openLight() {
 //		JmeUtil.setSpatialHighLight(model, glowColor);
@@ -52,27 +49,14 @@ public class LightIO implements Savable {// extends BaseVO<LightIOPO> {
 		spatial.setUserData("entity", this);
 	}
 
-	public Spatial getSpatial() {
-		return spatial;
-	}
-
-	public String getMdlName() {
-		return mdlName;
-	}
-
-	public String getName() {
-		return name;
-	}
-
 	@Override
 	public void write(JmeExporter ex) throws IOException {
-		// TODO Auto-generated method stub
-
+		// nothing to save
 	}
 
 	@Override
 	public void read(JmeImporter im) throws IOException {
-		// TODO Auto-generated method stub
-
+		// nothing to read
 	}
+
 }

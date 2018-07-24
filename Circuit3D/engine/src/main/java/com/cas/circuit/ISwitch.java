@@ -6,6 +6,6 @@ public interface ISwitch {
 
 	void setButton(ControlIO c);
 
-	void doSwitch();
-	
+	void doSwitch(boolean pressed);
+
 }

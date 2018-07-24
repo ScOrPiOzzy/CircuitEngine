@@ -11,7 +11,7 @@ public class TestConfiguration {
 	@Test
 	public void testParse() throws Exception {
 		ElecCompDef comp = null;
-		File file = new File("D:\\HOME_SVN\\simulation\\电工仿真软件3D\\ServerResources\\configurations2\\Switch\\YBLX-K1-111.xml");
+		File file = new File("http://172.16.30.2:8082/configurations/Relay/CZY08A.xml");
 		comp = JaxbUtil.converyToJavaBean(file.toURL(), ElecCompDef.class);
 		System.out.println(comp);
 

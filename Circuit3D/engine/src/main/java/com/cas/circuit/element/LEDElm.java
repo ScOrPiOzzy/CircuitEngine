@@ -8,8 +8,8 @@ public class LEDElm extends DiodeElm {
 	}
 
 	@Override
-	public void getInfo(String arr[]) {
-		super.getInfo(arr);
-		arr[0] = "LED";
+	void buildInfo() {
+		info.add("LED");
+		super.buildInfo();
 	}
 }

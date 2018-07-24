@@ -2,6 +2,12 @@ package com.cas.circuit.element;
 
 import static com.cas.circuit.util.Util.getUnitText;
 
+import java.util.Map;
+import java.util.function.Function;
+
+import javax.xml.bind.Unmarshaller;
+
+import com.cas.circuit.component.Terminal;
 import com.cas.circuit.util.Util;
 
 public class ResistorElm extends CircuitElm {
@@ -15,6 +21,14 @@ public class ResistorElm extends CircuitElm {
 		resistance = r;
 	}
 
+	public ResistorElm(Unmarshaller u, Function<String, Terminal> f, Map<String, String> params) {
+		super(u, f, params);
+		String value = null;
+
+		value = params.get("resistance");
+		resistance = value == null ? resistance : Double.parseDouble(value);
+	}
+
 	@Override
 	void calculateCurrent() {
 		current = (volts[0] - volts[1]) / resistance;
@@ -26,10 +40,11 @@ public class ResistorElm extends CircuitElm {
 	}
 
 	@Override
-	public void getInfo(String arr[]) {
-		arr[0] = "resistor";
-		getBasicInfo(arr);
-		arr[3] = "R = " + getUnitText(resistance, Util.ohmString);
-		arr[4] = "P = " + getUnitText(getPower(), "W");
+	void buildInfo() {
+		info.add("resistor");
+		super.buildInfo();
+		info.add(String.format("R = %s", getUnitText(resistance, Util.ohmString)));
+		info.add(String.format("P = %s", getUnitText(getPower(), "W")));
 	}
+
 }

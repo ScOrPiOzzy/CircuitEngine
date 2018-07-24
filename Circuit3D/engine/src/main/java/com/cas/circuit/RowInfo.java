@@ -20,10 +20,10 @@ public class RowInfo {
 	private boolean rsChanges; // row's right side changes
 	private boolean lsChanges; // row's left side changes
 	private boolean dropRow; // row is not needed in matrix
+
 	@Override
 	public String toString() {
 		return "RowInfo [nodeEq=" + nodeEq + ", type=" + type + ", mapCol=" + mapCol + ", mapRow=" + mapRow + ", value=" + value + ", rsChanges=" + rsChanges + ", lsChanges=" + lsChanges + ", dropRow=" + dropRow + "]";
 	}
-	
-	
+
 }

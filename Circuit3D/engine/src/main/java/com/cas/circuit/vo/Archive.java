@@ -15,6 +15,7 @@ import com.cas.circuit.component.WireProxy;
 
 import lombok.Getter;
 import lombok.Setter;
+
 @Getter
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "Archive")
@@ -30,7 +31,6 @@ public class Archive {
 	@XmlElement(name = "Wire")
 	@XmlElementWrapper(name = "Wires")
 	private List<WireProxy> wireList = new ArrayList<>();
-
 
 	/**
 	 * 将元器件信息注入，等待保存

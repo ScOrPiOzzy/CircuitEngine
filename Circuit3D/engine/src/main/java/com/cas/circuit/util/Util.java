@@ -1,7 +1,6 @@
 package com.cas.circuit.util;
 
 import java.text.NumberFormat;
-import java.util.Arrays;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -170,9 +169,9 @@ public class Util {
 			// avoid zeros
 			if (a[j][j] == 0.0) {
 				log.info("avoided zero row:{} col:{}", j, j);
-				for (int l = 0; l < a.length; l++) {
-					System.out.println(Arrays.toString(a[l]));
-				}
+//				for (int l = 0; l < a.length; l++) {
+//					System.out.println(Arrays.toString(a[l]));
+//				}
 				a[j][j] = 1e-18;
 			}
 

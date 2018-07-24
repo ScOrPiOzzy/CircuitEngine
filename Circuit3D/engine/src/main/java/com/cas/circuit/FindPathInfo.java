@@ -1,6 +1,6 @@
 package com.cas.circuit;
 
-import java.util.Vector;
+import java.util.List;
 
 import com.cas.circuit.element.CircuitElm;
 import com.cas.circuit.element.CurrentElm;
@@ -15,9 +15,9 @@ public class FindPathInfo {
 	int dest;
 	CircuitElm firstElm;
 	int type;
-	private Vector<CircuitElm> elmList;
+	private List<CircuitElm> elmList;
 
-	FindPathInfo(int type, CircuitElm firstElm, int dest, int nodeSize, Vector<CircuitElm> elmList) {
+	FindPathInfo(int type, CircuitElm firstElm, int dest, int nodeSize, List<CircuitElm> elmList) {
 		this.dest = dest;
 		this.type = type;
 		this.firstElm = firstElm;
@@ -43,7 +43,7 @@ public class FindPathInfo {
 		used[n1] = true;
 		int i;
 		for (i = 0; i != elmList.size(); i++) {
-			CircuitElm ce = elmList.elementAt(i);
+			CircuitElm ce = elmList.get(i);
 
 			if (ce == firstElm) {
 				continue;

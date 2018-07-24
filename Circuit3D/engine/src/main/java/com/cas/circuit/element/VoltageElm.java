@@ -5,6 +5,13 @@ import static com.cas.circuit.util.Util.getUnitText;
 import static com.cas.circuit.util.Util.getVoltageText;
 import static com.cas.circuit.util.Util.pi;
 
+import java.util.Map;
+import java.util.function.Function;
+
+import javax.xml.bind.Unmarshaller;
+
+import com.cas.circuit.component.Terminal;
+
 public class VoltageElm extends CircuitElm {
 	static final int FLAG_COS = 2;
 	int waveform;
@@ -18,6 +25,21 @@ public class VoltageElm extends CircuitElm {
 		frequency = 50;
 		dutyCycle = .5;
 		reset();
+	}
+
+	public VoltageElm(Unmarshaller u, Function<String, Terminal> f, Map<String, String> params) {
+		super(u, f, params);
+		String value = params.get("waveform");
+		waveform = value == null ? 0 : Integer.parseInt(value);
+
+		value = params.get("maxVoltage");
+		maxVoltage = value == null ? 5 : Integer.parseInt(value);
+
+		value = params.get("frequency");
+		frequency = value == null ? 50 : Integer.parseInt(value);
+
+		value = params.get("phaseShift");
+		phaseShift = value == null ? 0 : Integer.parseInt(value);
 	}
 
 	@Override
@@ -94,44 +116,44 @@ public class VoltageElm extends CircuitElm {
 	}
 
 	@Override
-	public void getInfo(String arr[]) {
+	void buildInfo() {
+		super.buildInfo();
 		switch (waveform) {
 		case WF_DC:
 		case WF_VAR:
-			arr[0] = "voltage source";
+			info.add(0, "voltage source");
 			break;
 		case WF_AC:
-			arr[0] = "A/C source";
+			info.add(0, "A/C source");
 			break;
 		case WF_SQUARE:
-			arr[0] = "square wave gen";
+			info.add(0, "square wave gen");
 			break;
 		case WF_PULSE:
-			arr[0] = "pulse gen";
+			info.add(0, "pulse gen");
 			break;
 		case WF_SAWTOOTH:
-			arr[0] = "sawtooth gen";
+			info.add(0, "sawtooth gen");
 			break;
 		case WF_TRIANGLE:
-			arr[0] = "triangle gen";
+			info.add(0, "triangle gen");
 			break;
 		}
-		arr[1] = "I = " + getCurrentText(getCurrent());
-		arr[2] = ((this instanceof RailElm) ? "V = " : "Vd = ") + getVoltageText(getVoltageDiff());
-		
-		int i = 3;
+		info.add(String.format("I = %s", getCurrentText(getCurrent())));
+		info.add(String.format(((this instanceof RailElm) ? "V = %s" : "Vd = %s"), getVoltageText(getVoltageDiff())));
+
 		if (waveform != WF_DC && waveform != WF_VAR) {
-			arr[i++] = "f = " + getUnitText(frequency, "Hz");
-			arr[i++] = "Vmax = " + getVoltageText(maxVoltage);
+			info.add(String.format("f = %s", getUnitText(frequency, "Hz")));
+			info.add(String.format("Vmax = ", getVoltageText(maxVoltage)));
 			if (bias != 0) {
-				arr[i++] = "Voff = " + getVoltageText(bias);
+				info.add(String.format("Voff = %s", getVoltageText(bias)));
 			} else if (frequency > 500) {
-				arr[i++] = "wavelength = " + getUnitText(2.9979e8 / frequency, "m");
+				info.add(String.format("wavelength = %s", getUnitText(2.9979e8 / frequency, "m")));
 			}
-			arr[i++] = "P = " + getUnitText(getPower(), "W");
+			info.add(String.format("P = %s", getUnitText(getPower(), "W")));
 		}
-		if(getCurrent() != 0) {
-			arr[i++] = "R = " + getUnitText(getVoltageDiff() / getCurrent(), "");
+		if (getCurrent() != 0) {
+			info.add(String.format("R = %s", getUnitText(getVoltageDiff() / getCurrent(), "")));
 		}
 	}
 }

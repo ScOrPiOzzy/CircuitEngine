@@ -5,8 +5,16 @@ import static com.cas.circuit.util.Util.getVoltageDText;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
+import javax.xml.bind.Unmarshaller;
+
+import com.cas.circuit.ISwitch;
+import com.cas.circuit.component.ControlIO;
 import com.cas.circuit.component.Terminal;
+
+import lombok.extern.slf4j.Slf4j;
 
 // 0 = switch
 // 1 = switch end 1
@@ -15,8 +23,12 @@ import com.cas.circuit.component.Terminal;
 // 3n   = coil
 // 3n+1 = coil
 // 3n+2 = end of coil resistor
-
-public class RelayElm extends CircuitElm {
+/**
+ * 继电器， 能控制COM-NC-NO一组连接头的通断
+ * @author Administrator
+ */
+@Slf4j
+public class RelayElm extends CircuitElm implements ISwitch {
 	private static final int COM = 0, NC = 1, NO = 2;
 	protected double r_on = .05;
 	protected double r_off = 1e18;
@@ -40,16 +52,52 @@ public class RelayElm extends CircuitElm {
 	private double delta = 0;
 	private boolean lock;
 
+	protected ControlIO button;
+
+	private boolean force;
+
 	public RelayElm() {
 		noDiagonal = true;
+	}
+
+	public RelayElm(Unmarshaller u, Function<String, Terminal> f, Map<String, String> params) {
+		String value = null;
+
+		Terminal coil1 = f.apply(params.get("coil1"));
+		Terminal coil2 = f.apply(params.get("coil2"));
+
+		value = params.get("posts");
+		if (value == null) {
+			throw new RuntimeException("继电器配置有错");
+		}
+		String[] arr = value.split("\\|");
+		List<List<Terminal>> termGroupedList = new ArrayList<>(arr.length);
+		for (int i = 0; i < arr.length; i++) {
+			String[] tid = arr[i].split(",");
+
+			List<Terminal> termList = new ArrayList<>(3);
+			termList.add(f.apply(tid[COM]));
+			termList.add(f.apply(tid[NC]));
+			termList.add(f.apply(tid[NO]));
+
+			termGroupedList.add(termList);
+		}
+
+		value = params.get("coilR");
+		coilR = value == null ? coilR : Float.parseFloat(value);
+
+		value = params.get("onCurrent");
+		onCurrent = value == null ? onCurrent : Float.parseFloat(value);
+
+		setPosts(coil1, coil2, termGroupedList);
 	}
 
 	public void setPosts(Terminal coil1, Terminal coil2, List<List<Terminal>> termGroupedList) {
 		poleCount = termGroupedList.size();
 
 		posts = new ArrayList<>();
-		for (int i = 0; i < poleCount; i++) {
-			List<Terminal> s = termGroupedList.get(i);
+
+		for (List<Terminal> s : termGroupedList) {
 			for (int j = 0; j < s.size(); j++) {
 				Terminal t = s.get(j);
 				t.setIndexInElm(posts.size());
@@ -112,6 +160,12 @@ public class RelayElm extends CircuitElm {
 
 	@Override
 	public void startIteration() {
+		if (force) {
+			i_position = 1;
+
+			return;
+		}
+
 		if (!lock) {
 			// magic value to balance operate speed with reset speed semi-realistically
 			double magic = 1.3;
@@ -124,12 +178,20 @@ public class RelayElm extends CircuitElm {
 				d_position = 0;
 			}
 		} else if (Math.abs(delta - coilCurrent) < 1e-8) {
-			lock = false;
+			if (lock) {
+				button.unstuck();
+				lock = false;
+			}
 		}
+
 		if (d_position > 1) {
 			d_position = 1;
-			lock = true;
+			if (!lock) {
+				lock = true;
+				button.absorbed();
+			}
 		}
+
 		if (d_position < .1) {
 			i_position = 0;
 		} else if (d_position > .9) {
@@ -166,24 +228,34 @@ public class RelayElm extends CircuitElm {
 	}
 
 	@Override
-	public void getInfo(String arr[]) {
-		arr[0] = i_position == 0 ? "relay (off)" : i_position == 1 ? "relay (on)" : "relay";
-		int ln = 1;
+	void buildInfo() {
+		info.add(String.format(i_position == 0 ? "%s (off)" : i_position == 1 ? "%s (on)" : "%s", getClass().getSimpleName()));
+		super.buildInfo();
 		for (int i = 0; i != poleCount; i++) {
-			arr[ln++] = "I" + (i + 1) + " = " + getCurrentDText(switchCurrent[i]);
+			info.add(String.format("I%d = %s", (i + 1), getCurrentDText(switchCurrent[i])));
 		}
-		arr[ln++] = "coil I = " + getCurrentDText(coilCurrent);
-		arr[ln++] = "coil Vd = " + getVoltageDText(volts[nCoil1] - volts[nCoil2]);
+		info.add(String.format("coil I = %s", getCurrentDText(coilCurrent)));
+		info.add(String.format("coil Vd = %s", getVoltageDText(volts[nCoil1] - volts[nCoil2])));
 	}
 
 	@Override
 	public boolean getConnection(int n1, int n2) {
-		return (n1 / pairs == n2 / pairs);
+		return n1 / pairs == n2 / pairs;
 	}
 
 	// we need this to be able to change the matrix for each step
 	@Override
 	public boolean nonLinear() {
 		return true;
+	}
+
+	@Override
+	public void setButton(ControlIO c) {
+		this.button = c;
+	}
+
+	@Override
+	public void doSwitch(boolean pressed) {
+		force = pressed;
 	}
 }

@@ -14,11 +14,13 @@ import com.cas.circuit.component.ControlIO;
 import com.cas.circuit.component.Terminal;
 
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class SwitchElm extends CircuitElm implements ISwitch {
 //	private boolean momentary;
 	// position 0 == closed, position 1 == open
-	int position, posCount;
+	int position = 0, posCount = 2;
 
 	@Setter
 	private ControlIO button;
@@ -27,17 +29,15 @@ public class SwitchElm extends CircuitElm implements ISwitch {
 		super();
 //		momentary = false;
 		position = 0;
-		posCount = 2;
 	}
 
 	public SwitchElm(boolean mm) {
 		super();
 		position = (mm) ? 1 : 0;
 //		momentary = mm;
-		posCount = 2;
 	}
 
-	public SwitchElm(Unmarshaller u, Function<Object, Terminal> f, Map<String, String> params) {
+	public SwitchElm(Unmarshaller u, Function<String, Terminal> f, Map<String, String> params) {
 		super(u, f, params);
 		String value = null;
 
@@ -68,24 +68,26 @@ public class SwitchElm extends CircuitElm implements ISwitch {
 	}
 
 	@Override
-	public void doSwitch() {
+	public void doSwitch(boolean pressed) {
 		position++;
 		if (position >= posCount) {
 			position = 0;
 		}
+		sim.needAnalyze();
 	}
 
 	@Override
-	public void getInfo(String arr[]) {
-		arr[0] = "switch (SPST)";
+	void buildInfo() {
+		super.buildInfo();
+		info.add(0, "switch (SPST)");
 //		arr[0] = (momentary) ? "push switch (SPST)" : "switch (SPST)";
 		if (position == 1) {
-			arr[1] = "open";
-			arr[2] = "Vd = " + getVoltageDText(getVoltageDiff());
+			info.add(1, "open");
+			info.add(String.format("Vd = %s", getVoltageDText(getVoltageDiff())));
 		} else {
-			arr[1] = "closed";
-			arr[2] = "V = " + getVoltageText(volts[0]);
-			arr[3] = "I = " + getCurrentDText(getCurrent());
+			info.add(1, "closed");
+			info.add(String.format("V = %s", getVoltageText(volts[0])));
+			info.add(String.format("I = %s", getCurrentDText(getCurrent())));
 		}
 	}
 

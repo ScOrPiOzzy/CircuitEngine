@@ -4,6 +4,7 @@ import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class BooleanIntAdapter extends XmlAdapter<String, Boolean> {
+	@Override
 	public Boolean unmarshal(String v) {
 		if (v == null) {
 			return false;
@@ -11,6 +12,7 @@ public class BooleanIntAdapter extends XmlAdapter<String, Boolean> {
 		return DatatypeConverter.parseBoolean(v);
 	}
 
+	@Override
 	public String marshal(Boolean v) {
 		if (v == null) {
 			return "0";

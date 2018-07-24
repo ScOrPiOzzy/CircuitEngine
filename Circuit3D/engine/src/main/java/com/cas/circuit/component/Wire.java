@@ -1,13 +1,16 @@
 package com.cas.circuit.component;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.Savable;
 import com.jme3.scene.Spatial;
 
 import lombok.Getter;
@@ -22,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 @Slf4j
 @XmlAccessorType(XmlAccessType.NONE)
-public class Wire {
+public class Wire implements Savable {
 	@XmlAttribute
 	private String mark;
 	@XmlAttribute
@@ -42,13 +45,6 @@ public class Wire {
 	private WireProxy proxy;
 
 	public Wire() {
-	}
-
-	/**
-	 * jaxb 解析标签&lt;ElecCompDef&gt;完成后调用
-	 */
-	public void afterUnmarshal(Unmarshaller u, Object parent) {
-		log.info("afterUnmarshal");
 	}
 
 	/**
@@ -129,4 +125,19 @@ public class Wire {
 	public void setProxy(WireProxy proxy) {
 		this.proxy = proxy;
 	}
+
+	public void setInternal() {
+		internal = true;
+	}
+
+	@Override
+	public void write(JmeExporter ex) throws IOException {
+		// nothing to save
+	}
+
+	@Override
+	public void read(JmeImporter im) throws IOException {
+		// nothing to read
+	}
+
 }

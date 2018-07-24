@@ -38,12 +38,11 @@ public class Inductor {
 		// The oscillation is a real problem in circuits with switches.
 		nodes[0] = n0;
 		nodes[1] = n1;
-//		FIXME sim.timeStep = 5.0E-6
-		double timeStep = 5.0E-6;
+//		double timeStep = 5.0E-6;
 		if (isTrapezoidal()) {
-			compResistance = 2 * inductance / timeStep;
+			compResistance = 2 * inductance / sim.getTimeStep();
 		} else {// backward euler
-			compResistance = inductance / timeStep;
+			compResistance = inductance / sim.getTimeStep();
 		}
 		sim.stampResistor(nodes[0], nodes[1], compResistance);
 		sim.stampRightSide(nodes[0]);

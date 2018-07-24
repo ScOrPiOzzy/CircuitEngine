@@ -14,9 +14,9 @@ public class CurrentElm extends CircuitElm {
 	}
 
 	@Override
-	public void getInfo(String arr[]) {
-		arr[0] = "current source";
-		getBasicInfo(arr);
+	void buildInfo() {
+		info.add("current source");
+		super.buildInfo();
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package test.circuit;
 
-import java.util.Arrays;
 import java.util.Vector;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -72,20 +71,17 @@ public class TestCircuit {
 		resis7.setPostPoint(1, b);
 
 		CirSim sim = new CirSim();
-		Vector<CircuitElm> elmList = new Vector<>();
 
-		elmList.addElement(elm1);
-		elmList.addElement(resis1);
-		elmList.addElement(resis2);
-		elmList.addElement(resis3);
-		elmList.addElement(resis4);
-		elmList.addElement(resis5);
-		elmList.addElement(resis6);
-		elmList.addElement(resis7);
+		sim.addCircuitElm(elm1);
+		sim.addCircuitElm(resis1);
+		sim.addCircuitElm(resis2);
+		sim.addCircuitElm(resis3);
+		sim.addCircuitElm(resis4);
+		sim.addCircuitElm(resis5);
+		sim.addCircuitElm(resis6);
+		sim.addCircuitElm(resis7);
 
-		sim.setElmList(elmList);
-
-		sim.setAnalyzeFlag(true);
+		sim.needAnalyze();
 
 		CircuitElm.initClass(sim);
 
@@ -115,26 +111,24 @@ public class TestCircuit {
 
 	@Test
 	public void testWireConnect() throws Exception {
-		Vector<CircuitElm> elmList = new Vector<>();
 //		preapreThreePhase(elmList);
 //		preapreRail(elmList);
-		prepareWheatstoneBridge(elmList);
 
 		CirSim sim = new CirSim();
-		sim.setElmList(elmList);
+		prepareWheatstoneBridge(sim);
 
-		sim.setAnalyzeFlag(true);
+		sim.needAnalyze();
 
 		CircuitElm.initClass(sim);
 
 		ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
 		pool.scheduleAtFixedRate(() -> {
 			sim.updateCircuit(5e-6);
-			elmList.forEach(e -> {
-				String[] info = new String[10];
-				e.getInfo(info);
-				System.out.println(e.getClass() + ":" + Arrays.toString(info));
-			});
+//			elmList.forEach(e -> {
+//				String[] info = new String[10];
+//				e.getInfo(info);
+//				System.out.println(e.getClass() + ":" + Arrays.toString(info));
+//			});
 		}, 10, 10, TimeUnit.MILLISECONDS);
 	}
 
@@ -213,7 +207,7 @@ public class TestCircuit {
 		elmList.add(resis3);
 	}
 
-	void prepareWheatstoneBridge(Vector<CircuitElm> elmList) {
+	void prepareWheatstoneBridge(CirSim sim) {
 		VoltageElm elm1 = new VoltageElm(1);
 		Terminal elm1_0 = new Terminal("elm1_0");
 		Terminal elm1_1 = new Terminal("elm1_1");
@@ -313,13 +307,13 @@ public class TestCircuit {
 		wire.bind(elm1_1);
 		wire.bind(resis7_0);
 
-		elmList.addElement(elm1);
-		elmList.addElement(resis1);
-		elmList.addElement(resis2);
-		elmList.addElement(resis3);
-		elmList.addElement(resis4);
-		elmList.addElement(resis5);
-		elmList.addElement(resis6);
-		elmList.addElement(resis7);
+		sim.addCircuitElm(elm1);
+		sim.addCircuitElm(resis1);
+		sim.addCircuitElm(resis2);
+		sim.addCircuitElm(resis3);
+		sim.addCircuitElm(resis4);
+		sim.addCircuitElm(resis5);
+		sim.addCircuitElm(resis6);
+		sim.addCircuitElm(resis7);
 	}
 }

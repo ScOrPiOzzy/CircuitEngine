@@ -3,6 +3,8 @@ package com.cas.circuit.element;
 import static com.cas.circuit.util.Util.getCurrentDText;
 import static com.cas.circuit.util.Util.getVoltageDText;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -11,6 +13,9 @@ import javax.xml.bind.Unmarshaller;
 import com.cas.circuit.CirSim;
 import com.cas.circuit.component.Terminal;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public abstract class CircuitElm {
 	public static double voltageRange = 5;
 	public static double currentMult, powerMult;
@@ -25,6 +30,8 @@ public abstract class CircuitElm {
 	double current, curcount;
 	boolean noDiagonal;
 
+	protected List<String> info;
+
 	public static void initClass(CirSim s) {
 		sim = s;
 	}
@@ -33,11 +40,11 @@ public abstract class CircuitElm {
 		allocNodes();
 	}
 
-	protected CircuitElm(Unmarshaller u, Function<Object, Terminal> f, Map<String, String> params) {
+	protected CircuitElm(Unmarshaller u, Function<String, Terminal> f, Map<String, String> params) {
 		this();
 		try {
-			term1 = f.apply(params.get("term1"));
-			term2 = f.apply(params.get("term2"));
+			setPostPoint(0, f.apply(params.get("term1")));
+			setPostPoint(1, f.apply(params.get("term2")));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -79,6 +86,8 @@ public abstract class CircuitElm {
 	public void setNodeVoltage(int n, double c) {
 		volts[n] = c;
 		calculateCurrent();
+
+		getPostPoint(n).voltageChanged(c);
 	}
 
 	void calculateCurrent() {
@@ -149,13 +158,17 @@ public abstract class CircuitElm {
 		return false;
 	}
 
-	public void getInfo(String arr[]) {
-	}
+	public void printInfo() {
+		if (this instanceof RelayElm) {
+			info = new ArrayList<>();
+			buildInfo();
+			log.info(info.toString());
+		}
+	};
 
-	int getBasicInfo(String arr[]) {
-		arr[1] = "I = " + getCurrentDText(getCurrent());
-		arr[2] = "Vd = " + getVoltageDText(getVoltageDiff());
-		return 3;
+	void buildInfo() {
+		info.add(String.format("I = %s", getCurrentDText(getCurrent())));
+		info.add(String.format("Vd = %s", getVoltageDText(getVoltageDiff())));
 	}
 
 	double getPower() {
