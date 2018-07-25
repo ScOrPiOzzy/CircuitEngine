@@ -54,7 +54,7 @@ public class TimeRelayElm extends RelayElm {
 			if (d_position < 0) {
 				d_position = 0;
 			}
-		} else if (Math.abs(delta - coilCurrent) < 1e-8) {
+		} else if (delta == 0 && delta == coilCurrent) {
 			if (lock) {
 
 				count = 0;

@@ -176,7 +176,7 @@ public class RelayElm extends CircuitElm implements ISwitch {
 			if (d_position < 0) {
 				d_position = 0;
 			}
-		} else if (Math.abs(delta - coilCurrent) < 1e-8) {
+		} else if (delta == 0 && delta == coilCurrent) {
 			if (lock) {
 				button.unstuck();
 				lock = false;
