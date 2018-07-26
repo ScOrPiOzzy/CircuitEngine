@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.xml.bind.Unmarshaller;
-
 import com.cas.circuit.CirSim;
 import com.cas.circuit.component.Terminal;
 
@@ -40,7 +38,7 @@ public abstract class CircuitElm {
 		allocNodes();
 	}
 
-	protected CircuitElm(Unmarshaller u, Function<String, Terminal> f, Map<String, String> params) {
+	protected CircuitElm(Function<String, Terminal> f, Map<String, String> params) {
 		this();
 		try {
 			setPostPoint(0, f.apply(params.get("term1")));
@@ -87,7 +85,7 @@ public abstract class CircuitElm {
 		volts[n] = c;
 		calculateCurrent();
 
-		getPostPoint(n).voltageChanged(c);
+//		getPostPoint(n).voltageChanged(c);
 	}
 
 	void calculateCurrent() {
@@ -159,10 +157,10 @@ public abstract class CircuitElm {
 	}
 
 	public void printInfo() {
-		if (this instanceof RelayElm) {
+		if (this instanceof ResistorElm) {
 			info = new ArrayList<>();
 			buildInfo();
-//			log.info(info.toString());
+			log.info(info.toString());
 		}
 	};
 

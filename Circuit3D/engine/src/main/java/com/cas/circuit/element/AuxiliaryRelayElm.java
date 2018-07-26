@@ -18,6 +18,7 @@ import com.cas.circuit.component.Terminal;
 /**
  * 中间继电器
  */
+@Deprecated
 public class AuxiliaryRelayElm extends RelayElm {
 	// 表示每一组触电有4个连接头，当前类中的4个连接头两两一对
 	private static final int NC1 = 0, NC2 = 1, NO1 = 2, NO2 = 3;

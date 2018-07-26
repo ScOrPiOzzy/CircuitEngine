@@ -26,7 +26,7 @@ public class CirSim {
 
 	@Getter
 	@Setter
-	private double t;
+	private double timer;
 
 	private boolean analyzeFlag;
 
@@ -66,7 +66,7 @@ public class CirSim {
 		}
 
 		elmList.forEach(CircuitElm::printInfo);
-		t += timeStep;
+		timer += timeStep;
 	}
 
 	private CircuitNode getCircuitNode(int n) {
@@ -121,7 +121,7 @@ public class CirSim {
 
 		shrinkWire(elmList);
 
-//		log.info(isoElectricTerminalMap.toString());
+		log.info(isoElectricTerminalMap.toString());
 
 		// System.out.println("ac2");
 		// allocate nodes and voltage sources
@@ -856,6 +856,10 @@ public class CirSim {
 //							log.info("{}: {}", link, res);
 							terminal.getElm().setNodeVoltage(terminal.getIndexInElm(), res);
 						}
+
+						isoElectricTerminalMap.get(node.getNum()).forEach(t->{
+							t.voltageChanged(res);
+						});
 					} else {
 						int ji = j - (nodeList.size() - 1);
 						// System.out.println("setting vsrc " + ji + " to " + res);

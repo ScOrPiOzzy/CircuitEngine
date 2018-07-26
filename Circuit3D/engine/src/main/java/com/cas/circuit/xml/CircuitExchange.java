@@ -44,8 +44,8 @@ public class CircuitExchange {
 
 		try {
 			Class<?> clazz = Class.forName(String.format("com.cas.circuit.element.%s", type));
-			Constructor<?> c = clazz.getDeclaredConstructor(new Class[] { Unmarshaller.class, Function.class, Map.class });
-			circuitElm = (CircuitElm) c.newInstance(u, f, params);
+			Constructor<?> c = clazz.getDeclaredConstructor(new Class[] { Function.class, Map.class });
+			circuitElm = (CircuitElm) c.newInstance(f, params);
 			elecCompDef.putCircuitElm(id, circuitElm);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -8,15 +8,15 @@ import static com.cas.circuit.util.Util.pi;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.xml.bind.Unmarshaller;
-
 import com.cas.circuit.component.Terminal;
 
 public class VoltageElm extends CircuitElm {
 	static final int FLAG_COS = 2;
 	int waveform;
 	public static final int WF_DC = 0, WF_AC = 1, WF_SQUARE = 2, WF_TRIANGLE = 3, WF_SAWTOOTH = 4, WF_PULSE = 5, WF_VAR = 6;
-	double frequency, maxVoltage, freqTimeZero, bias, phaseShift, dutyCycle;
+	private double maxVoltage, bias, phaseShift, dutyCycle;
+
+	private int frequency;
 
 	public VoltageElm(int waveform) {
 		super();
@@ -27,24 +27,23 @@ public class VoltageElm extends CircuitElm {
 		reset();
 	}
 
-	public VoltageElm(Unmarshaller u, Function<String, Terminal> f, Map<String, String> params) {
-		super(u, f, params);
+	public VoltageElm(Function<String, Terminal> f, Map<String, String> params) {
+		super(f, params);
 		String value = params.get("waveform");
 		waveform = value == null ? 0 : Integer.parseInt(value);
 
 		value = params.get("maxVoltage");
-		maxVoltage = value == null ? 5 : Integer.parseInt(value);
+		maxVoltage = value == null ? 5 : Double.parseDouble(value);
 
 		value = params.get("frequency");
 		frequency = value == null ? 50 : Integer.parseInt(value);
 
 		value = params.get("phaseShift");
-		phaseShift = value == null ? 0 : Integer.parseInt(value);
+		setPhaseShift(value == null ? 0 : Integer.parseInt(value));
 	}
 
 	@Override
 	public void reset() {
-		freqTimeZero = 0;
 		curcount = 0;
 	}
 
@@ -72,7 +71,7 @@ public class VoltageElm extends CircuitElm {
 	}
 
 	public double getVoltage() {
-		double w = 2 * pi * (sim.getT() - freqTimeZero) * frequency + phaseShift;
+		double w = 2 * pi * sim.getTimer() * frequency + phaseShift;
 
 		switch (waveform) {
 		case WF_DC:
@@ -105,14 +104,6 @@ public class VoltageElm extends CircuitElm {
 	@Override
 	public double getVoltageDiff() {
 		return volts[1] - volts[0];
-	}
-
-	public void setPhaseShift(double phaseShift) {
-		this.phaseShift = phaseShift;
-	}
-
-	public void setMaxVoltage(double maxVoltage) {
-		this.maxVoltage = maxVoltage;
 	}
 
 	@Override
@@ -155,5 +146,16 @@ public class VoltageElm extends CircuitElm {
 		if (getCurrent() != 0) {
 			info.add(String.format("R = %s", getUnitText(getVoltageDiff() / getCurrent(), "")));
 		}
+	}
+
+	/**
+	 * @param phaseShift 角度
+	 */
+	public void setPhaseShift(int phaseShift) {
+		this.phaseShift = Math.toRadians(phaseShift);
+	}
+
+	public void setMaxVoltage(double maxVoltage) {
+		this.maxVoltage = maxVoltage;
 	}
 }

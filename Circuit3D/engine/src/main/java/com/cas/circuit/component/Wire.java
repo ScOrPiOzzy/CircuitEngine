@@ -46,6 +46,11 @@ public class Wire implements Savable {
 
 	public Wire() {
 	}
+	
+	public Wire(Terminal term1,Terminal term2) {
+		bind(term1);
+		bind(term2);
+	}
 
 	/**
 	 * 将导线绑到连接头上
@@ -126,7 +131,7 @@ public class Wire implements Savable {
 		this.proxy = proxy;
 	}
 
-	public void setInternal() {
+	public void markInternal() {
 		internal = true;
 	}
 

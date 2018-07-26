@@ -111,7 +111,11 @@ public class ElecCompDef implements Savable {
 	 */
 	public void afterUnmarshal(Unmarshaller u, Object parent) {
 //		标记导线为元器件内部导线
-		internalWireList.forEach(w -> w.setInternal(true));
+		internalWireList.forEach(w -> {
+			w.markInternal();
+			w.bind(getTerminal(w.getTerm1Id()));
+			w.bind(getTerminal(w.getTerm2Id()));
+		});
 //		
 		terminalMap.values().forEach(t -> t.setElecCompDef(this));
 		controlIOList.forEach(c -> c.setElecCompDef(this));

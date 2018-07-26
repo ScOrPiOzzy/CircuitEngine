@@ -103,9 +103,19 @@ public class Terminal implements Savable {
 		return this.name;
 	}
 
+	double maxV = 0;
+	
 	public void voltageChanged(double c) {
+		if(c > maxV) {
+			maxV = c;
+		}
 		if (spatial != null) {
-			JmeUtil.color(spatial, new ColorRGBA(1, 0, 0, (float) (Math.abs(c) / 220)), true);
+//			System.out.println(Math.abs(c));
+			if (Math.abs(c) > 0) {
+				JmeUtil.color(spatial, new ColorRGBA(1, 0, 0, (float) (Math.abs(c) / maxV)), true);
+			} else {
+				JmeUtil.uncolor(spatial);
+			}
 		}
 	}
 

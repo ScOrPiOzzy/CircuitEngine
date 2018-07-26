@@ -7,8 +7,6 @@ import static com.cas.circuit.util.Util.getVoltageText;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.xml.bind.Unmarshaller;
-
 import com.cas.circuit.ISwitch;
 import com.cas.circuit.component.ControlIO;
 import com.cas.circuit.component.Terminal;
@@ -37,8 +35,8 @@ public class SwitchElm extends CircuitElm implements ISwitch {
 //		momentary = mm;
 	}
 
-	public SwitchElm(Unmarshaller u, Function<String, Terminal> f, Map<String, String> params) {
-		super(u, f, params);
+	public SwitchElm(Function<String, Terminal> f, Map<String, String> params) {
+		super(f, params);
 		String value = null;
 
 //		value = params.get("momentary");

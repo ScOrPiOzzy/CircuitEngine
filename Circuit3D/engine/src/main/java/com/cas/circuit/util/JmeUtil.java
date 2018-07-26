@@ -84,7 +84,9 @@ public final class JmeUtil {
 		if (sp instanceof Geometry) {
 			Material mat = ((Geometry) sp).getMaterial();
 			if (saveMat) {
-				sp.setUserData("Color", mat);
+				if (sp.getUserData("Color") == null) {
+					sp.setUserData("Color", mat);
+				}
 			}
 
 			Material colorMat = mat.clone();

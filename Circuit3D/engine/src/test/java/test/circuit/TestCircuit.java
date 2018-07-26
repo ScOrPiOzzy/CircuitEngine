@@ -140,14 +140,14 @@ public class TestCircuit {
 		r.setPostPoint(1, r_1);
 
 		VoltageElm s = new VoltageElm(1);
-		s.setPhaseShift(Math.toRadians(120));
+		s.setPhaseShift(120);
 		Terminal s_0 = new Terminal("s_0");
 		Terminal s_1 = new Terminal("s_1");
 		s.setPostPoint(0, s_0);
 		s.setPostPoint(1, s_1);
 
 		VoltageElm t = new VoltageElm(1);
-		t.setPhaseShift(Math.toRadians(240));
+		t.setPhaseShift(240);
 		Terminal t_0 = new Terminal("t_0");
 		Terminal t_1 = new Terminal("t_1");
 		t.setPostPoint(0, t_0);

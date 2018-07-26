@@ -6,8 +6,6 @@ import static com.cas.circuit.util.Util.getVoltageText;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.xml.bind.Unmarshaller;
-
 import com.cas.circuit.component.Terminal;
 
 public class WireElm extends ResistorElm {
@@ -24,8 +22,8 @@ public class WireElm extends ResistorElm {
 		super(r);
 	}
 
-	public WireElm(Unmarshaller u, Function<String, Terminal> f, Map<String, String> params) {
-		super(u, f, params);
+	public WireElm(Function<String, Terminal> f, Map<String, String> params) {
+		super(f, params);
 	}
 
 	@Override
