@@ -8,11 +8,13 @@ import com.jme3.scene.Spatial;
 
 public class MotorElm extends CircuitElm {
 	public static final int STATE_STATIC = 0, STATE_CW = 1, STATE_ACW = -1;
-
+	public static final int F_STABLE = 1;
 	protected int state = 0;
 
-//	转子
+// 	转子
 	protected Spatial rotator;
+
+	protected int flag;
 
 	public MotorElm() {
 	}
