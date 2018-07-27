@@ -17,11 +17,11 @@ import com.cas.circuit.element.CircuitElm;
 import com.cas.circuit.element.ThreePhaseACAsynchMotorElm;
 import com.cas.circuit.element.VoltageElm;
 
-public class TestMotor {
+public class TestMotorStar {
 	private long time;
 
 	public static void main(String[] args) {
-		TestMotor relay = new TestMotor();
+		TestMotorStar relay = new TestMotorStar();
 		relay.testBefore();
 
 		relay.startTest();

@@ -30,9 +30,8 @@ public class ThreePhaseACAsynchMotorElm extends MotorElm {
 //	磁极对数
 	private int p;
 
-	// 临界点
+//	电压临界点
 	private double maxmin, vmax = 220;
-	private double maxphase, minphase;
 	int cnt, sample = 3;
 
 	private double phase_v;
@@ -73,10 +72,6 @@ public class ThreePhaseACAsynchMotorElm extends MotorElm {
 		sim.stampResistor(nodes[0], nodes[3], coilR);
 		sim.stampResistor(nodes[1], nodes[4], coilR);
 		sim.stampResistor(nodes[2], nodes[5], coilR);
-
-//		for (int i = 0; i != getPostCount(); i++) {
-//			sim.stampNonLinear(nodes[i]);
-//		}
 	}
 
 	@Override
@@ -92,42 +87,15 @@ public class ThreePhaseACAsynchMotorElm extends MotorElm {
 			return;
 		}
 
-//		System.out.println(abs(volt_u + volt_v + volt_w));
-
 		if (maxmin == 0) {
 			maxmin = volt_v;
 		}
-
-//		if (cnt < sample * 2) {
-//			vmax = max(abs(volt_v), vmax);
-//
-//			double tmp = volt_v - maxmin;
-//			if (tmp > 0) {
-////				System.out.printf("max[%d] = %s\r\n", cnt / 2, volt_v);
-//				if (slope == -1) {
-//					// 过了最小值的临界点附近
-//					cnt++;
-//				}
-//				slope = 1;
-//			} else if (tmp < 0) {
-////				System.out.printf("min[%d] = %s\r\n", cnt / 2, volt_v);
-//				if (slope == 1) {
-//					// 过了最大值的临界点附近
-//					cnt++;
-//				}
-//				slope = -1;
-//			}
-//			return;
-//		}
 		vmax = max(max(max(volt_u, volt_v), volt_w), vmax);
-
 //		选择v相作为标准
-//		double phase_u = asin(volt_u / vmax);
-
-//		double phase_w = asin(volt_w / vmax);
 //		满足相位差 uvw
-
+//		double phase_u = asin(volt_u / vmax);
 		double phase = asin(volt_v / vmax);
+//		double phase_w = asin(volt_w / vmax);
 		if (phase_v == 0) {
 			phase_v = phase;
 			return;
@@ -146,24 +114,11 @@ public class ThreePhaseACAsynchMotorElm extends MotorElm {
 		}
 		phase_v = phase;
 
-//		System.out.println(Math.abs(volt_w - prew) + " ,  " + Math.abs(volt_u - preu));
 		if (Math.abs(volt_w - prew) < 8 && Math.abs(volt_u - preu) < 8) {
 			System.out.println("正转");
-			
 		} else {
 			System.out.println("反转");
 		}
-
-//		System.out.printf("volt_v[%.5f], \tprew[%.5f], \tvolt_w[[%.5f]], \t[%.5f]\r\n", volt_v, prew, volt_w, volt_w - prew);
-//		System.out.printf("volt_w[%.5f], \tpreu[%.5f], \tvolt_u[[%.5f]], \t[%.5f]\r\n", volt_w, preu, volt_u, volt_u - preu);
-//		System.out.printf("volt_u[%.5f], \tprev[%.5f], \tvolt_v[[%.5f]], \t[%.5f]\r\n", volt_u, prev, volt_v, volt_v - prev);
-
-//		preu = vmax * sin(phase_v + PI * 2 / 3);
-//		prev = vmax * sin(phase_u + PI * 2 / 3);
-//		prew = vmax * sin(phase_w + PI * 2 / 3);
-//		System.out.printf("volt_v[%.5f], \tprew[%.5f] = \tvolt_w[[%.5f]], \t[%.5f]\r\n", volt_v, prew, volt_w, volt_w - prew);
-//		System.out.printf("volt_w[%.5f], \tpreu[%.5f] = \tvolt_u[[%.5f]], \t[%.5f]\r\n", volt_w, preu, volt_u, volt_u - preu);
-//		System.out.printf("volt_u[%.5f], \tprev[%.5f] = \tvolt_v[[%.5f]], \t[%.5f]\r\n", volt_u, prev, volt_v, volt_v - prev);
 	}
 
 	@Override
