@@ -41,12 +41,14 @@ public class TestMotor {
 
 	private void prepareCircuit(CirSim sim) {
 		VoltageElm r = new VoltageElm(1);
+		r.setMaxVoltage(200);
 		Terminal r_0 = new Terminal("r_0");
 		Terminal r_1 = new Terminal("r_1");
 		r.setPostPoint(0, r_0);
 		r.setPostPoint(1, r_1);
 
 		VoltageElm s = new VoltageElm(1);
+		s.setMaxVoltage(200);
 		s.setPhaseShift(120);
 		Terminal s_0 = new Terminal("s_0");
 		Terminal s_1 = new Terminal("s_1");
@@ -55,6 +57,7 @@ public class TestMotor {
 
 		VoltageElm t = new VoltageElm(1);
 		t.setPhaseShift(240);
+		t.setMaxVoltage(200);
 		Terminal t_0 = new Terminal("t_0");
 		Terminal t_1 = new Terminal("t_1");
 		t.setPostPoint(0, t_0);
@@ -83,9 +86,30 @@ public class TestMotor {
 		new Wire(r_0, s_0);
 		new Wire(s_0, t_0);
 		
+//		正转1
+//		new Wire(r_1, u1);
+//		new Wire(s_1, v1);
+//		new Wire(t_1, w1);
+//		正转2
+//		new Wire(r_1, v1);
+//		new Wire(s_1, w1);
+//		new Wire(t_1, u1);
+//		正转3
+//		new Wire(r_1, w1);
+//		new Wire(s_1, u1);
+//		new Wire(t_1, v1);
+//		反转1
+//		new Wire(r_1, w1);
+//		new Wire(s_1, v1);
+//		new Wire(t_1, u1);
+//		反转2
+//		new Wire(r_1, v1);
+//		new Wire(s_1, u1);
+//		new Wire(t_1, w1);
+//		反转3
 		new Wire(r_1, u1);
-		new Wire(s_1, v1);
-		new Wire(t_1, w1);
+		new Wire(s_1, w1);
+		new Wire(t_1, v1);
 		
 		new Wire(u2, v2);
 		new Wire(v2, w2);
@@ -112,7 +136,7 @@ public class TestMotor {
 		pool.scheduleAtFixedRate(() -> {
 			// System.out.println("TestRelay.startTest()");
 			try {
-				sim.updateCircuit(5e-5);
+				sim.updateCircuit(1e-5);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -127,6 +151,6 @@ public class TestMotor {
 //			System.out.println(Arrays.toString(info));
 
 			// });
-		}, 10, 10, TimeUnit.MILLISECONDS);
+		}, 10, 1, TimeUnit.MILLISECONDS);
 	}
 }
