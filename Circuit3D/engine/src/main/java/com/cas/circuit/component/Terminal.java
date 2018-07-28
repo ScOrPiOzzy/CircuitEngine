@@ -42,6 +42,8 @@ public class Terminal implements Savable {
 	private String mark;
 	@XmlAttribute(name = "num")
 	private Integer limit;// 限制可连接导线的数量，要么是1，要么是2.
+	@XmlAttribute
+	private Boolean internal;// 是否为内部节点，不需要给用户接线, 默认肯定是false，表不是内部连接头
 //	=============================================================================================
 //	=============================================================================================
 	@Setter
@@ -104,9 +106,9 @@ public class Terminal implements Savable {
 	}
 
 	double maxV = 0;
-	
+
 	public void voltageChanged(double c) {
-		if(c > maxV) {
+		if (c > maxV) {
 			maxV = c;
 		}
 		if (spatial != null) {
@@ -117,6 +119,10 @@ public class Terminal implements Savable {
 				JmeUtil.uncolor(spatial);
 			}
 		}
+	}
+
+	public boolean notInternal() {
+		return internal == null || !internal;
 	}
 
 }

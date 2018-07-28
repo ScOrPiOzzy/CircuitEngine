@@ -27,8 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 public class CirSim implements Runnable {
 
 	@Getter
-	@Setter
 	private double timer;
+	public static final double TPF = 1e-6;
 
 	private boolean analyzeFlag;
 
@@ -49,8 +49,6 @@ public class CirSim implements Runnable {
 
 	@Setter
 	private boolean converged;
-	@Getter
-	private double tpf;
 
 	private Application app;
 
@@ -63,14 +61,13 @@ public class CirSim implements Runnable {
 		this.app = app;
 	}
 
-	public void updateCircuit(double tpf) {
-//System.out.println(tpf);
+	public void updateCircuit() {
 		if (analyzeFlag) {
 			analyzeCircuit();
 			analyzeFlag = false;
 		}
 		try {
-			runCircuit(tpf);
+			runCircuit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			analyzeFlag = true;
@@ -502,10 +499,6 @@ public class CirSim implements Runnable {
 	private Set<Terminal> passedTerminal = new HashSet<>();
 	private Terminal ground;
 
-	private boolean exitFlag;
-
-	private long start;
-
 	private void shrinkWire(List<CircuitElm> elmList) {
 		elmList.forEach(e -> {
 			int postCnt = e.getPostCount();
@@ -777,7 +770,7 @@ public class CirSim implements Runnable {
 		}
 	}
 
-	protected void runCircuit(double timeStep) {
+	protected void runCircuit() {
 		if (circuitMatrix == null || elmList.size() == 0) {
 			circuitMatrix = null;
 			return;
@@ -965,7 +958,7 @@ public class CirSim implements Runnable {
 			this.elmList.add(elm);
 		});
 	}
-	
+
 	public void removeCircuitElm(CircuitElm elm) {
 		enqueue.add(() -> {
 			this.elmList.remove(elm);
@@ -981,35 +974,19 @@ public class CirSim implements Runnable {
 
 	@Override
 	public void run() {
-		exitFlag = false;
-//		while (true) {
-//			if (exitFlag) {
-//				break;
-//			}
-
-		tpf = (System.nanoTime() - start) * (1e-9);
-
+//		电路运算的时间间隔0.01毫秒
 		runQueuedTasks();
-
 		synchronized (this) {
-			updateCircuit(tpf);
+			updateCircuit();
 		}
-
-		start = System.nanoTime();
-//			System.out.println("tpf" + (System.nanoTime() - start));
-		timer += tpf;
-//		}
+		timer += TPF;
 	}
 
-	private void runQueuedTasks() {
+	public void runQueuedTasks() {
 		Runnable task;
 		while ((task = enqueue.poll()) != null) {
 			task.run();
 		}
-	}
-
-	public void exit() {
-		exitFlag = true;
 	}
 
 	public void enqueue(Runnable e) {

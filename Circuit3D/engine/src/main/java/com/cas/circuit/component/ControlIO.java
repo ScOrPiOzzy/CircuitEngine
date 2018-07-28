@@ -52,6 +52,10 @@ public class ControlIO implements Savable {
 	 */
 	public static final String INTERACT_ROTATE = "rotate";
 
+	
+//	id 对于 ControlIO 并不是必要的，在
+	@XmlAttribute
+	private String id;
 	@XmlAttribute
 	private String name;
 	@XmlAttribute

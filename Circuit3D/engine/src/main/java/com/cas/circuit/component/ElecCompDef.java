@@ -154,7 +154,7 @@ public class ElecCompDef implements Savable {
 //		遍历元气件中所有插座
 //		jackList.forEach(jack -> jack.setSpatial(spatial.getChild(jack.getMdlName())));
 //		遍历元气件中所有连接头
-		terminalMap.values().forEach(t -> t.setSpatial(spatial.getChild(t.getMdlName())));
+		terminalMap.values().stream().filter(Terminal::notInternal).forEach(t -> t.setSpatial(spatial.getChild(t.getMdlName())));
 //		遍历元气件中所有开关
 		controlIOList.forEach(c -> c.setSpatial(spatial.getChild(c.getMdlName())));
 //		遍历元气件中所有指示灯
