@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 public class Util {
 
 	public static final NumberFormat showFormat, shortFormat, noCommaFormat;
-	public static final double pi = 3.14159265358979323846;
 	public static final String muString = "u";
 	public static final String ohmString = "ohm";
 

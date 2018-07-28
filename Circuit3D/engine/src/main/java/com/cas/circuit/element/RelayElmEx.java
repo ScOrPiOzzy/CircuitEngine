@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.xml.bind.Unmarshaller;
-
 import com.cas.circuit.component.Terminal;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +21,7 @@ public class RelayElmEx extends RelayElm {
 		super();
 	}
 
-	public RelayElmEx(Unmarshaller u, Function<String, Terminal> f, Map<String, String> params) {
+	public RelayElmEx(Function<String, Terminal> f, Map<String, String> params) {
 		Terminal coil1 = f.apply(params.get("coil1"));
 		Terminal coil2 = f.apply(params.get("coil2"));
 		pairs = 2;

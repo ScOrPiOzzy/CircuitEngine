@@ -5,8 +5,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Function;
 
-import javax.xml.bind.Unmarshaller;
-
 import com.cas.circuit.component.Terminal;
 
 /**
@@ -28,8 +26,8 @@ public class TimeRelayElm extends RelayElm {
 		super();
 	}
 
-	public TimeRelayElm(Unmarshaller u, Function<String, Terminal> f, Map<String, String> params) {
-		super(u, f, params);
+	public TimeRelayElm(Function<String, Terminal> f, Map<String, String> params) {
+		super(f, params);
 
 		String value = params.get("preset");
 		preset = value == null ? preset : Integer.parseInt(value);

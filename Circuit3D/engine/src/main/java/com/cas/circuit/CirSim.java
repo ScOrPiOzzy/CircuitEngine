@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.cas.circuit.component.Terminal;
 import com.cas.circuit.component.Wire;
@@ -16,13 +17,14 @@ import com.cas.circuit.element.GroundElm;
 import com.cas.circuit.element.RailElm;
 import com.cas.circuit.element.VoltageElm;
 import com.cas.circuit.util.Util;
+import com.jme3.app.Application;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class CirSim {
+public class CirSim implements Runnable {
 
 	@Getter
 	@Setter
@@ -48,17 +50,27 @@ public class CirSim {
 	@Setter
 	private boolean converged;
 	@Getter
-	private double timeStep;
+	private double tpf;
 
-	public void updateCircuit(double timeStep) {
-		this.timeStep = timeStep;
+	private Application app;
 
+	private ConcurrentLinkedQueue<Runnable> enqueue = new ConcurrentLinkedQueue<>();
+
+	public CirSim() {
+	}
+
+	public CirSim(Application app) {
+		this.app = app;
+	}
+
+	public void updateCircuit(double tpf) {
+//System.out.println(tpf);
 		if (analyzeFlag) {
 			analyzeCircuit();
 			analyzeFlag = false;
 		}
 		try {
-			runCircuit(timeStep);
+			runCircuit(tpf);
 		} catch (Exception e) {
 			e.printStackTrace();
 			analyzeFlag = true;
@@ -66,7 +78,6 @@ public class CirSim {
 		}
 
 		elmList.forEach(CircuitElm::printInfo);
-		timer += timeStep;
 	}
 
 	private CircuitNode getCircuitNode(int n) {
@@ -121,7 +132,7 @@ public class CirSim {
 
 		shrinkWire(elmList);
 
-		log.info(isoElectricTerminalMap.toString());
+//		log.info(isoElectricTerminalMap.toString());
 
 		// System.out.println("ac2");
 		// allocate nodes and voltage sources
@@ -491,6 +502,10 @@ public class CirSim {
 	private Set<Terminal> passedTerminal = new HashSet<>();
 	private Terminal ground;
 
+	private boolean exitFlag;
+
+	private long start;
+
 	private void shrinkWire(List<CircuitElm> elmList) {
 		elmList.forEach(e -> {
 			int postCnt = e.getPostCount();
@@ -857,7 +872,7 @@ public class CirSim {
 							terminal.getElm().setNodeVoltage(terminal.getIndexInElm(), res);
 						}
 
-						isoElectricTerminalMap.get(node.getNum()).forEach(t->{
+						isoElectricTerminalMap.get(node.getNum()).forEach(t -> {
 							t.voltageChanged(res);
 						});
 					} else {
@@ -946,7 +961,15 @@ public class CirSim {
 	}
 
 	public void addCircuitElm(CircuitElm elm) {
-		this.elmList.add(elm);
+		enqueue.add(() -> {
+			this.elmList.add(elm);
+		});
+	}
+	
+	public void removeCircuitElm(CircuitElm elm) {
+		enqueue.add(() -> {
+			this.elmList.remove(elm);
+		});
 	}
 
 	public CircuitElm getCircuitElm(int n) {
@@ -956,7 +979,41 @@ public class CirSim {
 		return elmList.get(n);
 	}
 
-	public boolean removeCircuitElm(CircuitElm elm) {
-		return this.elmList.remove(elm);
+	@Override
+	public void run() {
+		exitFlag = false;
+//		while (true) {
+//			if (exitFlag) {
+//				break;
+//			}
+
+		tpf = (System.nanoTime() - start) * (1e-9);
+
+		runQueuedTasks();
+
+		synchronized (this) {
+			updateCircuit(tpf);
+		}
+
+		start = System.nanoTime();
+//			System.out.println("tpf" + (System.nanoTime() - start));
+		timer += tpf;
+//		}
 	}
+
+	private void runQueuedTasks() {
+		Runnable task;
+		while ((task = enqueue.poll()) != null) {
+			task.run();
+		}
+	}
+
+	public void exit() {
+		exitFlag = true;
+	}
+
+	public void enqueue(Runnable e) {
+		app.enqueue(e);
+	}
+
 }

@@ -3,7 +3,7 @@ package com.cas.circuit.element;
 import static com.cas.circuit.util.Util.getCurrentText;
 import static com.cas.circuit.util.Util.getUnitText;
 import static com.cas.circuit.util.Util.getVoltageText;
-import static com.cas.circuit.util.Util.pi;
+import static java.lang.Math.PI;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -48,10 +48,10 @@ public class VoltageElm extends CircuitElm {
 	}
 
 	public double triangleFunc(double x) {
-		if (x < pi) {
-			return x * (2 / pi) - 1;
+		if (x < PI) {
+			return x * (2 / PI) - 1;
 		}
-		return 1 - (x - pi) * (2 / pi);
+		return 1 - (x - PI) * (2 / PI);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class VoltageElm extends CircuitElm {
 	}
 
 	public double getVoltage() {
-		double w = 2 * pi * sim.getTimer() * frequency + phaseShift;
+		double w = 2 * PI * sim.getTimer() * frequency + phaseShift;
 
 		switch (waveform) {
 		case WF_DC:
@@ -79,13 +79,13 @@ public class VoltageElm extends CircuitElm {
 		case WF_AC:
 			return Math.sin(w) * maxVoltage + bias;
 		case WF_SQUARE:
-			return bias + ((w % (2 * pi) > (2 * pi * dutyCycle)) ? -maxVoltage : maxVoltage);
+			return bias + ((w % (2 * PI) > (2 * PI * dutyCycle)) ? -maxVoltage : maxVoltage);
 		case WF_TRIANGLE:
-			return bias + triangleFunc(w % (2 * pi)) * maxVoltage;
+			return bias + triangleFunc(w % (2 * PI)) * maxVoltage;
 		case WF_SAWTOOTH:
-			return bias + (w % (2 * pi)) * (maxVoltage / pi) - maxVoltage;
+			return bias + (w % (2 * PI)) * (maxVoltage / PI) - maxVoltage;
 		case WF_PULSE:
-			return ((w % (2 * pi)) < 1) ? maxVoltage + bias : bias;
+			return ((w % (2 * PI)) < 1) ? maxVoltage + bias : bias;
 		default:
 			return 0;
 		}

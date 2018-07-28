@@ -16,6 +16,7 @@ import com.cas.circuit.component.Terminal;
 import com.cas.circuit.element.CircuitElm;
 import com.cas.circuit.xml.adapter.MapAdapter;
 
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,6 +33,7 @@ public class CircuitExchange {
 	@XmlJavaTypeAdapter(MapAdapter.class)
 	private Map<String, String> params;
 
+	@Getter
 	private CircuitElm circuitElm;
 
 	public void afterUnmarshal(Unmarshaller u, Object parent) {

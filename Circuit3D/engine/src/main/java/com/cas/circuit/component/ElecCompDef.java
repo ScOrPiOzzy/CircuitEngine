@@ -16,7 +16,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.cas.circuit.ISwitch;
+import com.cas.circuit.control.MotorControl;
 import com.cas.circuit.element.CircuitElm;
+import com.cas.circuit.element.MotorElm;
 import com.cas.circuit.xml.CircuitExchange;
 import com.cas.circuit.xml.adapter.MapAdapter;
 import com.cas.circuit.xml.adapter.TerminalMapAdapter;
@@ -157,6 +159,16 @@ public class ElecCompDef implements Savable {
 		controlIOList.forEach(c -> c.setSpatial(spatial.getChild(c.getMdlName())));
 //		遍历元气件中所有指示灯
 		lightIOList.forEach(l -> l.setSpatial(spatial.getChild(l.getMdlName())));
+
+		circuitExchangeList.forEach(ex -> {
+			CircuitElm elm = ex.getCircuitElm();
+			if (elm instanceof MotorElm) {
+				MotorControl control = new MotorControl(getParam("rotator"));
+				spatial.addControl(control);
+
+				((MotorElm) elm).setControl(control);
+			}
+		});
 	}
 
 	/**

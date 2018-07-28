@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.xml.bind.Unmarshaller;
-
 import com.cas.circuit.component.Terminal;
 
 /**
@@ -24,7 +22,7 @@ public class ThermalRelayElm extends RelayElmEx {
 		super();
 	}
 
-	public ThermalRelayElm(Unmarshaller u, Function<String, Terminal> f, Map<String, String> params) {
+	public ThermalRelayElm(Function<String, Terminal> f, Map<String, String> params) {
 		String value = params.get("heater");
 		String[] arr = value.split("\\|");
 

@@ -3,8 +3,6 @@ package com.cas.circuit.element;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.xml.bind.Unmarshaller;
-
 import com.cas.circuit.component.Terminal;
 
 // 0 = switch
@@ -28,8 +26,8 @@ public class AuxiliaryRelayElm extends RelayElm {
 		pairs = 4;
 	}
 
-	public AuxiliaryRelayElm(Unmarshaller u, Function<String, Terminal> f, Map<String, String> params) {
-		super(u, f, params);
+	public AuxiliaryRelayElm(Function<String, Terminal> f, Map<String, String> params) {
+		super(f, params);
 	}
 
 	@Override

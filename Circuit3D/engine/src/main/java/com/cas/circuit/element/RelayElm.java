@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.xml.bind.Unmarshaller;
-
 import com.cas.circuit.ISwitch;
 import com.cas.circuit.component.ControlIO;
 import com.cas.circuit.component.Terminal;
@@ -60,7 +58,7 @@ public class RelayElm extends CircuitElm implements ISwitch {
 		noDiagonal = true;
 	}
 
-	public RelayElm(Unmarshaller u, Function<String, Terminal> f, Map<String, String> params) {
+	public RelayElm(Function<String, Terminal> f, Map<String, String> params) {
 		String value = null;
 
 		Terminal coil1 = f.apply(params.get("coil1"));

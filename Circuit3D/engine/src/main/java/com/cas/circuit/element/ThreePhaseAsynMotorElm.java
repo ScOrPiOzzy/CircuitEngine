@@ -18,7 +18,7 @@ import com.cas.circuit.component.Terminal;
  * 三相交流异步点击,<br>
  * 转速n = 60 * 电源频率f / 磁极对数p
  */
-public class ThreePhaseACAsynchMotorElm extends MotorElm {
+public class ThreePhaseAsynMotorElm extends MotorElm {
 	public static final int POST_COUNT = 6;
 
 //	U1,V1,W1,U2,V2,W2
@@ -31,16 +31,16 @@ public class ThreePhaseACAsynchMotorElm extends MotorElm {
 	private int p;
 
 //	电压临界点
-	private double maxmin, vmax = 220;
+	private double maxmin, vmax = 0;
 	int cnt, sample = 3;
 
 	private double phase_v;
 
-	public ThreePhaseACAsynchMotorElm() {
+	public ThreePhaseAsynMotorElm() {
 		super();
 	}
 
-	public ThreePhaseACAsynchMotorElm(Function<String, Terminal> f, Map<String, String> params) {
+	public ThreePhaseAsynMotorElm(Function<String, Terminal> f, Map<String, String> params) {
 		super(f, params);
 
 		posts = new ArrayList<>(6);
@@ -81,18 +81,18 @@ public class ThreePhaseACAsynchMotorElm extends MotorElm {
 		double volt_w = volts[2] - volts[5];
 
 //		三相电特性1：任意时刻，线电压代数和为近似为0（精度问题）
-//		不满足条件的情况：电压全为0，或者是电压代数和远大于0，这里认为偏差1伏
-		if ((volt_u == 0 && volt_v == 0 && volt_w == 0) || (abs(volt_u + volt_v + volt_w) > 1e-7)) {
+//		不满足条件的情况：电压全为0，或者是电压代数和远大于0，这里认为偏差1e-10伏
+		if ((abs(volt_u) < 1e-10 && (abs(volt_v) < 1e-10 && (abs(volt_w) < 1e-10) || (abs(volt_u + volt_v + volt_w) > 1e-8)))) {
 			state = STATE_STATIC;
+
+			control.setDir(0);
 			return;
 		}
-
 		if (maxmin == 0) {
 			maxmin = volt_v;
 		}
 		vmax = max(max(max(volt_u, volt_v), volt_w), vmax);
 //		选择v相作为标准
-//		满足相位差 uvw
 //		double phase_u = asin(volt_u / vmax);
 		double phase = asin(volt_v / vmax);
 //		double phase_w = asin(volt_w / vmax);
@@ -112,13 +112,17 @@ public class ThreePhaseACAsynchMotorElm extends MotorElm {
 		} else {
 			preu = prew = vmax * sin(PI / 2);
 		}
-		phase_v = phase;
 
-		if (Math.abs(volt_w - prew) < 8 && Math.abs(volt_u - preu) < 8) {
-			System.out.println("正转");
+		if (Math.abs(volt_w - prew) < 10 && Math.abs(volt_u - preu) < 10) {
+//			System.out.println("正转" + Math.toDegrees(sim.getTpf() * 25 * PI));
+			control.setDir(1);
 		} else {
-			System.out.println("反转");
+			control.setDir(-1);
+//			System.out.printf("prew:%.5f,\tvolt_w:%.5f\r\npreu:%.5f,\tvolt_u:%.5f\r\n", prew, (volt_w - prew), preu, (volt_u - preu));
+//			System.out.println("反转" + (volt_w - prew) + ",  "+(volt_u - preu));
 		}
+
+		phase_v = phase;
 	}
 
 	@Override

@@ -40,9 +40,9 @@ public class Inductor {
 		nodes[1] = n1;
 //		double timeStep = 5.0E-6;
 		if (isTrapezoidal()) {
-			compResistance = 2 * inductance / sim.getTimeStep();
+			compResistance = 2 * inductance / sim.getTpf();
 		} else {// backward euler
-			compResistance = inductance / sim.getTimeStep();
+			compResistance = inductance / sim.getTpf();
 		}
 		sim.stampResistor(nodes[0], nodes[1], compResistance);
 		sim.stampRightSide(nodes[0]);
