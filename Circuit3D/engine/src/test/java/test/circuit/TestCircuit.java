@@ -85,7 +85,7 @@ public class TestCircuit {
 
 		CircuitElm.initClass(sim);
 
-		sim.updateCircuit(1);
+		sim.updateCircuit();
 
 //		elmList.forEach(elm -> {
 //			String[] info = new String[10];
@@ -123,7 +123,7 @@ public class TestCircuit {
 
 		ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
 		pool.scheduleAtFixedRate(() -> {
-			sim.updateCircuit(5e-6);
+			sim.updateCircuit();
 //			elmList.forEach(e -> {
 //				String[] info = new String[10];
 //				e.getInfo(info);

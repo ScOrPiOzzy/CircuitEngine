@@ -13,8 +13,9 @@ import org.junit.Before;
 import com.cas.circuit.CirSim;
 import com.cas.circuit.component.Terminal;
 import com.cas.circuit.component.Wire;
+import com.cas.circuit.control.MotorControl;
 import com.cas.circuit.element.CircuitElm;
-import com.cas.circuit.element.ThreePhaseACAsynchMotorElm;
+import com.cas.circuit.element.ThreePhaseAsynMotorElm;
 import com.cas.circuit.element.VoltageElm;
 
 public class TestMotorStar {
@@ -56,8 +57,8 @@ public class TestMotorStar {
 		s.setPostPoint(1, s_1);
 
 		VoltageElm t = new VoltageElm(1);
-		t.setPhaseShift(240);
 		t.setMaxVoltage(200);
+		t.setPhaseShift(240);
 		Terminal t_0 = new Terminal("t_0");
 		Terminal t_1 = new Terminal("t_1");
 		t.setPostPoint(0, t_0);
@@ -80,20 +81,20 @@ public class TestMotorStar {
 		Function<String, Terminal> f = (k) -> {
 			return moterTermMap.get(k);
 		};
-		ThreePhaseACAsynchMotorElm motor = new ThreePhaseACAsynchMotorElm(f, params);
-
+		ThreePhaseAsynMotorElm motor = new ThreePhaseAsynMotorElm(f, params);
+		motor.setControl(new MotorControl());
 //		直流部分
 		new Wire(r_0, s_0);
 		new Wire(s_0, t_0);
-		
+
 //		正转1
 //		new Wire(r_1, u1);
 //		new Wire(s_1, v1);
 //		new Wire(t_1, w1);
 //		正转2
-//		new Wire(r_1, v1);
-//		new Wire(s_1, w1);
-//		new Wire(t_1, u1);
+		new Wire(r_1, v1);
+		new Wire(s_1, w1);
+		new Wire(t_1, u1);
 //		正转3
 //		new Wire(r_1, w1);
 //		new Wire(s_1, u1);
@@ -107,10 +108,10 @@ public class TestMotorStar {
 //		new Wire(s_1, u1);
 //		new Wire(t_1, w1);
 //		反转3
-		new Wire(r_1, u1);
-		new Wire(s_1, w1);
-		new Wire(t_1, v1);
-		
+//		new Wire(r_1, u1);
+//		new Wire(s_1, w1);
+//		new Wire(t_1, v1);
+
 		new Wire(u2, v2);
 		new Wire(v2, w2);
 
@@ -125,32 +126,10 @@ public class TestMotorStar {
 		CircuitElm.initClass(sim);
 
 		prepareCircuit(sim);
-		// preapreRail(elmList);
-		// prepareCircuit(elmList);
 
 		sim.needAnalyze();
 
-		// SwitchElm s = (SwitchElm) elmList.get(1);
-		// s.toggle();
 		ScheduledExecutorService pool = Executors.newScheduledThreadPool(2);
-		pool.scheduleAtFixedRate(() -> {
-			// System.out.println("TestRelay.startTest()");
-			try {
-				sim.updateCircuit(1e-5);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			// elmList.forEach(e -> {
-//			CircuitElm e = sim.getCircuitElm(5);
-//			String[] info = new String[8];
-//			e.getInfo(info);
-//			System.out.println(Arrays.toString(info));
-//			e = elmList.get(2);
-//			info = new String[8];
-//			e.getInfo(info);
-//			System.out.println(Arrays.toString(info));
-
-			// });
-		}, 10, 1, TimeUnit.MILLISECONDS);
+		pool.scheduleAtFixedRate(sim, 0, (long) (1 / CirSim.TPF / 10), TimeUnit.NANOSECONDS);
 	}
 }

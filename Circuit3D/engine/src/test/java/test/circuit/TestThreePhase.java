@@ -110,7 +110,7 @@ public class TestThreePhase {
 		pool.scheduleAtFixedRate(() -> {
 			// System.out.println("TestRelay.startTest()");
 			try {
-				sim.updateCircuit(5e-4);
+				sim.updateCircuit();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

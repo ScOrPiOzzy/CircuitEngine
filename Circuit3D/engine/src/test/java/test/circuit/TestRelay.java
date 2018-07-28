@@ -179,7 +179,7 @@ public class TestRelay {
 
 			accept();
 			try {
-				sim.updateCircuit(5e-6);
+				sim.updateCircuit();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -188,7 +188,7 @@ public class TestAuxiliaryRelayElm {
 
 			// System.out.println("TestRelay.startTest()");
 			try {
-				sim.updateCircuit(5e-6);
+				sim.updateCircuit();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
