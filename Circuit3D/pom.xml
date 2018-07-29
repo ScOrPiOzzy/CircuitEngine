@@ -18,7 +18,12 @@
 		<!-- 引擎版本号 -->
 		<engine.version>3.2.1-stable</engine.version>
 	</properties>
-
+	<repositories>
+		<repository>
+			<id>spring</id>
+			<url>http://repo.spring.io/plugins-release/</url>
+		</repository>
+	</repositories>
 	<!-- 发布设置 -->
 	<distributionManagement>
 		<snapshotRepository>
