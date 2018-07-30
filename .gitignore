@@ -1,2 +1,3 @@
 *.class
 Circuit3D/**/target
+Circuit3D/**/.svn

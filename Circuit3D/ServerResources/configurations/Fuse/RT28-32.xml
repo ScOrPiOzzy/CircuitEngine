@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ElecCompDef name="熔体" model="RT28-32" desc="熔体在电路中用FU表示，在电路发生故障或异常时，熔体就会在电流异常升高到一定的高度的时候，自身熔断切断电流，从而起到保护电路安全运行的作用。">
-	<Terminal id="1" name="1" mdlName="1" direction="Z+"/>
-	<Terminal id="2" name="2" mdlName="2" direction="Z-"/>
+	<Terminal>
+		<item id="1" name="1" mdlName="1" direction="Z+"/>
+		<item id="2" name="2" mdlName="2" direction="Z-"/>
+	</Terminal>
 	<ResisState isDef="1">
 		<ResisRelation term1Id="1" term2Id="3" value="0.0001" />
 	</ResisState>

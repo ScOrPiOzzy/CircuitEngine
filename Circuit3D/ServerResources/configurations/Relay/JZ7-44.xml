@@ -1,45 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ElecCompDef name="中间继电器" model="JZ7-44" desc="继电器在电路中用KA表示，是一种电控制器件，当输入量的变化达到规定要求时，在电气输出电路中使被控量发生预定的阶跃变化的一种电器。它具有控制系统（输入回路）和被控制系统（输出回路）之间的互动关系，通常应用于自动化的控制电路中，在电路中起着自动调节、安全保护、转换电路等作用。">
-	<Terminal id="11" name="11" mdlName="11" direction="Z+" />
-	<Terminal id="12" name="12" mdlName="12" direction="Z-" />
-	<Terminal id="23" name="23" mdlName="23" direction="Z+" />
-	<Terminal id="24" name="24" mdlName="24" direction="Z-" />
-	<Terminal id="31" name="31" mdlName="31" direction="Z+" />
-	<Terminal id="32" name="32" mdlName="32" direction="Z-" />
-	<Terminal id="43" name="43" mdlName="43" direction="Z+" />
-	<Terminal id="44" name="44" mdlName="44" direction="Z-" />
-	<Terminal id="51" name="51" mdlName="51" direction="Z+" />
-	<Terminal id="52" name="52" mdlName="52" direction="Z-" />
-	<Terminal id="63" name="63" mdlName="63" direction="Z+" />
-	<Terminal id="64" name="64" mdlName="64" direction="Z-" />
-	<Terminal id="71" name="71" mdlName="71" direction="Z+" />
-	<Terminal id="72" name="72" mdlName="72" direction="Z-" />
-	<Terminal id="83" name="83" mdlName="83" direction="Z+" />
-	<Terminal id="84" name="84" mdlName="84" direction="Z-" />
-	<Terminal id="A1" name="A1" mdlName="A1" direction="Z+" />
-	<Terminal id="A2" name="A2" mdlName="A2" direction="Z-" />
-	<Magnetism>
-		<VoltageIO type="input" term1Id="A1" term2Id="A2" value="380" deviation="10" switchIn="off,on" />
-		<!--<ControlIO type="input,output" interact="press" name="触点架" mdlName="JZ7-44" switchIn="off,on" motion="move" motionParams="0,-0.005" axis="y">
-			<Param key="sound" value="me/Interface/sound/control/press.wav" />
-		</ControlIO>-->
-	</Magnetism>
-	<ResisState isDef="1">
-		<ResisRelation term1Id="A1" term2Id="A2" value="1900" />
-	</ResisState>
-	<ResisState id="off" isDef="1">
-		<ResisRelation term1Id="11" term2Id="12" value="0" />
-		<ResisRelation term1Id="31" term2Id="32" value="0" />
-		<ResisRelation term1Id="51" term2Id="52" value="0" />
-		<ResisRelation term1Id="71" term2Id="72" value="0" />
-	</ResisState>
-	<ResisState id="on">
-		<ResisRelation term1Id="23" term2Id="24" value="0" />
-		<ResisRelation term1Id="43" term2Id="44" value="0" />
-		<ResisRelation term1Id="63" term2Id="64" value="0" />
-		<ResisRelation term1Id="83" term2Id="84" value="0" />
-	</ResisState>
+	<Terminal>
+		<item id="11" name="11" mdlName="11" direction="Z+" />
+		<item id="12" name="12" mdlName="12" direction="Z-" />
+		<item id="23" name="23" mdlName="23" direction="Z+" />
+		<item id="24" name="24" mdlName="24" direction="Z-" />
+		<item id="31" name="31" mdlName="31" direction="Z+" />
+		<item id="32" name="32" mdlName="32" direction="Z-" />
+		<item id="43" name="43" mdlName="43" direction="Z+" />
+		<item id="44" name="44" mdlName="44" direction="Z-" />
+		<item id="51" name="51" mdlName="51" direction="Z+" />
+		<item id="52" name="52" mdlName="52" direction="Z-" />
+		<item id="63" name="63" mdlName="63" direction="Z+" />
+		<item id="64" name="64" mdlName="64" direction="Z-" />
+		<item id="71" name="71" mdlName="71" direction="Z+" />
+		<item id="72" name="72" mdlName="72" direction="Z-" />
+		<item id="83" name="83" mdlName="83" direction="Z+" />
+		<item id="84" name="84" mdlName="84" direction="Z-" />
+		<item id="A1" name="A1" mdlName="A1" direction="Z+" />
+		<item id="A2" name="A2" mdlName="A2" direction="Z-" />
+	</Terminal>
+	<CircuitExchange type="RelayElmEx" id="KA">
+		<!-- coil: 两个值，用英文的逗号隔开',' -->
+		<!-- post: 继电器上的普通端子，按照COM,NC,NO|COM,NC,NO的顺序填写,每4个连接头为一组, 多组连接头之间用竖线‘|’分割 -->
+		<Params>
+			<coil1>A1</coil1>
+			<coil2>A2</coil2>
+			<nc>11,12|31,32|51,52|71,72</nc>
+			<no>23,24|43,44|63,64|83,84</no>
+		</Params>
+	</CircuitExchange>
+
+	<!-- interact：按钮的交互方式 -->
+	<!-- effect：表示按钮可以操作哪些“内部”开关SwitchElm -->
+	<ControlIO interact="press" name="按钮" mdlName="JZ7-44_07" effect="KA" />
+
 	<Params>
-		<Param key="shell" value="JZ7-44_12,JZ7-44_15,JZ7-44_93" />
+		<shell>JZ7-44_12,JZ7-44_15,JZ7-44_93</shell>
 	</Params>
 </ElecCompDef>

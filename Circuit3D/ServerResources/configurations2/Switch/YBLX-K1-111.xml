@@ -1,34 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 行程开关 (三种位置关系) -->
 <ElecCompDef name="行程开关" model="YBLX-K1/111" desc="行程开关在在电路中用SQ表示">
-
-	<Terminal>
-		<item id="1" name="NC_1" mdlName="1" />
-		<item id="2" name="NC_2" mdlName="2" />
-		<item id="3" name="NO_1" mdlName="3" />
-		<item id="4" name="NO_2" mdlName="4" />
-	</Terminal>
+	<Terminal id="1" name="NC_1" mdlName="1" />
+	<Terminal id="2" name="NC_2" mdlName="2" />
+	<Terminal id="3" name="NO_1" mdlName="3" />
+	<Terminal id="4" name="NO_2" mdlName="4" />
 
 	<!-- 开关的两端 -->
 	<!-- momentary表示是否回弹 -->
 	<!-- position:默认位置 0=closed, 1=open -->
-	<CircuitExchange type="SwitchElm" id="s1" >
-		<Params>
-			<term1>1</term1>
-			<term2>2</term2>
-			<momentary>false</momentary>
-			<position>0</position>
-		</Params>
-	</CircuitExchange>
-
-	<CircuitExchange type="SwitchElm" id="s2" >
-		<Params>
-			<term1>1</term1>
-			<term2>2</term2>
-			<momentary>false</momentary>
-			<position>1</position>
-		</Params>
-	</CircuitExchange>
+	<CircuitElm type="SwitchElm" id="s1" term1="NC_1" term2="NC_2" momentary="false" position="0"/>
+	<CircuitElm type="SwitchElm" id="s2" term1="NO_1" term2="NO_2" momentary="false" position="1"/>
 
 	<!-- interact：按钮的交互方式 -->
 	<!-- effect：表示按钮可以操作哪些“内部”开关SwitchElm -->
@@ -38,6 +20,6 @@
 
 	<!-- 额外的配置信息 -->
 	<Params>
-		<shell>YBLX-K1_03,YBLX-K1_04,YBLX-K1_15,YBLX-K1_01</shell>
+		<Param key="shell" value="YBLX-K1_03,YBLX-K1_04,YBLX-K1_15,YBLX-K1_01" />
 	</Params>
 </ElecCompDef>

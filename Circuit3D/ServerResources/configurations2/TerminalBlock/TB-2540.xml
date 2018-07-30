@@ -81,48 +81,48 @@
 	<Terminal id="79" name="39_2" mdlName="39_2" />
 	<Terminal id="80" name="40_2" mdlName="40_2" />
 
-	<CircuitElm>
-		<ResistorElm term1Id="1" term2Id="41" value="0" />
-		<ResistorElm term1Id="2" term2Id="42" value="0" />
-		<ResistorElm term1Id="3" term2Id="43" value="0" />
-		<ResistorElm term1Id="4" term2Id="44" value="0" />
-		<ResistorElm term1Id="5" term2Id="45" value="0" />
-		<ResistorElm term1Id="6" term2Id="46" value="0" />
-		<ResistorElm term1Id="7" term2Id="47" value="0" />
-		<ResistorElm term1Id="8" term2Id="48" value="0" />
-		<ResistorElm term1Id="9" term2Id="49" value="0" />
-		<ResistorElm term1Id="10" term2Id="50" value="0" />
-		<ResistorElm term1Id="11" term2Id="51" value="0" />
-		<ResistorElm term1Id="12" term2Id="52" value="0" />
-		<ResistorElm term1Id="13" term2Id="53" value="0" />
-		<ResistorElm term1Id="14" term2Id="54" value="0" />
-		<ResistorElm term1Id="15" term2Id="55" value="0" />
-		<ResistorElm term1Id="16" term2Id="56" value="0" />
-		<ResistorElm term1Id="17" term2Id="57" value="0" />
-		<ResistorElm term1Id="18" term2Id="58" value="0" />
-		<ResistorElm term1Id="19" term2Id="59" value="0" />
-		<ResistorElm term1Id="20" term2Id="60" value="0" />
-		<ResistorElm term1Id="21" term2Id="61" value="0" />
-		<ResistorElm term1Id="22" term2Id="62" value="0" />
-		<ResistorElm term1Id="23" term2Id="63" value="0" />
-		<ResistorElm term1Id="24" term2Id="64" value="0" />
-		<ResistorElm term1Id="25" term2Id="65" value="0" />
-		<ResistorElm term1Id="26" term2Id="66" value="0" />
-		<ResistorElm term1Id="27" term2Id="67" value="0" />
-		<ResistorElm term1Id="28" term2Id="68" value="0" />
-		<ResistorElm term1Id="29" term2Id="69" value="0" />
-		<ResistorElm term1Id="30" term2Id="70" value="0" />
-		<ResistorElm term1Id="31" term2Id="71" value="0" />
-		<ResistorElm term1Id="32" term2Id="72" value="0" />
-		<ResistorElm term1Id="33" term2Id="73" value="0" />
-		<ResistorElm term1Id="34" term2Id="74" value="0" />
-		<ResistorElm term1Id="35" term2Id="75" value="0" />
-		<ResistorElm term1Id="36" term2Id="76" value="0" />
-		<ResistorElm term1Id="37" term2Id="77" value="0" />
-		<ResistorElm term1Id="38" term2Id="78" value="0" />
-		<ResistorElm term1Id="39" term2Id="79" value="0" />
-		<ResistorElm term1Id="40" term2Id="80" value="0" />
-	</CircuitElm>
+	<ResisState id="on" isDef="1">
+		<ResisRelation term1Id="1" term2Id="41" value="0" />
+		<ResisRelation term1Id="2" term2Id="42" value="0" />
+		<ResisRelation term1Id="3" term2Id="43" value="0" />
+		<ResisRelation term1Id="4" term2Id="44" value="0" />
+		<ResisRelation term1Id="5" term2Id="45" value="0" />
+		<ResisRelation term1Id="6" term2Id="46" value="0" />
+		<ResisRelation term1Id="7" term2Id="47" value="0" />
+		<ResisRelation term1Id="8" term2Id="48" value="0" />
+		<ResisRelation term1Id="9" term2Id="49" value="0" />
+		<ResisRelation term1Id="10" term2Id="50" value="0" />
+		<ResisRelation term1Id="11" term2Id="51" value="0" />
+		<ResisRelation term1Id="12" term2Id="52" value="0" />
+		<ResisRelation term1Id="13" term2Id="53" value="0" />
+		<ResisRelation term1Id="14" term2Id="54" value="0" />
+		<ResisRelation term1Id="15" term2Id="55" value="0" />
+		<ResisRelation term1Id="16" term2Id="56" value="0" />
+		<ResisRelation term1Id="17" term2Id="57" value="0" />
+		<ResisRelation term1Id="18" term2Id="58" value="0" />
+		<ResisRelation term1Id="19" term2Id="59" value="0" />
+		<ResisRelation term1Id="20" term2Id="60" value="0" />
+		<ResisRelation term1Id="21" term2Id="61" value="0" />
+		<ResisRelation term1Id="22" term2Id="62" value="0" />
+		<ResisRelation term1Id="23" term2Id="63" value="0" />
+		<ResisRelation term1Id="24" term2Id="64" value="0" />
+		<ResisRelation term1Id="25" term2Id="65" value="0" />
+		<ResisRelation term1Id="26" term2Id="66" value="0" />
+		<ResisRelation term1Id="27" term2Id="67" value="0" />
+		<ResisRelation term1Id="28" term2Id="68" value="0" />
+		<ResisRelation term1Id="29" term2Id="69" value="0" />
+		<ResisRelation term1Id="30" term2Id="70" value="0" />
+		<ResisRelation term1Id="31" term2Id="71" value="0" />
+		<ResisRelation term1Id="32" term2Id="72" value="0" />
+		<ResisRelation term1Id="33" term2Id="73" value="0" />
+		<ResisRelation term1Id="34" term2Id="74" value="0" />
+		<ResisRelation term1Id="35" term2Id="75" value="0" />
+		<ResisRelation term1Id="36" term2Id="76" value="0" />
+		<ResisRelation term1Id="37" term2Id="77" value="0" />
+		<ResisRelation term1Id="38" term2Id="78" value="0" />
+		<ResisRelation term1Id="39" term2Id="79" value="0" />
+		<ResisRelation term1Id="40" term2Id="80" value="0" />
+	</ResisState>
 
 	<!-- <Params> -->
 	<!-- <Param key="shell" value="NP2-E3001_00,NP2-E3001_01,NP2-E3001_03,NP2-E3001_04,NP2-E3001_05,NP2-E3001_06" /> -->

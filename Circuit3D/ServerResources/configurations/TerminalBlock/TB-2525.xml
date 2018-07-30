@@ -1,84 +1,123 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ElecCompDef name="端子排" model="TB-2525" desc="端子排，意为承载多个或多组相互绝缘的端子组件并用于固定支持件的绝缘部件。端子排的作用就是将屏内设备和屏外设备的线路相连接，起到信号（电流电压）传输的作用。有了端子排，使得接线美观，维护方便，在远距离线之间的联接时主要是牢靠，施工和维护方便。">
-	<Terminal id="1" name="1_1" mdlName="1_1" direction="Z-" />
-	<Terminal id="2" name="2_1" mdlName="2_1" direction="Z-"/>
-	<Terminal id="3" name="3_1" mdlName="3_1" direction="Z-"/>
-	<Terminal id="4" name="4_1" mdlName="4_1" direction="Z-"/>
-	<Terminal id="5" name="5_1" mdlName="5_1" direction="Z-"/>
-	<Terminal id="6" name="6_1" mdlName="6_1" direction="Z-"/>
-	<Terminal id="7" name="7_1" mdlName="7_1" direction="Z-"/>
-	<Terminal id="8" name="8_1" mdlName="8_1" direction="Z-"/>
-	<Terminal id="9" name="9_1" mdlName="9_1" direction="Z-"/>
-	<Terminal id="10" name="10_1" mdlName="10_1" direction="Z-"/>
-	<Terminal id="11" name="11_1" mdlName="11_1" direction="Z-"/>
-	<Terminal id="12" name="12_1" mdlName="12_1" direction="Z-"/>
-	<Terminal id="13" name="13_1" mdlName="13_1" direction="Z-"/>
-	<Terminal id="14" name="14_1" mdlName="14_1" direction="Z-"/>
-	<Terminal id="15" name="15_1" mdlName="15_1" direction="Z-"/>
-	<Terminal id="16" name="16_1" mdlName="16_1" direction="Z-"/>
-	<Terminal id="17" name="17_1" mdlName="17_1" direction="Z-"/>
-	<Terminal id="18" name="18_1" mdlName="18_1" direction="Z-"/>
-	<Terminal id="19" name="19_1" mdlName="19_1" direction="Z-"/>
-	<Terminal id="20" name="20_1" mdlName="20_1" direction="Z-"/>
-	<Terminal id="21" name="21_1" mdlName="21_1" direction="Z-"/>
-	<Terminal id="22" name="22_1" mdlName="22_1" direction="Z-"/>
-	<Terminal id="23" name="23_1" mdlName="23_1" direction="Z-"/>
-	<Terminal id="24" name="24_1" mdlName="24_1" direction="Z-"/>
-	<Terminal id="25" name="25_1" mdlName="25_1" direction="Z-"/>
-	<Terminal id="26" name="1_2" mdlName="1_2" />
-	<Terminal id="27" name="2_2" mdlName="2_2" />
-	<Terminal id="28" name="3_2" mdlName="3_2" />
-	<Terminal id="29" name="4_2" mdlName="4_2" />
-	<Terminal id="30" name="5_2" mdlName="5_2" />
-	<Terminal id="31" name="6_2" mdlName="6_2" />
-	<Terminal id="32" name="7_2" mdlName="7_2" />
-	<Terminal id="33" name="8_2" mdlName="8_2" />
-	<Terminal id="34" name="9_2" mdlName="9_2" />
-	<Terminal id="35" name="10_2" mdlName="10_2" />
-	<Terminal id="36" name="11_2" mdlName="11_2" />
-	<Terminal id="37" name="12_2" mdlName="12_2" />
-	<Terminal id="38" name="13_2" mdlName="13_2" />
-	<Terminal id="39" name="14_2" mdlName="14_2" />
-	<Terminal id="40" name="15_2" mdlName="15_2" />
-	<Terminal id="41" name="16_2" mdlName="16_2" />
-	<Terminal id="42" name="17_2" mdlName="17_2" />
-	<Terminal id="43" name="18_2" mdlName="18_2" />
-	<Terminal id="44" name="19_2" mdlName="19_2" />
-	<Terminal id="45" name="20_2" mdlName="20_2" />
-	<Terminal id="46" name="21_2" mdlName="21_2" />
-	<Terminal id="47" name="22_2" mdlName="22_2" />
-	<Terminal id="48" name="23_2" mdlName="23_2" />
-	<Terminal id="49" name="24_2" mdlName="24_2" />
-	<Terminal id="50" name="25_2" mdlName="25_2" />
-
-	<ResisState isDef="1">
-		<ResisRelation term1Id="1" term2Id="26" value="0" />
-		<ResisRelation term1Id="2" term2Id="27" value="0" />
-		<ResisRelation term1Id="3" term2Id="28" value="0" />
-		<ResisRelation term1Id="4" term2Id="29" value="0" />
-		<ResisRelation term1Id="5" term2Id="30" value="0" />
-		<ResisRelation term1Id="6" term2Id="31" value="0" />
-		<ResisRelation term1Id="7" term2Id="32" value="0" />
-		<ResisRelation term1Id="8" term2Id="33" value="0" />
-		<ResisRelation term1Id="9" term2Id="34" value="0" />
-		<ResisRelation term1Id="10" term2Id="35" value="0" />
-		<ResisRelation term1Id="11" term2Id="36" value="0" />
-		<ResisRelation term1Id="12" term2Id="37" value="0" />
-		<ResisRelation term1Id="13" term2Id="38" value="0" />
-		<ResisRelation term1Id="14" term2Id="39" value="0" />
-		<ResisRelation term1Id="15" term2Id="40" value="0" />
-		<ResisRelation term1Id="16" term2Id="41" value="0" />
-		<ResisRelation term1Id="17" term2Id="42" value="0" />
-		<ResisRelation term1Id="18" term2Id="43" value="0" />
-		<ResisRelation term1Id="19" term2Id="44" value="0" />
-		<ResisRelation term1Id="20" term2Id="45" value="0" />
-		<ResisRelation term1Id="21" term2Id="46" value="0" />
-		<ResisRelation term1Id="22" term2Id="47" value="0" />
-		<ResisRelation term1Id="23" term2Id="48" value="0" />
-		<ResisRelation term1Id="24" term2Id="49" value="0" />
-		<ResisRelation term1Id="25" term2Id="50" value="0" />
-	</ResisState>
-
+	<Terminal>
+		<item id="1" name="1_1" mdlName="1_1" direction="Z-" />
+		<item id="2" name="2_1" mdlName="2_1" direction="Z-"/>
+		<item id="3" name="3_1" mdlName="3_1" direction="Z-"/>
+		<item id="4" name="4_1" mdlName="4_1" direction="Z-"/>
+		<item id="5" name="5_1" mdlName="5_1" direction="Z-"/>
+		<item id="6" name="6_1" mdlName="6_1" direction="Z-"/>
+		<item id="7" name="7_1" mdlName="7_1" direction="Z-"/>
+		<item id="8" name="8_1" mdlName="8_1" direction="Z-"/>
+		<item id="9" name="9_1" mdlName="9_1" direction="Z-"/>
+		<item id="10" name="10_1" mdlName="10_1" direction="Z-"/>
+		<item id="11" name="11_1" mdlName="11_1" direction="Z-"/>
+		<item id="12" name="12_1" mdlName="12_1" direction="Z-"/>
+		<item id="13" name="13_1" mdlName="13_1" direction="Z-"/>
+		<item id="14" name="14_1" mdlName="14_1" direction="Z-"/>
+		<item id="15" name="15_1" mdlName="15_1" direction="Z-"/>
+		<item id="16" name="16_1" mdlName="16_1" direction="Z-"/>
+		<item id="17" name="17_1" mdlName="17_1" direction="Z-"/>
+		<item id="18" name="18_1" mdlName="18_1" direction="Z-"/>
+		<item id="19" name="19_1" mdlName="19_1" direction="Z-"/>
+		<item id="20" name="20_1" mdlName="20_1" direction="Z-"/>
+		<item id="21" name="21_1" mdlName="21_1" direction="Z-"/>
+		<item id="22" name="22_1" mdlName="22_1" direction="Z-"/>
+		<item id="23" name="23_1" mdlName="23_1" direction="Z-"/>
+		<item id="24" name="24_1" mdlName="24_1" direction="Z-"/>
+		<item id="25" name="25_1" mdlName="25_1" direction="Z-"/>
+		<item id="26" name="1_2" mdlName="1_2" />
+		<item id="27" name="2_2" mdlName="2_2" />
+		<item id="28" name="3_2" mdlName="3_2" />
+		<item id="29" name="4_2" mdlName="4_2" />
+		<item id="30" name="5_2" mdlName="5_2" />
+		<item id="31" name="6_2" mdlName="6_2" />
+		<item id="32" name="7_2" mdlName="7_2" />
+		<item id="33" name="8_2" mdlName="8_2" />
+		<item id="34" name="9_2" mdlName="9_2" />
+		<item id="35" name="10_2" mdlName="10_2" />
+		<item id="36" name="11_2" mdlName="11_2" />
+		<item id="37" name="12_2" mdlName="12_2" />
+		<item id="38" name="13_2" mdlName="13_2" />
+		<item id="39" name="14_2" mdlName="14_2" />
+		<item id="40" name="15_2" mdlName="15_2" />
+		<item id="41" name="16_2" mdlName="16_2" />
+		<item id="42" name="17_2" mdlName="17_2" />
+		<item id="43" name="18_2" mdlName="18_2" />
+		<item id="44" name="19_2" mdlName="19_2" />
+		<item id="45" name="20_2" mdlName="20_2" />
+		<item id="46" name="21_2" mdlName="21_2" />
+		<item id="47" name="22_2" mdlName="22_2" />
+		<item id="48" name="23_2" mdlName="23_2" />
+		<item id="49" name="24_2" mdlName="24_2" />
+		<item id="50" name="25_2" mdlName="25_2" />
+	</Terminal>
+	<Wires>
+<!-- 		<Wire term1Id="1" term2Id="26"  />
+		<Wire term1Id="2" term2Id="27"  />
+		<Wire term1Id="3" term2Id="28"  />
+		<Wire term1Id="4" term2Id="29"  />
+		<Wire term1Id="5" term2Id="30"  /> -->
+		<Wire term1Id="6" term2Id="31"  />
+		<Wire term1Id="7" term2Id="32"  />
+		<Wire term1Id="8" term2Id="33"  />
+		<Wire term1Id="9" term2Id="34"  />
+		<Wire term1Id="10" term2Id="35"  />
+		<Wire term1Id="11" term2Id="36"  />
+		<Wire term1Id="12" term2Id="37"  />
+		<Wire term1Id="13" term2Id="38"  />
+		<Wire term1Id="14" term2Id="39"  />
+		<Wire term1Id="15" term2Id="40"  />
+		<Wire term1Id="16" term2Id="41"  />
+		<Wire term1Id="17" term2Id="42"  />
+		<Wire term1Id="18" term2Id="43"  />
+		<Wire term1Id="19" term2Id="44"  />
+		<Wire term1Id="20" term2Id="45"  />
+		<Wire term1Id="21" term2Id="46"  />
+		<Wire term1Id="22" term2Id="47"  />
+		<Wire term1Id="23" term2Id="48"  />
+		<Wire term1Id="24" term2Id="49"  />
+		<Wire term1Id="25" term2Id="50"  />
+	</Wires>
+	<CircuitExchange type="VoltageElm" id="r" >
+		<Params>
+			<term1>1</term1>
+			<term2>26</term2>
+			<waveform>1</waveform>
+			<frequency>50</frequency>
+			<maxVoltage>220</maxVoltage>
+			<phaseShift>0</phaseShift>
+		</Params>
+	</CircuitExchange>
+	<CircuitExchange type="VoltageElm" id="s" >
+		<Params>
+			<term1>2</term1>
+			<term2>27</term2>
+			<waveform>1</waveform>
+			<frequency>50</frequency>
+			<maxVoltage>220</maxVoltage>
+			<phaseShift>120</phaseShift>
+		</Params>
+	</CircuitExchange>
+	<CircuitExchange type="VoltageElm" id="t" >
+		<Params>
+			<term1>3</term1>
+			<term2>28</term2>
+			<waveform>1</waveform>
+			<frequency>50</frequency>
+			<maxVoltage>220</maxVoltage>
+			<phaseShift>240</phaseShift>
+		</Params>
+	</CircuitExchange>
+	<CircuitExchange type="VoltageElm" id="dc" >
+		<Params>
+			<term1>4</term1>
+			<term2>29</term2>
+			<waveform>0</waveform>
+			<frequency>50</frequency>
+			<maxVoltage>24</maxVoltage>
+		</Params>
+	</CircuitExchange>
 	<!-- <Params> -->
 	<!-- <Param key="shell" value="NP2-E3001_00,NP2-E3001_01,NP2-E3001_03,NP2-E3001_04,NP2-E3001_05,NP2-E3001_06" /> -->
 	<!-- </Params> -->

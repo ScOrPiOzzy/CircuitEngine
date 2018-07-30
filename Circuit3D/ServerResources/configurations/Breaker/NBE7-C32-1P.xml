@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ElecCompDef model="NBE7-C32-1P" name="低压断路器（1P）" desc="低压断路器在电路中用QF表示，集控制和多种保护功能于一身，一般由触头系统、灭弧系统、操作机构、脱扣器、外壳等构成，除了能完成接触和分断电路外，尚能对电路或电气设备发生的短路、严重过载及欠电压等进行保护，同时也可以用于不频繁地启动电动机。">
-	<Terminal id="1" name="1" mdlName="1" direction="X+" team="in" />
-	<Terminal id="2" name="2" mdlName="2" direction="X-" team="out" />
-	<Magnetism>
-		<ControlIO type="input" interact="click" name="开关" mdlName="NBE7_11" motion="rotate" switchIn="off,on" motionParams="0,-120" axis="x">
-			<Param key="sound" value="me/Interface/sound/control/press.wav"/>
-		</ControlIO>
-	</Magnetism>
-	<ResisState id="off" isDef="1">
-	</ResisState>
-	<ResisState id="on">
-		<ResisRelation term1Id="1" term2Id="2" value="0" />
-	</ResisState>
+	<Terminal>	
+		<item id="1" name="1" mdlName="1" direction="Z-" />
+		<item id="2" name="2" mdlName="2" direction="Z+" />
+	</Terminal>	
+	<CircuitExchange type="SwitchElm" id="s1" >
+		<Params>
+			<term1>1</term1>
+			<term2>2</term2>
+			<momentary>false</momentary>
+			<position>1</position>
+		</Params>
+	</CircuitExchange>
 	<Params>
-		<Param key="shell" value="NBE7-C25-1P_12,NBE7-C25-1P_20" />
+		<shell>NBE7-C25-1P_12,NBE7-C25-1P_20</shell>
 	</Params>
 </ElecCompDef>

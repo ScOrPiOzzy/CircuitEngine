@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ElecCompDef name="交流异步电机电动机" model="Y132M-4" desc="电机在电路中用M表示，它的主要作用是将电能转化为机械能，产生驱动转矩，作为用电器或各种机械的动力源。" >
+	<Terminal>
+		<item id="u1" name="u1" mdlName="Y132M-4_112" direction="z-" />
+		<item id="v1" name="v1" mdlName="Y132M-4_109" direction="z-" />
+		<item id="w1" name="w1" mdlName="Y132M-4_106" direction="z-" />
+		
+		<item id="u2" name="u2" mdlName="Y132M-4_121" direction="z" />
+		<item id="v2" name="v2" mdlName="Y132M-4_118" direction="z" />
+		<item id="w2" name="w2" mdlName="Y132M-4_115" direction="z" />
+
+		<!-- <item id="pe" name="pe" mdlName="pe" direction="x-" /> -->
+	</Terminal>
+
+	<CircuitExchange type="ThreePhaseAsynMotorElm" id="KM">
+		<!-- coil: 两个值，用英文的逗号隔开',' -->
+		<!-- post: 继电器上的普通端子，按照COM,NC,NO|COM,NC,NO的顺序填写,每4个连接头为一组, 多组连接头之间用竖线‘|’分割 -->
+		<Params>
+			<posts>u1,v1,w1,u2,v2,w2</posts>
+			<coilR>2e-1</coilR>
+			<!-- 磁极对数 -->
+			<p>2</p>
+			<!-- 转速n = 60 * 电源频率f / 磁极对数p -->
+		</Params>
+	</CircuitExchange>
+
+	<Params>
+		<shell>Y132M-4_00,Y132M-4_86</shell>
+		<!-- 转子 -->
+		<rotator>Y132M-4_50,Y132M-4_81,Y132M-4_103</rotator>
+	</Params>
+
+</ElecCompDef>

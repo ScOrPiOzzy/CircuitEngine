@@ -14,16 +14,10 @@
 	<Terminal id="A2_1" name="A2" mdlName="A2_1" direction="Z-" />
 	<Terminal id="A2_2" name="A2" mdlName="A2_2" direction="Z+" />
 
-	<CircuitElm>
-		<!-- poleCount表示有几组线圈,每一个线圈对应一组NC、NO、COM -->
-		<!-- coilR表示线圈电阻 -->
-		<RelayElm coilTerm1="A1" coilTerm2="A2_1" coilR="1800">
-		</RelayElm>
-	</CircuitElm>
-
 	<Magnetism>
 		<VoltageIO type="input" term1Id="A1" term2Id="A2_1" value="380" deviation="10" />
 		<ControlIO type="input,output" interact="press" name="触点架" mdlName="CJX2-1210_07" switchIn="off,on" motion="move" motionParams="0,-0.00125" axis="y">
+			<Param key="sound" value="me/Interface/sound/control/press.wav"/>
 		</ControlIO>
 	</Magnetism>
 	<ResisState isDef="1">
