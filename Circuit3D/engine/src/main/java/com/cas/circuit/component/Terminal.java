@@ -13,6 +13,7 @@ import com.cas.circuit.CircuitNode;
 import com.cas.circuit.element.CircuitElm;
 import com.cas.circuit.util.JmeUtil;
 import com.cas.circuit.xml.adapter.AxisAdapter;
+import com.cas.circuit.xml.adapter.BooleanIntAdapter;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.Savable;
@@ -41,8 +42,9 @@ public class Terminal implements Savable {
 	@XmlAttribute
 	private String mark;
 	@XmlAttribute(name = "num")
-	private Integer limit;// 限制可连接导线的数量，要么是1，要么是2.
+	private Integer limit = 2;// 限制可连接导线的数量，要么是1，要么是2.
 	@XmlAttribute
+	@XmlJavaTypeAdapter(BooleanIntAdapter.class)
 	private Boolean internal;// 是否为内部节点，不需要给用户接线, 默认肯定是false，表不是内部连接头
 //	=============================================================================================
 //	=============================================================================================
@@ -51,7 +53,6 @@ public class Terminal implements Savable {
 //	@Setter
 ////	如果该端子是在某个插孔中,则当插入电缆后,与之相连接的是哪个端子
 //	private Terminal contacted;
-	@Setter
 //	该端子上的连接的导线
 	private List<Wire> wires = new ArrayList<>();
 	@Setter
@@ -123,6 +124,10 @@ public class Terminal implements Savable {
 
 	public boolean notInternal() {
 		return internal == null || !internal;
+	}
+
+	public long getWireSize() {
+		return wires.stream().filter(w -> !w.isInternal()).count();
 	}
 
 }
