@@ -113,8 +113,10 @@ public class Terminal implements Savable {
 			maxV = c;
 		}
 		if (spatial != null) {
-//			System.out.println(Math.abs(c));
-			if (Math.abs(c) > 0) {
+//			if (c > 380) {
+//				System.out.println(name + Math.abs(c));
+//			}
+			if (Math.abs(c) > 1) {
 				JmeUtil.color(spatial, new ColorRGBA(1, 0, 0, (float) (Math.abs(c) / maxV)), true);
 			} else {
 				JmeUtil.uncolor(spatial);
@@ -128,6 +130,10 @@ public class Terminal implements Savable {
 
 	public long getWireSize() {
 		return wires.stream().filter(w -> !w.isInternal()).count();
+	}
+
+	public String getName() {
+		return String.format("name:%s, volt:%.8f", name, maxV);
 	}
 
 }

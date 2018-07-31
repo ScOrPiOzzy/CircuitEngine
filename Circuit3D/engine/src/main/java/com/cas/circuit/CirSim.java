@@ -643,7 +643,7 @@ public class CirSim implements Runnable {
 		stopMessage = s;
 		circuitMatrix = null;
 		analyzeFlag = false;
-		log.error("元器件错误{}->{}", ce, stopMessage);
+		log.error("stop msg : 元器件错误{}->{}", ce, stopMessage);
 	}
 
 	// control voltage source vs with voltage from n1 to n2 (must also call stampVoltageSource())
@@ -727,7 +727,7 @@ public class CirSim implements Runnable {
 				row = circuitRowInfo[row - 1].getMapRow();
 				RowInfo ri = circuitRowInfo[column - 1];
 				if (ri.getType() == RowInfo.ROW_CONST) {
-					System.out.println("Stamping constant " + row + " " + column + " " + value);
+//					System.out.println("Stamping constant " + row + " " + column + " " + value);
 					circuitRightSide[row] -= value * ri.getValue();
 					return;
 				}
@@ -847,6 +847,9 @@ public class CirSim implements Runnable {
 						res = ri.getValue();
 					} else {
 						res = circuitRightSide[ri.getMapCol()];
+//						if(res > 220) {
+//							System.out.println("--------------" + res);
+//						}
 					}
 					/*
 					 * System.out.println(j + " " + res + " " + ri.type + " " + ri.mapCol);
