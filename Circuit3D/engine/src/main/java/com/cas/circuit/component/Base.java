@@ -40,9 +40,8 @@ public class Base {
 			return Arrays.asList(pulgTermIds).containsAll(Arrays.asList(def.getRelyOn().getRelyIds()));
 		} else if (RelyOn.RELY_ON_TYPE_RESIS == type) {
 			String model = def.getModel();
-			String tenon = model.substring(0, model.indexOf("-"));
 			List<String> tenonList = Arrays.asList(tenons);
-			return tenonList.contains(tenon);
+			return tenonList.contains(model);
 		}
 		return false;
 	}

@@ -157,11 +157,11 @@ public abstract class CircuitElm {
 	}
 
 	public void printInfo() {
-		if (this instanceof ResistorElm) {
-			info = new ArrayList<>();
-			buildInfo();
-			log.info(info.toString());
-		}
+//		if (this instanceof RelayElm) {
+//			info = new ArrayList<>();
+//			buildInfo();
+//			log.info(info.toString());
+//		}
 	};
 
 	void buildInfo() {

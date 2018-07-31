@@ -52,7 +52,6 @@ public class ControlIO implements Savable {
 	 */
 	public static final String INTERACT_ROTATE = "rotate";
 
-	
 //	id 对于 ControlIO 并不是必要的，在
 	@XmlAttribute
 	private String id;
@@ -60,6 +59,8 @@ public class ControlIO implements Savable {
 	private String name;
 	@XmlAttribute
 	private String mdlName;
+	@XmlAttribute
+	private String linkageId;
 	@XmlAttribute
 	private String effect;
 	@XmlAttribute
@@ -86,13 +87,15 @@ public class ControlIO implements Savable {
 	@XmlAttribute
 	@XmlJavaTypeAdapter(BooleanIntAdapter.class)
 	private Boolean smooth = Boolean.FALSE;
-
 	@XmlElement(name = "Param")
 	@XmlElementWrapper(name = "Params")
 	private List<Param> params = new ArrayList<>();
 
 //	--------------------------------------------------------------------
 	private Spatial spatial;
+
+	@Setter
+	private ControlIO linkage; // 两个按钮通过连杆连接
 
 	@Setter
 	private ElecCompDef elecCompDef;

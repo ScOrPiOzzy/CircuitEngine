@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ElecCompDef name="接触器辅助触点" model="F4-22" desc="F4-22辅助触点可以和CJX2系列接触器配合使用，解决控制触点数量不足的问题。">
-	<RelyOn type="2" translation="4.0E-4, 7.35E-2, -1.5E-3" rotation="0,0,0,1" relyIds="A1,A2"/>
+	<RelyOn type="2" translation="4.0E-4, 7.318E-2, -1.5E-3" rotation="0,0,0,1" />
 	<Terminal>
 		<item id="53NO" name="53NO" mdlName="53NO" direction="Z-" />
 		<item id="54NO" name="54NO" mdlName="54NO" direction="Z+" />
@@ -13,25 +13,47 @@
 
 		<item id="83NO" name="83NO" mdlName="83NO" direction="Z-" />
 		<item id="84NO" name="84NO" mdlName="84NO" direction="Z+" />
-
-		<item id="A1" internal="true" />
-		<item id="A2" internal="true" />
 	</Terminal>
 
-	<CircuitExchange type="RelayElmEx" id="KM">
-		<!-- coil: 两个值，用英文的逗号隔开',' -->
-		<!-- post: 继电器上的普通端子，按照COM,NC,NO|COM,NC,NO的顺序填写,每4个连接头为一组, 多组连接头之间用竖线‘|’分割 -->
+	<CircuitExchange type="SwitchElm" id="s1" >
 		<Params>
-			<coil1>A1</coil1>
-			<coil2>A2</coil2>
-			<no>53NO,54NO|83NO,84NO</no>
-			<nc>61NC,62NC|71NC,72NC</nc>
+			<term1>53NO</term1>
+			<term2>54NO</term2>
+			<momentary>false</momentary>
+			<position>1</position>
 		</Params>
 	</CircuitExchange>
+
+	<CircuitExchange type="SwitchElm" id="s2" >
+		<Params>
+			<term1>61NC</term1>
+			<term2>62NC</term2>
+			<momentary>false</momentary>
+			<position>0</position>
+		</Params>
+	</CircuitExchange>
+
+	<CircuitExchange type="SwitchElm" id="s3" >
+		<Params>
+			<term1>71NC</term1>
+			<term2>72NC</term2>
+			<momentary>false</momentary>
+			<position>0</position>
+		</Params>
+	</CircuitExchange>
+
+	<CircuitExchange type="SwitchElm" id="s4" >
+		<Params>
+			<term1>83NO</term1>
+			<term2>84NO</term2>
+			<momentary>false</momentary>
+			<position>1</position>
+		</Params>
+	</CircuitExchange>
+
 	<!-- interact：按钮的交互方式 -->
 	<!-- effect：表示按钮可以操作哪些“内部”开关SwitchElm -->
-	<ControlIO interact="press" name="按钮" mdlName="F4-22_32" effect="KM" />
-
+	<ControlIO interact="press" name="接触器辅助触点按钮" mdlName="F4-22_32" effect="s1,s2,s3,s4" id="s" linkageId="Base.btn_km"/>
 
 	<Params>
 		<shell>F4-22_00,F4-22_01</shell>

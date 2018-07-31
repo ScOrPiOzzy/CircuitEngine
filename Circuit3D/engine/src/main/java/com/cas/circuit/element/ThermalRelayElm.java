@@ -17,6 +17,7 @@ public class ThermalRelayElm extends RelayElmEx {
 	private List<Terminal[]> heater;
 	private double resistance;
 	private double temperature;
+//	private double ;
 
 	public ThermalRelayElm() {
 		super();

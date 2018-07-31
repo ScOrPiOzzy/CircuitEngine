@@ -222,14 +222,18 @@ public class Util {
 				tot -= a[i][j] * b[j];
 			}
 			b[i] = tot / a[i][i];
+//			测试电路中部分电压值有异常
+//			if(b[i] > 220 ) {
+//				System.out.println("Util.lu_solve()" + b[i]);
+//			}
 		}
 	}
 
-	public static int distanceSq(int x1, int y1, int x2, int y2) {
-		x2 -= x1;
-		y2 -= y1;
-		return x2 * x2 + y2 * y2;
-	}
+//	public static int distanceSq(int x1, int y1, int x2, int y2) {
+//		x2 -= x1;
+//		y2 -= y1;
+//		return x2 * x2 + y2 * y2;
+//	}
 
 	public static int sign(int x) {
 		return (x < 0) ? -1 : (x == 0) ? 0 : 1;

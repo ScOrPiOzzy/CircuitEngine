@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RelayElm extends CircuitElm implements ISwitch {
 	private static final int COM = 0, NC = 1, NO = 2;
 	protected double r_on = .05;
-	protected double r_off = 1e18;
+	protected double r_off = 1e10; // 这个值不要随便动，否则会引起电路异常
 	protected double onCurrent = .02;
 
 	protected double coilCurrent, switchCurrent[];
@@ -163,6 +163,11 @@ public class RelayElm extends CircuitElm implements ISwitch {
 			return;
 		}
 
+//		if(432780906 != hashCode()) {
+//			System.out.println(hashCode() +"  " + coilCurrent +" : " + switchCurrent[0] + "  "+ switchCurrent[1]);
+//			System.out.println(hashCode() +"  " + coilCurrent +" : " + (volts[0] - volts[1]) + "  "+ switchCurrent[1]);
+//		}
+//		
 		if (!lock) {
 			// magic value to balance operate speed with reset speed semi-realistically
 			double magic = 1.3;
@@ -174,7 +179,7 @@ public class RelayElm extends CircuitElm implements ISwitch {
 			if (d_position < 0) {
 				d_position = 0;
 			}
-		} else if (delta == 0 && delta == coilCurrent) {
+		} else if ((delta == 0 && coilCurrent == delta) || (delta > -1e-10 && delta < 1e-10)) {
 			if (lock) {
 				button.unstuck();
 				lock = false;
@@ -237,6 +242,7 @@ public class RelayElm extends CircuitElm implements ISwitch {
 
 	@Override
 	public boolean getConnection(int n1, int n2) {
+//		System.out.printf("%d, %d %s \r\n", n1, n2, (n1 / pairs == n2 / pairs));
 		return n1 / pairs == n2 / pairs;
 	}
 
