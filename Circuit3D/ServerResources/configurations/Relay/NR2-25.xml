@@ -16,11 +16,16 @@
 		<item id="98" name="NO2" mdlName="98" direction="Z+" /><!--C2-->
 	</Terminal>
 
+	<!-- 热继电器 -->
 	<CircuitExchange type="ThermalRelayElm" id="KA" >
 		<Params>
+			<!-- 电热片 两两一组，用‘|’隔开 -->
 			<heater>1/L1,2/T1|3/L2,4/T2|5/L3,6/T3</heater>
+			<!-- 电热片电阻 -->
 			<resistance>1e-2</resistance>
-			<temperature></temperature>
+			<!-- 热值，达到热值，继电器跳变 -->
+			<joule>1e3</joule>
+
 			<nc>96,95</nc>
 			<no>97,98</no>
 		</Params>

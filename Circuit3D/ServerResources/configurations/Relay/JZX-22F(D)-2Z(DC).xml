@@ -19,7 +19,9 @@
 		<Params>
 			<coil1>13</coil1>
 			<coil2>14</coil2>
+			<!-- 线圈电阻 -->
 			<coilR>2e-2</coilR>
+			<!-- 公共端，常闭，常开  -->
 			<posts>9,1,5|12,4,8</posts>
 		</Params>
 	</CircuitExchange>
@@ -27,8 +29,9 @@
 	<!-- interact：按钮的交互方式 -->
 	<!-- effect：表示按钮可以操作哪些“内部”开关SwitchElm -->
 	<ControlIO interact="press" name="按钮" mdlName="JZX-22F(D)-2Z(DC)_02" effect="KA" />
-
+	
 	<LightIO name="继电器指示灯" mdlName="L1" glowColor="0,1,0,1" effect="KA" />
+
 	<Params>
 		<shell>JZX-22F(D)-2Z(DC)_01</shell>
 	</Params>

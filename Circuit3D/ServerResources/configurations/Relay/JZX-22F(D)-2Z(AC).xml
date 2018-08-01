@@ -13,7 +13,6 @@
 
 		<item id="13" name="ACIN_1" mdlName="13" />
 		<item id="14" name="ACIN_2" mdlName="14" />
-
 	</Terminal>
 
 	<CircuitExchange type="RelayElm" id="KA">

@@ -15,6 +15,7 @@
 		<item id="2" name="IN_1" mdlName="2" /><!--3/L2-->
 	</Terminal>
 
+	<!-- 时间继电器 -->
 	<CircuitExchange type="TimeRelayElm" id="KA">
 		<!-- coil: 两个值，用英文的逗号隔开',' -->
 		<!-- post: 继电器上的普通端子，按照COM,NC,NO|COM,NC,NO的顺序填写,每4个连接头为一组, 多组连接头之间用竖线‘|’分割 -->
@@ -22,11 +23,11 @@
 			<coil1>2</coil1>
 			<coil2>7</coil2>
 			<posts>1,4,3|8,5,6</posts>
+			<!-- 预设值5， 默认延迟时间10秒 -->
 			<preset>5</preset>
 		</Params>
 	</CircuitExchange>
 
-<!-- 	<Params>
-		<shell>NR2-25_36,NR2-25_15</shell>
-	</Params> -->
+	<Params>
+	</Params>
 </ElecCompDef>

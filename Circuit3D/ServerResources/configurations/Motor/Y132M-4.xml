@@ -12,7 +12,7 @@
 		<!-- <item id="pe" name="pe" mdlName="pe" direction="x-" /> -->
 	</Terminal>
 
-	<CircuitExchange type="ThreePhaseAsynMotorElm" id="KM">
+	<CircuitExchange type="ThreePhaseAsynMotorElm" id="M">
 		<!-- coil: 两个值，用英文的逗号隔开',' -->
 		<!-- post: 继电器上的普通端子，按照COM,NC,NO|COM,NC,NO的顺序填写,每4个连接头为一组, 多组连接头之间用竖线‘|’分割 -->
 		<Params>
