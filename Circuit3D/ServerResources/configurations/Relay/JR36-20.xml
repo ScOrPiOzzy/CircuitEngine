@@ -16,7 +16,7 @@
 		<Params>
 			<heater>1/L1,2/T1|3/L2,4/T2|5/L3,6/T3</heater>
 			<resistance>2e-2</resistance>
-			<joule>1e6</joule>
+			<joule>1e3</joule>
 			<nc>96,95</nc>
 			<no>97,98</no>
 		</Params>
