@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ElecCompDef name="交流220V继电器" model="JZX-22F(D)-2Z(AC)" desc="继电器在电路中用KA表示，是一种电控制器件，当输入量的变化达到规定要求时，在电气输出电路中使被控量发生预定的阶跃变化的一种电器。它具有控制系统（输入回路）和被控制系统（输出回路）之间的互动关系，通常应用于自动化的控制电路中，在电路中起着自动调节、安全保护、转换电路等作用。">
-	<RelyOn type="1" translation="-5.0E-4, 0.0223, 0.003" rotation="0,0,0,1" relyIds="1,5,9,4,8,12,13,14"/>
+	<RelyOn type="1" translation="-5.0E-4, 0.0223, 0.003" rotation="0,0,0,1" relyIds="1,5,9,4,8,12,13,14" />
 
 	<Terminal>
 		<item id="9" name="COM1" mdlName="9" />
 		<item id="1" name="NC1" mdlName="1" />
 		<item id="5" name="NO1" mdlName="5" />
-		
+
 		<item id="12" name="COM2" mdlName="12" />
 		<item id="4" name="NC2" mdlName="4" />
 		<item id="8" name="NO2" mdlName="8" />
-		
+
 		<item id="13" name="ACIN_1" mdlName="13" />
 		<item id="14" name="ACIN_2" mdlName="14" />
+
 	</Terminal>
 
-	<LightIO name="继电器指示灯" mdlName="L1" glowColor="1,0,0,1" />
-
-	<CircuitExchange type="RelayElm" id="KA" >
+	<CircuitExchange type="RelayElm" id="KA">
 		<Params>
 			<coil1>13</coil1>
 			<coil2>14</coil2>
@@ -30,6 +29,7 @@
 	<!-- effect：表示按钮可以操作哪些“内部”开关SwitchElm -->
 	<ControlIO interact="press" name="按钮" mdlName="JZX-22F(D)-2Z(AC)_02" effect="KA" />
 
+	<LightIO name="继电器指示灯" mdlName="L1" glowColor="1,0,0,1" effect="KA" />
 
 	<Params>
 		<shell>JZX-22F(D)-2Z(AC)_01</shell>

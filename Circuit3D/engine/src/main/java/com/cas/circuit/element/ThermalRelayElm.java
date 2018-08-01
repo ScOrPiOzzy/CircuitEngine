@@ -86,32 +86,34 @@ public class ThermalRelayElm extends RelayElmEx {
 
 	@Override
 	public void startIteration() {
-		q -= 4;
-//		q = joule;
-		// magic value to balance operate speed with reset speed semi-realistically
-		joule = 1.6e5;
-		if (q < 1.3 * joule) {
+		q -= 2;
+		if (q < 0) {
+			q = 0;
+		}
+//		 magic value to balance operate speed with reset speed semi-realistically
+		joule = 1e3;
+		if (q < 1.1 * joule) {
 			double max = 0;
 			for (int i = 0; i < heatCurrent.length; i++) {
 				max = Math.max(max, heatCurrent[i] * heatCurrent[i] * resistance * CirSim.TPF);
 			}
-			if (q < 1.1 * joule) {
+			if (q < 1.05 * joule) {
 				q += 3 * max;
 			} else {
 				q += max;
 			}
 		}
-
+//		System.out.println(q);
 		if (q > joule) {
 			d_position = 1;
-			System.out.println("on");
+//			System.out.println("on");
 			if (!lock) {
 				lock = true;
 				button.absorbed();
 			}
 
 		} else {
-			System.out.println("off");
+//			System.out.println("off");
 			d_position = 0;
 			if (lock) {
 				button.unstuck();

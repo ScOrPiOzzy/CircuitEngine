@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.cas.circuit.util.JmeUtil;
 import com.cas.circuit.xml.adapter.ColorRGBAAdapter;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
@@ -28,15 +29,17 @@ public class LightIO implements Savable {
 	@XmlAttribute
 	@XmlJavaTypeAdapter(ColorRGBAAdapter.class)
 	private ColorRGBA glowColor;
+	@XmlAttribute
+	private String effect;
 
 	private Spatial spatial;
 
-	public void openLight() {
-//		JmeUtil.setSpatialHighLight(model, glowColor);
+	public void closeLight() {
+		JmeUtil.uncolor(spatial);
 	}
 
-	public void closeLight() {
-//		JmeUtil.setSpatialHighLight(model, ColorRGBA.BlackNoAlpha);
+	public void openLight() {
+		JmeUtil.color(spatial, glowColor, true);
 	}
 
 	public void setSpatial(Spatial spatial) {

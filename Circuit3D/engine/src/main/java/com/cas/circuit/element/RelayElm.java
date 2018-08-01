@@ -6,10 +6,13 @@ import static com.cas.circuit.util.Util.getVoltageDText;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
+import com.cas.circuit.ILight;
 import com.cas.circuit.ISwitch;
 import com.cas.circuit.component.ControlIO;
+import com.cas.circuit.component.LightIO;
 import com.cas.circuit.component.Terminal;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author Administrator
  */
 @Slf4j
-public class RelayElm extends CircuitElm implements ISwitch {
+public class RelayElm extends CircuitElm implements ISwitch, ILight {
 	private static final int COM = 0, NC = 1, NO = 2;
 	protected double r_on = .05;
 	protected double r_off = 1e10; // 这个值不要随便动，否则会引起电路异常
@@ -51,6 +54,7 @@ public class RelayElm extends CircuitElm implements ISwitch {
 	protected boolean lock;
 
 	protected ControlIO button;
+	protected LightIO light;
 
 	protected boolean force;
 
@@ -184,6 +188,7 @@ public class RelayElm extends CircuitElm implements ISwitch {
 		} else if ((delta == 0 && coilCurrent == delta) || (delta > -1e-10 && delta < 1e-10)) {
 			if (lock) {
 				button.unstuck();
+				Optional.ofNullable(light).ifPresent(l -> l.closeLight());
 				lock = false;
 			}
 		}
@@ -193,6 +198,7 @@ public class RelayElm extends CircuitElm implements ISwitch {
 			if (!lock) {
 				lock = true;
 				button.absorbed();
+				Optional.ofNullable(light).ifPresent(l -> l.openLight());
 			}
 		}
 
@@ -262,5 +268,10 @@ public class RelayElm extends CircuitElm implements ISwitch {
 	@Override
 	public void doSwitch(boolean pressed) {
 		force = pressed;
+	}
+
+	@Override
+	public void setLight(LightIO light) {
+		this.light = light;
 	}
 }

@@ -61,6 +61,9 @@ public class ThreePhaseAsynMotorElm extends MotorElm {
 		value = params.get("p");
 		p = value == null ? p : Integer.parseInt(value);
 
+//		额定转速
+		rad = 50 * 60 / p;
+
 		coilCurrent = new double[3];
 
 		allocNodes();
@@ -82,16 +85,22 @@ public class ThreePhaseAsynMotorElm extends MotorElm {
 
 //		三相电特性1：任意时刻，线电压代数和为近似为0（精度问题）
 //		不满足条件的情况：电压全为0，或者是电压代数和远大于0，这里认为偏差1e-10伏
-		if ((abs(volt_u) < 1e-10 && (abs(volt_v) < 1e-10 && (abs(volt_w) < 1e-10) || (abs(volt_u + volt_v + volt_w) > 1e-8)))) {
+//		System.out.println(volt_u + " " + volt_v + "  " + volt_w);
+//		System.out.println((abs(volt_u) < 1e-10 && (abs(volt_v) < 1e-10 && (abs(volt_w) < 1e-10) || (abs(volt_u + volt_v + volt_w) > 1e-8))));
+		if ((abs(volt_u) < 1e-5 && (abs(volt_v) < 1e-5 && (abs(volt_w) < 1e-5) || (abs(volt_u + volt_v + volt_w) > 1e-8)))) {
 			state = STATE_STATIC;
-			control.setDir(0);
+			vmax = 0;
+			maxmin = 0;
+			control.stop();
 			return;
 		}
-		maxmin = max(max(max(abs(volt_v), abs(volt_u)), abs(volt_w)), maxmin);
+
+		maxmin = max(abs(volt_v), maxmin);
 		if (vmax < maxmin) {
 			vmax = maxmin;
 			return;
 		}
+
 //		选择v相作为标准
 //		double phase_u = asin(volt_u / vmax);
 		double phase = asin(volt_v / vmax);
@@ -100,7 +109,7 @@ public class ThreePhaseAsynMotorElm extends MotorElm {
 			phase_v = phase;
 			return;
 		}
-
+		control.start();
 		double preu, prew;
 //		System.out.println(volt_v);
 //		System.out.printf("phase[%s] < phase_v[%s]", phase , phase - phase_v);

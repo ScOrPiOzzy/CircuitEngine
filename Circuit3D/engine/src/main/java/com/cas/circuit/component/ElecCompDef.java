@@ -15,9 +15,11 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.cas.circuit.ILight;
 import com.cas.circuit.ISwitch;
 import com.cas.circuit.control.MotorControl;
 import com.cas.circuit.element.CircuitElm;
+import com.cas.circuit.element.LEDElm;
 import com.cas.circuit.element.MotorElm;
 import com.cas.circuit.xml.CircuitExchange;
 import com.cas.circuit.xml.adapter.MapAdapter;
@@ -146,6 +148,19 @@ public class ElecCompDef implements Savable {
 				}
 			}
 		});
+
+		lightIOList.forEach(l -> {
+			CircuitElm elm = this.circuitElmMap.get(l.getEffect());
+			if (elm == null) {
+				log.error("配置文件内容有错误! 没有{}对应的开关性质的元器件", l.getEffect());
+			} else if (!(elm instanceof ILight)) {
+				log.error("配置文件内容有错误! {}不是灯", elm);
+			} else {
+				ILight s = (ILight) elm;
+				s.setLight(l);
+			}
+		});
+
 	}
 
 	public void bindModel(Node spatial) {
