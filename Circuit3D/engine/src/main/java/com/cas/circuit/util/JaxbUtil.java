@@ -67,6 +67,7 @@ public class JaxbUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		LOG.info("解析完成: {}" , t);
 
 		return t;
 	}

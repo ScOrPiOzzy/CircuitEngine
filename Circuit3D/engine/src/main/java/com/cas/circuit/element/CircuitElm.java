@@ -39,13 +39,13 @@ public abstract class CircuitElm {
 	}
 
 	protected CircuitElm(Function<String, Terminal> f, Map<String, String> params) {
-		this();
 		try {
 			setPostPoint(0, f.apply(params.get("term1")));
 			setPostPoint(1, f.apply(params.get("term2")));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+		allocNodes();
 	}
 
 	void allocNodes() {

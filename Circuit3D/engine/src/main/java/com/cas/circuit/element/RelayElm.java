@@ -55,7 +55,6 @@ public class RelayElm extends CircuitElm implements ISwitch {
 	protected boolean force;
 
 	public RelayElm() {
-		noDiagonal = true;
 	}
 
 	public RelayElm(Function<String, Terminal> f, Map<String, String> params) {
@@ -103,7 +102,13 @@ public class RelayElm extends CircuitElm implements ISwitch {
 				t.setElm(this);
 			}
 		}
+		addCoils(coil1, coil2);
 
+		setupPoles();
+		allocNodes();
+	}
+
+	protected void addCoils(Terminal coil1, Terminal coil2) {
 		coil1.setIndexInElm(posts.size());
 		coil1.setElm(this);
 		posts.add(coil1);
@@ -111,9 +116,6 @@ public class RelayElm extends CircuitElm implements ISwitch {
 		coil2.setIndexInElm(posts.size());
 		coil2.setElm(this);
 		posts.add(coil2);
-
-		setupPoles();
-		allocNodes();
 	}
 
 	void setupPoles() {

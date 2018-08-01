@@ -62,11 +62,11 @@ public class CirSim implements Runnable {
 	}
 
 	public void updateCircuit() {
-		if (analyzeFlag) {
-			analyzeCircuit();
-			analyzeFlag = false;
-		}
 		try {
+			if (analyzeFlag) {
+				analyzeCircuit();
+				analyzeFlag = false;
+			}
 			runCircuit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -382,7 +382,7 @@ public class CirSim implements Runnable {
 		return nn;
 	}
 
-	private void simplifyMatrix() {
+	private boolean simplifyMatrix() {
 		int matrixSize = circuitMatrix.length;
 
 		for (int row = 0; row != matrixSize; row++) {
@@ -425,7 +425,7 @@ public class CirSim implements Runnable {
 			if (col == matrixSize) {
 				if (qp == -1) {
 					stop("Matrix error", null);
-					return;
+					return false;
 				}
 				RowInfo elt = circuitRowInfo[qp];
 				if (qm == -1) {
@@ -475,6 +475,8 @@ public class CirSim implements Runnable {
 				}
 			}
 		}
+
+		return true;
 	}
 
 	private void determineNonlinear() {
@@ -644,6 +646,7 @@ public class CirSim implements Runnable {
 		circuitMatrix = null;
 		analyzeFlag = false;
 		log.error("stop msg : 元器件错误{}->{}", ce, stopMessage);
+		throw new RuntimeException(s);
 	}
 
 	// control voltage source vs with voltage from n1 to n2 (must also call stampVoltageSource())
@@ -977,12 +980,14 @@ public class CirSim implements Runnable {
 
 	@Override
 	public void run() {
-//		电路运算的时间间隔0.01毫秒
-		runQueuedTasks();
-		synchronized (this) {
+		try {
+//			电路运算的时间间隔0.01毫秒
+			runQueuedTasks();
 			updateCircuit();
+			timer += TPF;
+		} catch (Exception e) {
+			log.error(e.getMessage());
 		}
-		timer += TPF;
 	}
 
 	public void runQueuedTasks() {

@@ -3,12 +3,14 @@
 	<RelyOn type="1" translation="-5.0E-4, 0.0223, 0.003" rotation="0,0,0,1" relyIds="1,5,9,4,8,12,13,14"/>
 
 	<Terminal>
+		<item id="9" name="COM1" mdlName="9" />
 		<item id="1" name="NC1" mdlName="1" />
 		<item id="5" name="NO1" mdlName="5" />
-		<item id="9" name="COM1" mdlName="9" />
+		
+		<item id="12" name="COM2" mdlName="12" />
 		<item id="4" name="NC2" mdlName="4" />
 		<item id="8" name="NO2" mdlName="8" />
-		<item id="12" name="COM2" mdlName="12" />
+
 		<item id="13" name="ACIN_1" mdlName="13" />
 		<item id="14" name="ACIN_2" mdlName="14" />
 	</Terminal>
@@ -17,7 +19,7 @@
 		<Params>
 			<coil1>13</coil1>
 			<coil2>14</coil2>
-			<coilR>20</coilR>
+			<coilR>2e-2</coilR>
 			<posts>9,1,5|12,4,8</posts>
 		</Params>
 	</CircuitExchange>

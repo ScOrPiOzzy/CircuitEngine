@@ -18,12 +18,9 @@ public class RelayElmEx extends RelayElm {
 	protected int flag = 0;
 
 	public RelayElmEx() {
-		super();
 	}
 
 	public RelayElmEx(Function<String, Terminal> f, Map<String, String> params) {
-		Terminal coil1 = f.apply(params.get("coil1"));
-		Terminal coil2 = f.apply(params.get("coil2"));
 		pairs = 2;
 		poleCount = 0;
 		posts = new ArrayList<>();
@@ -33,13 +30,8 @@ public class RelayElmEx extends RelayElm {
 
 		setPosts(f, params.get("no"));
 
-		coil1.setIndexInElm(posts.size());
-		posts.add(coil1);
-		coil1.setElm(this);
-
-		coil2.setIndexInElm(posts.size());
-		posts.add(coil2);
-		coil2.setElm(this);
+		addCoils(f.apply(params.get("coil1"))//
+				, f.apply(params.get("coil2")));
 
 		setupPoles();
 		allocNodes();

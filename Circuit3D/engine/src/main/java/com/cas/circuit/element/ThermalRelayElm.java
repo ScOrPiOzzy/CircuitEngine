@@ -1,10 +1,10 @@
 package com.cas.circuit.element;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.cas.circuit.CirSim;
 import com.cas.circuit.component.Terminal;
 
 /**
@@ -13,55 +13,150 @@ import com.cas.circuit.component.Terminal;
  */
 public class ThermalRelayElm extends RelayElmEx {
 
-//	电热片端子
-	private List<Terminal[]> heater;
 	private double resistance;
-	private double temperature;
-//	private double ;
+	private double joule;
+	private double q;
+	private double t; // 线圈通电时长
 
-	public ThermalRelayElm() {
-		super();
-	}
+	private double heatCurrent[];
 
 	public ThermalRelayElm(Function<String, Terminal> f, Map<String, String> params) {
-		String value = params.get("heater");
-		String[] arr = value.split("\\|");
-
-		heater = new ArrayList<>(arr.length);
-
-		for (int i = 0; i < arr.length; i++) {
-			String[] termid = arr[i].split(",");
-
-			Terminal[] t = new Terminal[2];
-			t[0] = f.apply(termid[0]);
-			t[1] = f.apply(termid[1]);
-
-			heater.add(t);
-		}
-
-		value = params.get("resistance");
-		resistance = value == null ? resistance : Double.parseDouble(value);
-		value = params.get("temperature");
-		temperature = value == null ? temperature : Double.parseDouble(value);
-
 		pairs = 2;
 		poleCount = 0;
-
 		posts = new ArrayList<>();
 		setPosts(f, params.get("nc"));
+
 		flag = poleCount;
+
 		setPosts(f, params.get("no"));
 
-//		coil1.setIndexInElm(posts.size());
-//		posts.add(coil1);
-//		coil1.setElm(this);
+		String value = null;
+//		线圈（产生热量）
+		value = params.get("heater");
+		String[] arr = value.split("\\|");
+//		nCoil1;
+		for (int i = 0; i < arr.length; i++) {
+			String[] coil = arr[i].split(",");
+			addCoils(f.apply(coil[0])//
+					, f.apply(coil[1]));
+		}
+		heatCurrent = new double[arr.length];
+//		线圈阻值
+		value = params.get("resistance");
+		resistance = value == null ? resistance : Double.parseDouble(value);
+//		使形变的热量
+		value = params.get("joule");
+		joule = value == null ? joule : Double.parseDouble(value);
+
+		setupPoles();
+
+		allocNodes();
+	}
+
+	void setupPoles() {
+		nCoil1 = pairs * poleCount;
+
+		if (switchCurrent == null || switchCurrent.length != poleCount) {
+			switchCurrent = new double[poleCount];
+		}
+	}
+
+	@Override
+	public void stamp() {
+//		电热片电阻
+		for (int i = nCoil1, j = 0; i < posts.size(); i += 2, j++) {
+			sim.stampResistor(nodes[nCoil1 + j * 2], nodes[nCoil1 + j * 2 + 1], resistance);
+		}
+
+////		NC
+//		for (int p = 0; p != flag; p++) {
+//			sim.stampResistor(nodes[p * pairs], nodes[p * pairs + 1], i_position == 0 ? r_on : r_off);
+//		}
 //
-//		coil2.setIndexInElm(posts.size());
-//		posts.add(coil2);
-//		coil2.setElm(this);
-//
-//		setupPoles();
-//		allocNodes();
+////		NO
+//		for (int p = flag; p != poleCount; p++) {
+//			sim.stampResistor(nodes[p * pairs], nodes[p * pairs + 1], i_position == 1 ? r_on : r_off);
+//		}
+
+		for (int p = 0; p != poleCount; p++) {
+			sim.stampNonLinear(nodes[p * pairs]);
+			sim.stampNonLinear(nodes[p * pairs + 1]);
+		}
+	}
+
+	@Override
+	public void startIteration() {
+		q -= 4;
+//		q = joule;
+		// magic value to balance operate speed with reset speed semi-realistically
+		joule = 1.6e5;
+		if (q < 1.3 * joule) {
+			double max = 0;
+			for (int i = 0; i < heatCurrent.length; i++) {
+				max = Math.max(max, heatCurrent[i] * heatCurrent[i] * resistance * CirSim.TPF);
+			}
+			if (q < 1.1 * joule) {
+				q += 3 * max;
+			} else {
+				q += max;
+			}
+		}
+
+		if (q > joule) {
+			d_position = 1;
+			System.out.println("on");
+			if (!lock) {
+				lock = true;
+				button.absorbed();
+			}
+
+		} else {
+			System.out.println("off");
+			d_position = 0;
+			if (lock) {
+				button.unstuck();
+				lock = false;
+			}
+		}
+
+		if (d_position < .1) {
+			i_position = 0;
+		} else if (d_position > .9) {
+			i_position = 1;
+		} else {
+			i_position = 2;
+		}
+		delta = coilCurrent;
+	}
+
+	@Override
+	void calculateCurrent() {
+		for (int i = 0; i < heatCurrent.length; i++) {
+			heatCurrent[i] = (volts[nCoil1 + 2 * i] - volts[nCoil1 + 2 * i + 1]) / resistance;
+		}
+
+//		NC
+		for (int p = 0; p != flag; p++) {
+			if (i_position == 0) {
+				switchCurrent[p] = (volts[p * pairs] - volts[p * pairs + 1]) / r_on;
+			} else {
+				switchCurrent[p] = 0;
+			}
+		}
+
+//		NO
+		for (int p = flag; p != poleCount; p++) {
+			if (i_position == 1) {
+				switchCurrent[p] = (volts[p * pairs] - volts[p * pairs + 1]) / r_on;
+			} else {
+				switchCurrent[p] = 0;
+			}
+		}
+	}
+
+	@Override
+	public int getPostCount() {
+		return posts == null ? 0 : posts.size();
 	}
 
 }
