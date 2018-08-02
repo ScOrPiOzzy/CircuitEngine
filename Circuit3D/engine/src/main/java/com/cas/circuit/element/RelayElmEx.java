@@ -33,6 +33,12 @@ public class RelayElmEx extends RelayElm {
 		addCoils(f.apply(params.get("coil1"))//
 				, f.apply(params.get("coil2")));
 
+		String value = params.get("coilR");
+		coilR = value == null ? coilR : Float.parseFloat(value);
+
+		value = params.get("onCurrent");
+		onCurrent = value == null ? onCurrent : Float.parseFloat(value);
+
 		setupPoles();
 		allocNodes();
 	}

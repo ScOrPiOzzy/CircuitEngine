@@ -25,7 +25,7 @@ public class ThreePhaseAsynMotorElm extends MotorElm {
 	protected List<Terminal> posts;
 	private double coilCurrent[];
 
-	private double coilR = 2e-1;
+	private double coilR = 5e-1;
 
 //	磁极对数
 	private int p;
@@ -85,54 +85,47 @@ public class ThreePhaseAsynMotorElm extends MotorElm {
 
 //		三相电特性1：任意时刻，线电压代数和为近似为0（精度问题）
 //		不满足条件的情况：电压全为0，或者是电压代数和远大于0，这里认为偏差1e-10伏
-//		System.out.println(volt_u + " " + volt_v + "  " + volt_w);
-//		System.out.println((abs(volt_u) < 1e-10 && (abs(volt_v) < 1e-10 && (abs(volt_w) < 1e-10) || (abs(volt_u + volt_v + volt_w) > 1e-8))));
-		if ((abs(volt_u) < 1e-5 && (abs(volt_v) < 1e-5 && (abs(volt_w) < 1e-5) || (abs(volt_u + volt_v + volt_w) > 1e-8)))) {
+		if ((abs(volt_u) < 1e-5 && (abs(volt_v) < 1e-5 && (abs(volt_w) < 1e-5) || (abs(volt_u + volt_v + volt_w) > 1e-6)))) {
 			state = STATE_STATIC;
-			vmax = 0;
-			maxmin = 0;
 			control.stop();
 			return;
 		}
 
-		maxmin = max(abs(volt_v), maxmin);
+		maxmin = max(max(max(abs(volt_v), abs(volt_w)), abs(volt_u)), vmax);
 		if (vmax < maxmin) {
 			vmax = maxmin;
 			return;
 		}
 
 //		选择v相作为标准
-//		double phase_u = asin(volt_u / vmax);
 		double phase = asin(volt_v / vmax);
-//		double phase_w = asin(volt_w / vmax);
 		if (phase_v == 0) {
+			phase_v = phase;
+		}
+
+		if (vmax - abs(volt_v) < 3) {
 			phase_v = phase;
 			return;
 		}
-		control.start();
-		double preu, prew;
-//		System.out.println(volt_v);
-//		System.out.printf("phase[%s] < phase_v[%s]", phase , phase - phase_v);
-//		System.out.printf("phaseu[%.5f] < phasev[%.5f] < phasew[%.5f] phase:[%.5f]", volt_u , phase, phase_w, (asin(sin(2*PI*50*sim.getTimer()))));
-		if (phase > phase_v) {
-			preu = vmax * sin(phase_v - PI * 2 / 3);
-			prew = vmax * sin(phase_v + PI * 2 / 3);
-		} else if (phase < phase_v) {
-			preu = vmax * sin(phase_v + PI * 2 / 3);
-			prew = vmax * sin(phase_v - PI * 2 / 3);
-		} else {
-			preu = prew = vmax * sin(PI / 2);
-		}
 
-		if (Math.abs(volt_w - prew) < 10 && Math.abs(volt_u - preu) < 10) {
-//			System.out.println("正转" + Math.toDegrees(sim.getTpf() * 25 * PI));
-//			System.out.println("正转" + vmax);
-			control.setDir(1);
-		} else {
-			control.setDir(-1);
-//			System.out.printf("prew:%.5f,\tvolt_w:%.5f\r\npreu:%.5f,\tvolt_u:%.5f\r\n", prew, (volt_w - prew), preu, (volt_u - preu));
-//			System.out.println("反转" + (volt_w - prew) + ",  " + (volt_u - preu));
-//			System.out.println("反转");
+		control.start();
+
+		double preu, prew;
+		preu = vmax * sin(phase + PI * 2 / 3);
+		prew = vmax * sin(phase - PI * 2 / 3);
+
+		if (phase < phase_v) {
+			if (abs(prew - volt_w) < 1 && abs(preu - volt_u) < 1) {
+				control.setDir(1);
+			} else if (abs(prew - volt_u) < 1 && abs(preu - volt_w) < 1) {
+				control.setDir(-1);
+			}
+		} else if ((phase > phase_v)) {
+			if (abs(prew - volt_w) < 1 && abs(preu - volt_u) < 1) {
+				control.setDir(-1);
+			} else if (abs(prew - volt_u) < 1 && abs(preu - volt_w) < 1) {
+				control.setDir(1);
+			}
 		}
 		phase_v = phase;
 	}

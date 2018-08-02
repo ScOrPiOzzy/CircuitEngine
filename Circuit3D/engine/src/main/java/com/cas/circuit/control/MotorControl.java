@@ -37,9 +37,9 @@ public class MotorControl extends AbstractControl {
 	protected void controlUpdate(float tpf) {
 		if (stop) {
 			if (rr > 5) {
-				rr = FastMath.extrapolateLinear(0.02f, rr, 0);
+				rr = FastMath.extrapolateLinear(0.04f, rr, 0);
 			} else {
-				rr /= 2;
+				rr /= 3;
 				if (rr < 1e-4) {
 					rr = 0;
 				}
@@ -51,6 +51,7 @@ public class MotorControl extends AbstractControl {
 				rr = FastMath.extrapolateLinear(0.05f, rr, max);
 			}
 		}
+//		System.out.println("update: " + dir * rr);
 		rotatorList.forEach(r -> r.rotate(dir * rr * FastMath.TWO_PI / 60 * tpf, 0, 0));
 	}
 

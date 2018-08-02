@@ -45,7 +45,7 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 	protected int pairs = 3;
 
 //	线圈的阻值
-	protected double coilR = 20;
+	protected double coilR = 2e-2;
 
 	protected int nCoil1, nCoil2;
 	protected List<Terminal> posts;
@@ -168,12 +168,6 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 			i_position = 1;
 			return;
 		}
-
-//		if(432780906 != hashCode()) {
-//			System.out.println(hashCode() +"  " + coilCurrent +" : " + switchCurrent[0] + "  "+ switchCurrent[1]);
-//			System.out.println(hashCode() +"  " + coilCurrent +" : " + (volts[0] - volts[1]) + "  "+ switchCurrent[1]);
-//		}
-//		
 		if (!lock) {
 			// magic value to balance operate speed with reset speed semi-realistically
 			double magic = 1.3;

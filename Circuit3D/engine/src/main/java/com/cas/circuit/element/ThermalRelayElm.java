@@ -86,12 +86,10 @@ public class ThermalRelayElm extends RelayElmEx {
 
 	@Override
 	public void startIteration() {
-		q -= 2;
+		q -= 2; // 散热
 		if (q < 0) {
 			q = 0;
 		}
-//		 magic value to balance operate speed with reset speed semi-realistically
-		joule = 1e3;
 		if (q < 1.1 * joule) {
 			double max = 0;
 			for (int i = 0; i < heatCurrent.length; i++) {
@@ -103,7 +101,6 @@ public class ThermalRelayElm extends RelayElmEx {
 				q += max;
 			}
 		}
-//		System.out.println(q);
 		if (q > joule) {
 			d_position = 1;
 //			System.out.println("on");

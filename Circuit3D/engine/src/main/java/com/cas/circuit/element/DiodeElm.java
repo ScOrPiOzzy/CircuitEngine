@@ -4,7 +4,11 @@ import static com.cas.circuit.util.Util.getCurrentText;
 import static com.cas.circuit.util.Util.getUnitText;
 import static com.cas.circuit.util.Util.getVoltageText;
 
+import java.util.Map;
+import java.util.function.Function;
+
 import com.cas.circuit.Diode;
+import com.cas.circuit.component.Terminal;
 
 public class DiodeElm extends CircuitElm {
 	Diode diode;
@@ -14,6 +18,10 @@ public class DiodeElm extends CircuitElm {
 
 	public DiodeElm() {
 		super();
+	}
+
+	public DiodeElm(Function<String, Terminal> f, Map<String, String> params) {
+		super(f, params);
 		diode = new Diode(sim);
 		fwdrop = defaultdrop;
 		zvoltage = 0;
