@@ -51,7 +51,6 @@ public class MotorControl extends AbstractControl {
 				rr = FastMath.extrapolateLinear(0.05f, rr, max);
 			}
 		}
-//		System.out.println("update: " + dir * rr);
 		rotatorList.forEach(r -> r.rotate(dir * rr * FastMath.TWO_PI / 60 * tpf, 0, 0));
 	}
 

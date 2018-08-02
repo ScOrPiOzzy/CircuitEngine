@@ -85,7 +85,7 @@ public class ThreePhaseAsynMotorElm extends MotorElm {
 
 //		三相电特性1：任意时刻，线电压代数和为近似为0（精度问题）
 //		不满足条件的情况：电压全为0，或者是电压代数和远大于0，这里认为偏差1e-10伏
-		if ((abs(volt_u) < 1e-5 && (abs(volt_v) < 1e-5 && (abs(volt_w) < 1e-5) || (abs(volt_u + volt_v + volt_w) > 1e-6)))) {
+		if (!(abs(volt_u) > 1e-3 && abs(volt_v) > 1e-3 && (abs(volt_w) > 1e-3)) || abs(volt_u + volt_v + volt_w) > 1e-6) {
 			state = STATE_STATIC;
 			control.stop();
 			return;

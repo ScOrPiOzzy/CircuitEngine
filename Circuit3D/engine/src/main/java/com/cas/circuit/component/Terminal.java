@@ -133,7 +133,8 @@ public class Terminal implements Savable {
 	}
 
 	public String getName() {
-		return String.format("name:%s, volt:%.8f", name, maxV);
+//		return String.format("name:%s, volt:%.8f", name, maxV);
+		return name;
 	}
 
 }
