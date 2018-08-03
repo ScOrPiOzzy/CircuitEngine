@@ -23,6 +23,7 @@
 		<Params>
 			<coil1>A1</coil1>
 			<coil2>A2_1</coil2>
+			<coilR>1.8e3</coilR>
 			<no>1/L1,2/T1|3/L2,4/T2|5/L3,6/T3|13NO,14NO</no>
 		</Params>
 	</CircuitExchange>

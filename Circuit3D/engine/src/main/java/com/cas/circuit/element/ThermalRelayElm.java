@@ -68,16 +68,6 @@ public class ThermalRelayElm extends RelayElmEx {
 			sim.stampResistor(nodes[nCoil1 + j * 2], nodes[nCoil1 + j * 2 + 1], resistance);
 		}
 
-////		NC
-//		for (int p = 0; p != flag; p++) {
-//			sim.stampResistor(nodes[p * pairs], nodes[p * pairs + 1], i_position == 0 ? r_on : r_off);
-//		}
-//
-////		NO
-//		for (int p = flag; p != poleCount; p++) {
-//			sim.stampResistor(nodes[p * pairs], nodes[p * pairs + 1], i_position == 1 ? r_on : r_off);
-//		}
-
 		for (int p = 0; p != poleCount; p++) {
 			sim.stampNonLinear(nodes[p * pairs]);
 			sim.stampNonLinear(nodes[p * pairs + 1]);
@@ -86,21 +76,21 @@ public class ThermalRelayElm extends RelayElmEx {
 
 	@Override
 	public void startIteration() {
-		q -= 2; // 散热
+		q -= 5e-1; // 散热
 		if (q < 0) {
 			q = 0;
 		}
-		if (q < 1.1 * joule) {
-			double max = 0;
-			for (int i = 0; i < heatCurrent.length; i++) {
-				max = Math.max(max, heatCurrent[i] * heatCurrent[i] * resistance * CirSim.TPF);
-			}
-			if (q < 1.05 * joule) {
-				q += 3 * max;
-			} else {
-				q += max;
-			}
+		double max = 0;
+		for (int i = 0; i < heatCurrent.length; i++) {
+			max += heatCurrent[i] * heatCurrent[i] * resistance * CirSim.TPF * 1e3;
 		}
+		max /= heatCurrent.length;
+		q += max;
+
+		if (q > 1.1 * joule) {
+			q = 1.1 * joule;
+		}
+
 		if (q > joule) {
 			d_position = 1;
 //			System.out.println("on");
@@ -108,7 +98,6 @@ public class ThermalRelayElm extends RelayElmEx {
 				lock = true;
 				button.absorbed();
 			}
-
 		} else {
 //			System.out.println("off");
 			d_position = 0;

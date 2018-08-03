@@ -17,7 +17,7 @@
 		<!-- post: 继电器上的普通端子，按照COM,NC,NO|COM,NC,NO的顺序填写,每4个连接头为一组, 多组连接头之间用竖线‘|’分割 -->
 		<Params>
 			<posts>u1,v1,w1,u2,v2,w2</posts>
-			<coilR>2e-1</coilR>
+			<coilR>5e-1</coilR>
 			<!-- 磁极对数 -->
 			<p>2</p>
 			<!-- 转速n = 60 * 电源频率f / 磁极对数p -->

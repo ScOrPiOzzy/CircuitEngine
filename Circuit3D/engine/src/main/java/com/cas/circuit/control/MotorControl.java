@@ -25,7 +25,6 @@ public class MotorControl extends AbstractControl {
 	private int dir;
 // 	转子
 	protected List<Spatial> rotatorList = new ArrayList<>();
-	@Setter
 	private int max;
 
 //	实时转速
@@ -85,6 +84,13 @@ public class MotorControl extends AbstractControl {
 
 	public void stop() {
 		stop = true;
+	}
+
+	public void setMax(int max) {
+		this.max = max;
+		
+		
+		
 	}
 
 }

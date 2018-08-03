@@ -19,6 +19,7 @@
 		<Params>
 			<term1>53NO</term1>
 			<term2>54NO</term2>
+			<coilR>1.8e3</coilR>
 			<momentary>false</momentary>
 			<position>1</position>
 		</Params>

@@ -213,6 +213,10 @@ public class ElecCompDef implements Savable {
 		circuitElmMap.put(id, circuitElm);
 	}
 
+	public void reset() {
+		circuitElmMap.values().forEach(elm -> elm.reset());
+	}
+
 	@Override
 	public void write(JmeExporter ex) throws IOException {
 		// nothing to save

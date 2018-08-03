@@ -45,7 +45,7 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 	protected int pairs = 3;
 
 //	线圈的阻值
-	protected double coilR = 2e-2;
+	protected double coilR = 6.5e2;
 
 	protected int nCoil1, nCoil2;
 	protected List<Terminal> posts;

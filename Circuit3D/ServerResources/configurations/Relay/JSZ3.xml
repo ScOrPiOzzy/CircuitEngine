@@ -22,6 +22,7 @@
 		<Params>
 			<coil1>2</coil1>
 			<coil2>7</coil2>
+			<coilR>1.29e3</coilR>
 			<posts>1,4,3|8,5,6</posts>
 			<!-- 预设值5， 默认延迟时间10秒 -->
 			<preset>5</preset>

@@ -20,7 +20,7 @@
 			<coil1>13</coil1>
 			<coil2>14</coil2>
 			<!-- 线圈电阻 -->
-			<coilR>2e-2</coilR>
+			<coilR>6.5e2</coilR>
 			<!-- 公共端，常闭，常开  -->
 			<posts>9,1,5|12,4,8</posts>
 		</Params>

@@ -19,7 +19,7 @@
 		<Params>
 			<coil1>13</coil1>
 			<coil2>14</coil2>
-			<coilR>2e-2</coilR>
+			<coilR>1.457e4</coilR>
 			<posts>9,1,5|12,4,8</posts>
 		</Params>
 	</CircuitExchange>
