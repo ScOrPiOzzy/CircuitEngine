@@ -87,7 +87,7 @@ public class Terminal implements Savable {
 	public void setSpatial(Spatial spatial) {
 		if (spatial == null) {
 			String errMsg = String.format("Terminal::没有找到连接头[%s]的模型[%s]", name, mdlName);
-			log.error(errMsg);
+			Terminal.log.error(errMsg);
 			throw new RuntimeException(errMsg);
 		}
 		this.spatial = spatial;

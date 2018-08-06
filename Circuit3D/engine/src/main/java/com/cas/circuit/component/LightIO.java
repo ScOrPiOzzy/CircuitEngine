@@ -45,7 +45,7 @@ public class LightIO implements Savable {
 	public void setSpatial(Spatial spatial) {
 		if (spatial == null) {
 			String errMsg = String.format("没有找到LightIO::name为%s的模型%s", name, mdlName);
-			log.error(errMsg);
+			LightIO.log.error(errMsg);
 			throw new RuntimeException(errMsg);
 		}
 		this.spatial = spatial;

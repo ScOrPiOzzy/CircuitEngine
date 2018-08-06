@@ -10,8 +10,6 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 
-import lombok.Setter;
-
 public class MotorControl extends AbstractControl {
 	private String rotator;
 
@@ -88,9 +86,7 @@ public class MotorControl extends AbstractControl {
 
 	public void setMax(int max) {
 		this.max = max;
-		
-		
-		
+
 	}
 
 }

@@ -1,7 +1,5 @@
 package com.cas.circuit.element;
 
-import static com.cas.circuit.util.Util.getUnitText;
-
 import java.util.Map;
 import java.util.function.Function;
 
@@ -32,16 +30,16 @@ public class ResistorElm extends CircuitElm {
 
 	@Override
 	public void stamp() {
-		sim.stampResistor(nodes[0], nodes[1], resistance);
+		CircuitElm.sim.stampResistor(nodes[0], nodes[1], resistance);
 	}
 
 	@Override
 	void buildInfo() {
 		info.add("resistor");
-		info.add(String.format("R = %s", getUnitText(resistance, Util.ohmString)));
+		info.add(String.format("R = %s", Util.getUnitText(resistance, Util.ohmString)));
 		super.buildInfo();
 		info.add(String.format("p1=%s p2=%s", volts[0], volts[1]));
-		info.add(String.format("P = %s", getUnitText(getPower(), "W")));
+		info.add(String.format("P = %s", Util.getUnitText(getPower(), "W")));
 	}
 
 }

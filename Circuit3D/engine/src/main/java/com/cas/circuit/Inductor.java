@@ -23,7 +23,7 @@ public class Inductor {
 	}
 
 	public boolean isTrapezoidal() {
-		return (flags & FLAG_BACK_EULER) == 0;
+		return (flags & Inductor.FLAG_BACK_EULER) == 0;
 	}
 
 	public void reset() {

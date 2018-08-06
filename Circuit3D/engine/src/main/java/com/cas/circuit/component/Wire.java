@@ -46,8 +46,8 @@ public class Wire implements Savable {
 
 	public Wire() {
 	}
-	
-	public Wire(Terminal term1,Terminal term2) {
+
+	public Wire(Terminal term1, Terminal term2) {
 		bind(term1);
 		bind(term2);
 	}

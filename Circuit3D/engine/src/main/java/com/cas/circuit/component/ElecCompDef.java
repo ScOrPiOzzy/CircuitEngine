@@ -19,7 +19,6 @@ import com.cas.circuit.ILight;
 import com.cas.circuit.ISwitch;
 import com.cas.circuit.control.MotorControl;
 import com.cas.circuit.element.CircuitElm;
-import com.cas.circuit.element.LEDElm;
 import com.cas.circuit.element.MotorElm;
 import com.cas.circuit.xml.CircuitExchange;
 import com.cas.circuit.xml.adapter.MapAdapter;
@@ -120,7 +119,7 @@ public class ElecCompDef implements Savable {
 			w.bind(getTerminal(w.getTerm1Id()));
 			w.bind(getTerminal(w.getTerm2Id()));
 		});
-//		
+//
 		terminalMap.values().forEach(t -> t.setElecCompDef(this));
 		controlIOList.forEach(c -> c.setElecCompDef(this));
 
@@ -137,9 +136,9 @@ public class ElecCompDef implements Savable {
 			for (int i = 0; i < switchName.length; i++) {
 				CircuitElm elm = this.circuitElmMap.get(switchName[i]);
 				if (elm == null) {
-					log.error("配置文件内容有错误! 没有{}对应的开关性质的元器件", switchName[i]);
+					ElecCompDef.log.error("配置文件内容有错误! 没有{}对应的开关性质的元器件", switchName[i]);
 				} else if (!(elm instanceof ISwitch)) {
-					log.error("配置文件内容有错误! {}不是一个包含开关的元器件", elm);
+					ElecCompDef.log.error("配置文件内容有错误! {}不是一个包含开关的元器件", elm);
 				} else {
 					ISwitch s = (ISwitch) elm;
 
@@ -152,9 +151,9 @@ public class ElecCompDef implements Savable {
 		lightIOList.forEach(l -> {
 			CircuitElm elm = this.circuitElmMap.get(l.getEffect());
 			if (elm == null) {
-				log.error("配置文件内容有错误! 没有{}对应的开关性质的元器件", l.getEffect());
+				ElecCompDef.log.error("配置文件内容有错误! 没有{}对应的开关性质的元器件", l.getEffect());
 			} else if (!(elm instanceof ILight)) {
-				log.error("配置文件内容有错误! {}不是灯", elm);
+				ElecCompDef.log.error("配置文件内容有错误! {}不是灯", elm);
 			} else {
 				ILight s = (ILight) elm;
 				s.setLight(l);

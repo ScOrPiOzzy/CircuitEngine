@@ -48,20 +48,20 @@ public class FindPathInfo {
 			if (ce == firstElm) {
 				continue;
 			}
-			if (type == INDUCT) {
+			if (type == FindPathInfo.INDUCT) {
 				if (ce instanceof CurrentElm) {
 					continue;
 				}
 			}
-			if (type == VOLTAGE) {
+			if (type == FindPathInfo.VOLTAGE) {
 				if (!(ce.isWire() || ce instanceof VoltageElm)) {
 					continue;
 				}
 			}
-			if (type == SHORT && !ce.isWire()) {
+			if (type == FindPathInfo.SHORT && !ce.isWire()) {
 				continue;
 			}
-			if (type == CAP_V) {
+			if (type == FindPathInfo.CAP_V) {
 				if (!(ce.isWire() || ce instanceof VoltageElm)) {
 //				if (!(ce.isWire() || ce instanceof CapacitorElm || ce instanceof VoltageElm)) {
 					continue;

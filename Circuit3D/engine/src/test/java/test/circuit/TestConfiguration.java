@@ -1,6 +1,5 @@
 package test.circuit;
 
-import java.io.File;
 import java.net.URL;
 
 import org.junit.Test;
@@ -12,8 +11,7 @@ public class TestConfiguration {
 	@Test
 	public void testParse() throws Exception {
 		ElecCompDef comp = null;
-		URL 
-		url = new URL("http://172.16.30.2:8082/configurations/Relay/CZY08A.xml");
+		URL url = new URL("http://172.16.30.2:8082/configurations/Relay/CZY08A.xml");
 		comp = JaxbUtil.converyToJavaBean(url, ElecCompDef.class);
 		System.out.println(comp);
 		url = new URL("http://172.16.30.2:8082/configurations/Relay/CZY08A.xml");

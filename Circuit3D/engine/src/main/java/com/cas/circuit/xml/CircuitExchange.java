@@ -40,7 +40,7 @@ public class CircuitExchange {
 		ElecCompDef elecCompDef = (ElecCompDef) parent;
 		Function<String, Terminal> f = (key) -> {
 			Terminal term = elecCompDef.getTerminalMap().get(key);
-			log.debug(String.format("%s:%s", key, term == null ? "Not Fount!" : term.toString()));
+			CircuitExchange.log.debug(String.format("%s:%s", key, term == null ? "Not Fount!" : term.toString()));
 			return term;
 		};
 
@@ -49,6 +49,7 @@ public class CircuitExchange {
 			Constructor<?> c = clazz.getDeclaredConstructor(new Class[] { Function.class, Map.class });
 			circuitElm = (CircuitElm) c.newInstance(f, params);
 			elecCompDef.putCircuitElm(id, circuitElm);
+			circuitElm.setElecCompDef(elecCompDef);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

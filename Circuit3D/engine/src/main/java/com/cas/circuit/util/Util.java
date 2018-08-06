@@ -13,20 +13,20 @@ public class Util {
 
 	static {
 		showFormat = NumberFormat.getInstance();
-		showFormat.setMaximumFractionDigits(2);
+		Util.showFormat.setMaximumFractionDigits(2);
 		shortFormat = NumberFormat.getInstance();
-		shortFormat.setMaximumFractionDigits(1);
+		Util.shortFormat.setMaximumFractionDigits(1);
 		noCommaFormat = NumberFormat.getInstance();
-		noCommaFormat.setMaximumFractionDigits(10);
-		noCommaFormat.setGroupingUsed(false);
+		Util.noCommaFormat.setMaximumFractionDigits(10);
+		Util.noCommaFormat.setGroupingUsed(false);
 	}
 
 	public static String getVoltageDText(double v) {
-		return getUnitText(Math.abs(v), "V");
+		return Util.getUnitText(Math.abs(v), "V");
 	}
 
 	public static String getVoltageText(double v) {
-		return getUnitText(v, "V");
+		return Util.getUnitText(v, "V");
 	}
 
 	public static String getUnitText(double v, String u) {
@@ -35,27 +35,27 @@ public class Util {
 			return "0 " + u;
 		}
 		if (va < 1e-9) {
-			return showFormat.format(v * 1e12) + " p" + u;
+			return Util.showFormat.format(v * 1e12) + " p" + u;
 		}
 		if (va < 1e-6) {
-			return showFormat.format(v * 1e9) + " n" + u;
+			return Util.showFormat.format(v * 1e9) + " n" + u;
 		}
 		if (va < 1e-3) {
-			return showFormat.format(v * 1e6) + " " + muString + u;
+			return Util.showFormat.format(v * 1e6) + " " + Util.muString + u;
 		}
 		if (va < 1) {
-			return showFormat.format(v * 1e3) + " m" + u;
+			return Util.showFormat.format(v * 1e3) + " m" + u;
 		}
 		if (va < 1e3) {
-			return showFormat.format(v) + " " + u;
+			return Util.showFormat.format(v) + " " + u;
 		}
 		if (va < 1e6) {
-			return showFormat.format(v * 1e-3) + " k" + u;
+			return Util.showFormat.format(v * 1e-3) + " k" + u;
 		}
 		if (va < 1e9) {
-			return showFormat.format(v * 1e-6) + " M" + u;
+			return Util.showFormat.format(v * 1e-6) + " M" + u;
 		}
-		return showFormat.format(v * 1e-9) + " G" + u;
+		return Util.showFormat.format(v * 1e-9) + " G" + u;
 	}
 
 	public static String getShortUnitText(double v, String u) {
@@ -64,35 +64,35 @@ public class Util {
 			return null;
 		}
 		if (va < 1e-9) {
-			return shortFormat.format(v * 1e12) + "p" + u;
+			return Util.shortFormat.format(v * 1e12) + "p" + u;
 		}
 		if (va < 1e-6) {
-			return shortFormat.format(v * 1e9) + "n" + u;
+			return Util.shortFormat.format(v * 1e9) + "n" + u;
 		}
 		if (va < 1e-3) {
-			return shortFormat.format(v * 1e6) + muString + u;
+			return Util.shortFormat.format(v * 1e6) + Util.muString + u;
 		}
 		if (va < 1) {
-			return shortFormat.format(v * 1e3) + "m" + u;
+			return Util.shortFormat.format(v * 1e3) + "m" + u;
 		}
 		if (va < 1e3) {
-			return shortFormat.format(v) + u;
+			return Util.shortFormat.format(v) + u;
 		}
 		if (va < 1e6) {
-			return shortFormat.format(v * 1e-3) + "k" + u;
+			return Util.shortFormat.format(v * 1e-3) + "k" + u;
 		}
 		if (va < 1e9) {
-			return shortFormat.format(v * 1e-6) + "M" + u;
+			return Util.shortFormat.format(v * 1e-6) + "M" + u;
 		}
-		return shortFormat.format(v * 1e-9) + "G" + u;
+		return Util.shortFormat.format(v * 1e-9) + "G" + u;
 	}
 
 	public static String getCurrentText(double i) {
-		return getUnitText(i, "A");
+		return Util.getUnitText(i, "A");
 	}
 
 	public static String getCurrentDText(double i) {
-		return getUnitText(Math.abs(i), "A");
+		return Util.getUnitText(Math.abs(i), "A");
 	}
 
 	// factors a matrix into upper and lower triangular matrices by
@@ -167,7 +167,7 @@ public class Util {
 
 			// avoid zeros
 			if (a[j][j] == 0.0) {
-				log.info("avoided zero row:{} col:{}", j, j);
+				Util.log.info("avoided zero row:{} col:{}", j, j);
 //				for (int l = 0; l < a.length; l++) {
 //					System.out.println(Arrays.toString(a[l]));
 //				}

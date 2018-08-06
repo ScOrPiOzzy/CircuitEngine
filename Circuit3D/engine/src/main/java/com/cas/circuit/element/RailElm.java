@@ -20,17 +20,17 @@ public class RailElm extends VoltageElm {
 
 	@Override
 	public void stamp() {
-		if (waveform == WF_DC) {
-			sim.stampVoltageSource(0, nodes[0], voltSource, getVoltage());
+		if (waveform == VoltageElm.WF_DC) {
+			CircuitElm.sim.stampVoltageSource(0, nodes[0], voltSource, getVoltage());
 		} else {
-			sim.stampVoltageSource(0, nodes[0], voltSource);
+			CircuitElm.sim.stampVoltageSource(0, nodes[0], voltSource);
 		}
 	}
 
 	@Override
 	public void doStep() {
-		if (waveform != WF_DC) {
-			sim.updateVoltageSource(0, nodes[0], voltSource, getVoltage());
+		if (waveform != VoltageElm.WF_DC) {
+			CircuitElm.sim.updateVoltageSource(0, nodes[0], voltSource, getVoltage());
 		}
 	}
 

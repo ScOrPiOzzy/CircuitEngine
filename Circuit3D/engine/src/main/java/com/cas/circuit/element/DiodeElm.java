@@ -1,14 +1,11 @@
 package com.cas.circuit.element;
 
-import static com.cas.circuit.util.Util.getCurrentText;
-import static com.cas.circuit.util.Util.getUnitText;
-import static com.cas.circuit.util.Util.getVoltageText;
-
 import java.util.Map;
 import java.util.function.Function;
 
 import com.cas.circuit.Diode;
 import com.cas.circuit.component.Terminal;
+import com.cas.circuit.util.Util;
 
 public class DiodeElm extends CircuitElm {
 	Diode diode;
@@ -22,7 +19,7 @@ public class DiodeElm extends CircuitElm {
 
 	public DiodeElm(Function<String, Terminal> f, Map<String, String> params) {
 		super(f, params);
-		diode = new Diode(sim);
+		diode = new Diode(CircuitElm.sim);
 		fwdrop = defaultdrop;
 		zvoltage = 0;
 		setup();
@@ -61,9 +58,9 @@ public class DiodeElm extends CircuitElm {
 	@Override
 	void buildInfo() {
 		info.add("diode");
-		info.add(String.format("I = %s", getCurrentText(getCurrent())));
-		info.add(String.format("Vd = %s", getVoltageText(getVoltageDiff())));
-		info.add(String.format("P = %s", getUnitText(getPower(), "W")));
-		info.add(String.format("Vf = %s", getVoltageText(fwdrop)));
+		info.add(String.format("I = %s", Util.getCurrentText(getCurrent())));
+		info.add(String.format("Vd = %s", Util.getVoltageText(getVoltageDiff())));
+		info.add(String.format("P = %s", Util.getUnitText(getPower(), "W")));
+		info.add(String.format("Vf = %s", Util.getVoltageText(fwdrop)));
 	}
 }

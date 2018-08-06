@@ -10,7 +10,7 @@ public class CurrentElm extends CircuitElm {
 	@Override
 	public void stamp() {
 		current = currentValue;
-		sim.stampCurrentSource(nodes[0], nodes[1], current);
+		CircuitElm.sim.stampCurrentSource(nodes[0], nodes[1], current);
 	}
 
 	@Override

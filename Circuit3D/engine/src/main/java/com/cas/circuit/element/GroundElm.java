@@ -1,6 +1,6 @@
 package com.cas.circuit.element;
 
-import static com.cas.circuit.util.Util.getCurrentText;
+import com.cas.circuit.util.Util;
 
 public class GroundElm extends CircuitElm {
 	@Override
@@ -17,7 +17,7 @@ public class GroundElm extends CircuitElm {
 
 	@Override
 	public void stamp() {
-		sim.stampVoltageSource(0, nodes[0], voltSource, 0);
+		CircuitElm.sim.stampVoltageSource(0, nodes[0], voltSource, 0);
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class GroundElm extends CircuitElm {
 	@Override
 	void buildInfo() {
 		info.add("ground");
-		info.add(String.format("I = %s", getCurrentText(getCurrent())));
+		info.add(String.format("I = %s", Util.getCurrentText(getCurrent())));
 	}
 
 	@Override

@@ -1,15 +1,12 @@
 package com.cas.circuit.element;
 
-import static com.cas.circuit.util.Util.getCurrentDText;
-import static com.cas.circuit.util.Util.getVoltageDText;
-import static com.cas.circuit.util.Util.getVoltageText;
-
 import java.util.Map;
 import java.util.function.Function;
 
 import com.cas.circuit.ISwitch;
 import com.cas.circuit.component.ControlIO;
 import com.cas.circuit.component.Terminal;
+import com.cas.circuit.util.Util;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +53,7 @@ public class SwitchElm extends CircuitElm implements ISwitch {
 	@Override
 	public void stamp() {
 		if (position == 0) {
-			sim.stampVoltageSource(nodes[0], nodes[1], voltSource, 0);
+			CircuitElm.sim.stampVoltageSource(nodes[0], nodes[1], voltSource, 0);
 		}
 	}
 
@@ -71,7 +68,7 @@ public class SwitchElm extends CircuitElm implements ISwitch {
 		if (position >= posCount) {
 			position = 0;
 		}
-		sim.needAnalyze();
+		CircuitElm.sim.needAnalyze();
 	}
 
 	@Override
@@ -81,11 +78,11 @@ public class SwitchElm extends CircuitElm implements ISwitch {
 //		arr[0] = (momentary) ? "push switch (SPST)" : "switch (SPST)";
 		if (position == 1) {
 			info.add(1, "open");
-			info.add(String.format("Vd = %s", getVoltageDText(getVoltageDiff())));
+			info.add(String.format("Vd = %s", Util.getVoltageDText(getVoltageDiff())));
 		} else {
 			info.add(1, "closed");
-			info.add(String.format("V = %s", getVoltageText(volts[0])));
-			info.add(String.format("I = %s", getCurrentDText(getCurrent())));
+			info.add(String.format("V = %s", Util.getVoltageText(volts[0])));
+			info.add(String.format("I = %s", Util.getCurrentDText(getCurrent())));
 		}
 	}
 

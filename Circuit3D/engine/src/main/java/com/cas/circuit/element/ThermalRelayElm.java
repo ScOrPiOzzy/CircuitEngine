@@ -53,6 +53,7 @@ public class ThermalRelayElm extends RelayElmEx {
 		allocNodes();
 	}
 
+	@Override
 	void setupPoles() {
 		nCoil1 = pairs * poleCount;
 
@@ -65,12 +66,12 @@ public class ThermalRelayElm extends RelayElmEx {
 	public void stamp() {
 //		电热片电阻
 		for (int i = nCoil1, j = 0; i < posts.size(); i += 2, j++) {
-			sim.stampResistor(nodes[nCoil1 + j * 2], nodes[nCoil1 + j * 2 + 1], resistance);
+			CircuitElm.sim.stampResistor(nodes[nCoil1 + j * 2], nodes[nCoil1 + j * 2 + 1], resistance);
 		}
 
 		for (int p = 0; p != poleCount; p++) {
-			sim.stampNonLinear(nodes[p * pairs]);
-			sim.stampNonLinear(nodes[p * pairs + 1]);
+			CircuitElm.sim.stampNonLinear(nodes[p * pairs]);
+			CircuitElm.sim.stampNonLinear(nodes[p * pairs + 1]);
 		}
 	}
 

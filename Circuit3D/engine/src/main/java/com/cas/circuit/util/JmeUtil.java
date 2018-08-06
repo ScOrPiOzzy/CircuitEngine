@@ -1,18 +1,15 @@
 package com.cas.circuit.util;
 
-import com.jme3.asset.AssetManager;
-import com.jme3.bounding.BoundingBox;
 import com.jme3.material.MatParam;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.BlendMode;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.debug.WireBox;
 
 public final class JmeUtil {
 
@@ -45,7 +42,7 @@ public final class JmeUtil {
 			}
 		} else if (sp instanceof Node) {
 			for (Spatial child : ((Node) sp).getChildren()) {
-				transparent(child, alpha);
+				JmeUtil.transparent(child, alpha);
 			}
 		}
 	}
@@ -67,7 +64,7 @@ public final class JmeUtil {
 			}
 		} else if (sp instanceof Node) {
 			for (Spatial child : ((Node) sp).getChildren()) {
-				untransparent(child);
+				JmeUtil.untransparent(child);
 			}
 		}
 	}
@@ -97,7 +94,7 @@ public final class JmeUtil {
 			}
 		} else if (sp instanceof Node) {
 			for (Spatial child : ((Node) sp).getChildren()) {
-				color(child, color, saveMat);
+				JmeUtil.color(child, color, saveMat);
 			}
 		}
 	}
@@ -118,36 +115,91 @@ public final class JmeUtil {
 			}
 		} else if (sp instanceof Node) {
 			for (Spatial child : ((Node) sp).getChildren()) {
-				uncolor(child);
+				JmeUtil.uncolor(child);
 			}
 		}
 	}
 
-	public static void updateWiringBox(Geometry boxGeo, Spatial ref) {
-		WireBox box = (WireBox) boxGeo.getMesh();
-		BoundingBox bound = ((BoundingBox) ref.getWorldBound());
-		boxGeo.setLocalTranslation(bound.getCenter());
-		box.updatePositions(bound.getXExtent(), bound.getYExtent(), bound.getZExtent());
+	public static String[] parseArray(String value) {
+		if (value == null) {
+			return null;
+		}
+
+		value = trim(value);
+		String[] arr = value.split(",");
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = arr[i].trim();
+		}
+		return arr;
 	}
 
-	public static ColorRGBA convert(javafx.scene.paint.Color color) {
-		ColorRGBA colorRGBA = new ColorRGBA();
-		colorRGBA.set((float) color.getRed(), (float) color.getGreen(), (float) color.getBlue(), (float) color.getOpacity());
-//		colorRGBA.set(color.r, g, b, a);
-		return colorRGBA;
+	public static float[] parseFloatArray(String value) {
+		String[] arr = parseArray(value);
+
+		float[] result = new float[arr.length];
+		for (int i = 0; i < arr.length; i++) {
+			result[i] = Float.parseFloat(arr[i]);
+		}
+
+		return result;
 	}
 
-	public static Geometry createLineGeo(AssetManager assetManager, Mesh line, ColorRGBA color) {
-		Geometry geom = new Geometry("TempWire", line);
+	/**
+	 * @param value eg.(-0.017576016, 0.011718482, -0.99977684, 1)
+	 * @return
+	 */
+	public static Quaternion parseQuaternion(String value) {
+		if (value == null) {
+			return null;
+		}
 
-		Material ballMat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-		ballMat.setColor("Diffuse", color);
-		ballMat.setFloat("Shininess", 10f);
-		ballMat.setColor("Specular", ColorRGBA.White);
-		ballMat.setBoolean("UseMaterialColors", true);
-//		ballMat.getAdditionalRenderState().setLineWidth(width);
-		geom.setMaterial(ballMat);
-		return geom;
+		value = trim(value);
+		String[] arr = value.split(",");
+
+		Quaternion result = new Quaternion(//
+				Float.parseFloat(arr[0]), //
+				Float.parseFloat(arr[1]), //
+				Float.parseFloat(arr[2]), //
+				Float.parseFloat(arr[3])//
+		);
+
+		return result;
+	}
+
+	/**
+	 * @param value eg.(-0.017576016, 0.011718482, -0.99977684)
+	 * @return
+	 */
+	public static Vector3f parseVector3f(String value) {
+		if (value == null) {
+			return null;
+		}
+
+		value = trim(value);
+
+		String[] arr = value.split(",");
+
+		Vector3f result = new Vector3f();
+		result.x = Float.parseFloat(arr[0]);
+		result.y = Float.parseFloat(arr[1]);
+		result.z = Float.parseFloat(arr[2]);
+
+		return result;
+	}
+
+	private static String trim(String value) {
+		if (value == null) {
+			return null;
+		}
+//		这个方法的局限性,只能针对形如：(1,2,3)|[1,2,3]的字符串
+//		无法处理[[1,2],[3,4]]|((1,2),(3,4)),这样的字符串建议用用JSON,或StringUtil
+		value = value.replace("(", "");
+		value = value.replace(")", "");
+		value = value.replace("[", "");
+		value = value.replace("]", "");
+
+		value = value.trim();
+		return value;
 	}
 
 }

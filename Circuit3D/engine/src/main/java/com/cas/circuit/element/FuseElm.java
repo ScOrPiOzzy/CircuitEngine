@@ -7,6 +7,7 @@ import java.util.function.Function;
 import com.cas.circuit.ILight;
 import com.cas.circuit.component.LightIO;
 import com.cas.circuit.component.Terminal;
+import com.cas.circuit.effect.ParticleEffect;
 
 import lombok.Setter;
 
@@ -35,8 +36,9 @@ public class FuseElm extends ResistorElm implements ILight {
 		if (q > Math.abs(ratedCurrent) * 1.5) {
 			resistance = broken;
 			Optional.ofNullable(light).ifPresent(l -> {
-				l.openLight();
+				CircuitElm.sim.enqueue2jme(l::openLight);
 			});
+			CircuitElm.sim.enqueue2jme(() -> CircuitElm.sim.addBroken(FuseElm.this, ParticleEffect.Smoke));
 		}
 	}
 
@@ -45,8 +47,9 @@ public class FuseElm extends ResistorElm implements ILight {
 		super.reset();
 		resistance = normal;
 		Optional.ofNullable(light).ifPresent(l -> {
-			l.closeLight();
+			CircuitElm.sim.enqueue2jme(l::closeLight);
 		});
+		CircuitElm.sim.enqueue2jme(() -> CircuitElm.sim.removeBroken(FuseElm.this));
 	}
 
 }

@@ -1,8 +1,5 @@
 package com.cas.circuit.element;
 
-import static com.cas.circuit.util.Util.getCurrentDText;
-import static com.cas.circuit.util.Util.getVoltageDText;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +11,7 @@ import com.cas.circuit.ISwitch;
 import com.cas.circuit.component.ControlIO;
 import com.cas.circuit.component.LightIO;
 import com.cas.circuit.component.Terminal;
+import com.cas.circuit.util.Util;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -77,9 +75,9 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 			String[] tid = arr[i].split(",");
 
 			List<Terminal> termList = new ArrayList<>(3);
-			termList.add(f.apply(tid[COM]));
-			termList.add(f.apply(tid[NC]));
-			termList.add(f.apply(tid[NO]));
+			termList.add(f.apply(tid[RelayElm.COM]));
+			termList.add(f.apply(tid[RelayElm.NC]));
+			termList.add(f.apply(tid[RelayElm.NO]));
 
 			termGroupedList.add(termList);
 		}
@@ -153,12 +151,12 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 	@Override
 	public void stamp() {
 		// resistor from coil post 1 to coil post 2
-		sim.stampResistor(nodes[nCoil1], nodes[nCoil2], coilR);
+		CircuitElm.sim.stampResistor(nodes[nCoil1], nodes[nCoil2], coilR);
 
 		for (int p = 0; p != poleCount; p++) {
-			sim.stampNonLinear(nodes[COM + p * pairs]);
-			sim.stampNonLinear(nodes[NC + p * pairs]);
-			sim.stampNonLinear(nodes[NO + p * pairs]);
+			CircuitElm.sim.stampNonLinear(nodes[RelayElm.COM + p * pairs]);
+			CircuitElm.sim.stampNonLinear(nodes[RelayElm.NC + p * pairs]);
+			CircuitElm.sim.stampNonLinear(nodes[RelayElm.NO + p * pairs]);
 		}
 	}
 
@@ -182,7 +180,7 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 		} else if ((delta == 0 && coilCurrent == delta) || (delta > -1e-10 && delta < 1e-10)) {
 			if (lock) {
 				button.unstuck();
-				Optional.ofNullable(light).ifPresent(l -> l.closeLight());
+				Optional.ofNullable(light).ifPresent(l -> CircuitElm.sim.enqueue2jme(l::closeLight));
 				lock = false;
 			}
 		}
@@ -192,7 +190,7 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 			if (!lock) {
 				lock = true;
 				button.absorbed();
-				Optional.ofNullable(light).ifPresent(l -> l.openLight());
+				Optional.ofNullable(light).ifPresent(l -> CircuitElm.sim.enqueue2jme(l::openLight));
 			}
 		}
 
@@ -209,8 +207,8 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 	@Override
 	public void doStep() {
 		for (int p = 0; p != poleCount; p++) {
-			sim.stampResistor(nodes[COM + p * pairs], nodes[NC + p * pairs], i_position == 0 ? r_on : r_off);
-			sim.stampResistor(nodes[COM + p * pairs], nodes[NO + p * pairs], i_position == 1 ? r_on : r_off);
+			CircuitElm.sim.stampResistor(nodes[RelayElm.COM + p * pairs], nodes[RelayElm.NC + p * pairs], i_position == 0 ? r_on : r_off);
+			CircuitElm.sim.stampResistor(nodes[RelayElm.COM + p * pairs], nodes[RelayElm.NO + p * pairs], i_position == 1 ? r_on : r_off);
 		}
 	}
 
@@ -222,9 +220,9 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 		// actually this isn't correct, since there is a small amount of current through the switch when off
 		for (int p = 0; p != poleCount; p++) {
 			if (i_position == 0) {
-				switchCurrent[p] = (volts[COM + p * pairs] - volts[NC + p * pairs]) / r_on;
+				switchCurrent[p] = (volts[RelayElm.COM + p * pairs] - volts[RelayElm.NC + p * pairs]) / r_on;
 			} else if (i_position == 1) {
-				switchCurrent[p] = (volts[COM + p * pairs] - volts[NO + p * pairs]) / r_on;
+				switchCurrent[p] = (volts[RelayElm.COM + p * pairs] - volts[RelayElm.NO + p * pairs]) / r_on;
 			} else if (i_position == 2) {
 				switchCurrent[p] = 0;
 			}
@@ -236,10 +234,10 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 		info.add(String.format(i_position == 0 ? "%s (off)" : i_position == 1 ? "%s (on)" : "%s", getClass().getSimpleName()));
 		super.buildInfo();
 		for (int i = 0; i != poleCount; i++) {
-			info.add(String.format("I%d = %s", (i + 1), getCurrentDText(switchCurrent[i])));
+			info.add(String.format("I%d = %s", (i + 1), Util.getCurrentDText(switchCurrent[i])));
 		}
-		info.add(String.format("coil I = %s", getCurrentDText(coilCurrent)));
-		info.add(String.format("coil Vd = %s", getVoltageDText(volts[nCoil1] - volts[nCoil2])));
+		info.add(String.format("coil I = %s", Util.getCurrentDText(coilCurrent)));
+		info.add(String.format("coil Vd = %s", Util.getVoltageDText(volts[nCoil1] - volts[nCoil2])));
 	}
 
 	@Override

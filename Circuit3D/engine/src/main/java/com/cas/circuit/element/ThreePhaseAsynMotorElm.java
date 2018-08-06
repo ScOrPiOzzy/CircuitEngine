@@ -1,18 +1,12 @@
 package com.cas.circuit.element;
 
-import static com.cas.circuit.util.Util.getVoltageText;
-import static java.lang.Math.PI;
-import static java.lang.Math.abs;
-import static java.lang.Math.asin;
-import static java.lang.Math.max;
-import static java.lang.Math.sin;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import com.cas.circuit.component.Terminal;
+import com.cas.circuit.util.Util;
 
 /**
  * 三相交流异步点击,<br>
@@ -48,7 +42,7 @@ public class ThreePhaseAsynMotorElm extends MotorElm {
 		String value = params.get("posts");
 		String[] arr = value.split(",");
 		Terminal t = null;
-		for (int i = 0; i < POST_COUNT; i++) {
+		for (int i = 0; i < ThreePhaseAsynMotorElm.POST_COUNT; i++) {
 			t = f.apply(arr[i]);
 			t.setIndexInElm(posts.size());
 			posts.add(t);
@@ -72,9 +66,9 @@ public class ThreePhaseAsynMotorElm extends MotorElm {
 	@Override
 	public void stamp() {
 		// resistor from coil post 1 to coil post 2
-		sim.stampResistor(nodes[0], nodes[3], coilR);
-		sim.stampResistor(nodes[1], nodes[4], coilR);
-		sim.stampResistor(nodes[2], nodes[5], coilR);
+		CircuitElm.sim.stampResistor(nodes[0], nodes[3], coilR);
+		CircuitElm.sim.stampResistor(nodes[1], nodes[4], coilR);
+		CircuitElm.sim.stampResistor(nodes[2], nodes[5], coilR);
 	}
 
 	@Override
@@ -85,25 +79,25 @@ public class ThreePhaseAsynMotorElm extends MotorElm {
 
 //		三相电特性1：任意时刻，线电压代数和为近似为0（精度问题）
 //		不满足条件的情况：电压全为0，或者是电压代数和远大于0，这里认为偏差1e-10伏
-		if (!(abs(volt_u) > 1e-3 && abs(volt_v) > 1e-3 && (abs(volt_w) > 1e-3)) || abs(volt_u + volt_v + volt_w) > 1e-6) {
-			state = STATE_STATIC;
+		if (!(Math.abs(volt_u) > 1e-3 && Math.abs(volt_v) > 1e-3 && (Math.abs(volt_w) > 1e-3)) || Math.abs(volt_u + volt_v + volt_w) > 1e-6) {
+			state = MotorElm.STATE_STATIC;
 			control.stop();
 			return;
 		}
 
-		maxmin = max(max(max(abs(volt_v), abs(volt_w)), abs(volt_u)), vmax);
+		maxmin = Math.max(Math.max(Math.max(Math.abs(volt_v), Math.abs(volt_w)), Math.abs(volt_u)), vmax);
 		if (vmax < maxmin) {
 			vmax = maxmin;
 			return;
 		}
 
 //		选择v相作为标准
-		double phase = asin(volt_v / vmax);
+		double phase = Math.asin(volt_v / vmax);
 		if (phase_v == 0) {
 			phase_v = phase;
 		}
 
-		if (vmax - abs(volt_v) < 3) {
+		if (vmax - Math.abs(volt_v) < 3) {
 			phase_v = phase;
 			return;
 		}
@@ -111,19 +105,19 @@ public class ThreePhaseAsynMotorElm extends MotorElm {
 		control.start();
 
 		double preu, prew;
-		preu = vmax * sin(phase + PI * 2 / 3);
-		prew = vmax * sin(phase - PI * 2 / 3);
+		preu = vmax * Math.sin(phase + Math.PI * 2 / 3);
+		prew = vmax * Math.sin(phase - Math.PI * 2 / 3);
 
 		if (phase < phase_v) {
-			if (abs(prew - volt_w) < 1 && abs(preu - volt_u) < 1) {
+			if (Math.abs(prew - volt_w) < 1 && Math.abs(preu - volt_u) < 1) {
 				control.setDir(1);
-			} else if (abs(prew - volt_u) < 1 && abs(preu - volt_w) < 1) {
+			} else if (Math.abs(prew - volt_u) < 1 && Math.abs(preu - volt_w) < 1) {
 				control.setDir(-1);
 			}
 		} else if ((phase > phase_v)) {
-			if (abs(prew - volt_w) < 1 && abs(preu - volt_u) < 1) {
+			if (Math.abs(prew - volt_w) < 1 && Math.abs(preu - volt_u) < 1) {
 				control.setDir(-1);
-			} else if (abs(prew - volt_u) < 1 && abs(preu - volt_w) < 1) {
+			} else if (Math.abs(prew - volt_u) < 1 && Math.abs(preu - volt_w) < 1) {
 				control.setDir(1);
 			}
 		}
@@ -142,13 +136,13 @@ public class ThreePhaseAsynMotorElm extends MotorElm {
 		info.add(getClass().getSimpleName());
 		super.buildInfo();
 		for (int i = 0; i < 3; i++) {
-			info.add(String.format("coil Vd%d = %s", i, getVoltageText(volts[i] - volts[i + 3])));
+			info.add(String.format("coil Vd%d = %s", i, Util.getVoltageText(volts[i] - volts[i + 3])));
 		}
 	}
 
 	@Override
 	public int getPostCount() {
-		return POST_COUNT;
+		return ThreePhaseAsynMotorElm.POST_COUNT;
 	}
 
 	@Override
@@ -158,6 +152,6 @@ public class ThreePhaseAsynMotorElm extends MotorElm {
 
 	@Override
 	public boolean getConnection(int n1, int n2) {
-		return abs(n1 - n1) == 3;
+		return Math.abs(n1 - n1) == 3;
 	}
 }

@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.cas.circuit.component.Terminal;
 import com.cas.circuit.component.Wire;
+import com.cas.circuit.effect.ParticleEffect;
 import com.cas.circuit.element.CircuitElm;
 import com.cas.circuit.element.CurrentElm;
 import com.cas.circuit.element.GroundElm;
@@ -52,13 +53,16 @@ public class CirSim implements Runnable {
 
 	private Application app;
 
+	private ICircuitEffect circuit;
+
 	private ConcurrentLinkedQueue<Runnable> enqueue = new ConcurrentLinkedQueue<>();
 
 	public CirSim() {
 	}
 
-	public CirSim(Application app) {
+	public CirSim(Application app, ICircuitEffect circuit) {
 		this.app = app;
+		this.circuit = circuit;
 	}
 
 	public void updateCircuit() {
@@ -117,7 +121,7 @@ public class CirSim implements Runnable {
 			return;
 		}
 		stopMessage = null;
-		nodeList = new ArrayList<CircuitNode>();
+		nodeList = new ArrayList<>();
 
 		// System.out.println("ac1");
 		// look for voltage or ground element
@@ -433,7 +437,7 @@ public class CirSim implements Runnable {
 					int k;
 					for (k = 0; elt.getType() == RowInfo.ROW_EQUAL && k < 100; k++) {
 						// follow the chain
-						log.info("following equal chain from {} to {}  {}", row, qp, elt.getNodeEq());
+						CirSim.log.info("following equal chain from {} to {}  {}", row, qp, elt.getNodeEq());
 						qp = elt.getNodeEq();
 						elt = circuitRowInfo[qp];
 					}
@@ -645,7 +649,7 @@ public class CirSim implements Runnable {
 		stopMessage = s;
 		circuitMatrix = null;
 		analyzeFlag = false;
-		log.error("stop msg : 元器件错误{}->{}", ce, stopMessage);
+		CirSim.log.error("stop msg : 元器件错误{}->{}", ce, stopMessage);
 		throw new RuntimeException(s);
 	}
 
@@ -906,7 +910,7 @@ public class CirSim implements Runnable {
 
 	private boolean validate() {
 		if (stopMessage != null) {
-			log.error(stopMessage);
+			CirSim.log.error(stopMessage);
 			return false;
 		}
 		for (int j = 0; j != circuitMatrixSize; j++) {
@@ -984,9 +988,9 @@ public class CirSim implements Runnable {
 //			电路运算的时间间隔0.01毫秒
 			runQueuedTasks();
 			updateCircuit();
-			timer += TPF;
+			timer += CirSim.TPF;
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			CirSim.log.error(e.getMessage());
 		}
 	}
 
@@ -997,8 +1001,16 @@ public class CirSim implements Runnable {
 		}
 	}
 
-	public void enqueue(Runnable e) {
+	public void enqueue2jme(Runnable e) {
 		app.enqueue(e);
+	}
+	
+	public void addBroken(CircuitElm elm, ParticleEffect effect) {
+		circuit.addElecCompEffect(elm, effect);
+	}
+	
+	public void removeBroken(CircuitElm elm) {
+		circuit.removeElecCompEffect(elm);
 	}
 
 }

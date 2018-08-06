@@ -6,8 +6,6 @@ import java.util.function.Function;
 import com.cas.circuit.component.Terminal;
 import com.cas.circuit.control.MotorControl;
 
-import lombok.Setter;
-
 public class MotorElm extends CircuitElm {
 	public static final int STATE_STATIC = 0, STATE_CW = 1, STATE_ACW = -1;
 	public static final int F_STABLE = 1;

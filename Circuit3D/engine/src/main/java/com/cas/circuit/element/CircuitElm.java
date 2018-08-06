@@ -1,16 +1,16 @@
 package com.cas.circuit.element;
 
-import static com.cas.circuit.util.Util.getCurrentDText;
-import static com.cas.circuit.util.Util.getVoltageDText;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import com.cas.circuit.CirSim;
+import com.cas.circuit.component.ElecCompDef;
 import com.cas.circuit.component.Terminal;
+import com.cas.circuit.util.Util;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -30,8 +30,12 @@ public abstract class CircuitElm {
 
 	protected List<String> info;
 
+	@Setter
+	@Getter
+	protected ElecCompDef elecCompDef;
+
 	public static void initClass(CirSim s) {
-		sim = s;
+		CircuitElm.sim = s;
 	}
 
 	protected CircuitElm() {
@@ -165,8 +169,8 @@ public abstract class CircuitElm {
 	};
 
 	void buildInfo() {
-		info.add(String.format("I = %s", getCurrentDText(getCurrent())));
-		info.add(String.format("Vd = %s", getVoltageDText(getVoltageDiff())));
+		info.add(String.format("I = %s", Util.getCurrentDText(getCurrent())));
+		info.add(String.format("Vd = %s", Util.getVoltageDText(getVoltageDiff())));
 	}
 
 	double getPower() {

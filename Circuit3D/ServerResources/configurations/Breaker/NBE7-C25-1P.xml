@@ -17,5 +17,6 @@
 
 	<Params>
 		<shell>NBE7-C25-1P_07,NBE7-C25-1P_12,NBE7-C25-1P_20,NBE7-C25-1P_04,NBE7-C25-1P_31</shell>
+		<effectLoc>0.0, 0.046203613, 0.006931305</effectLoc>
 	</Params>
 </ElecCompDef>

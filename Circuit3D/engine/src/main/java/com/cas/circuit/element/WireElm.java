@@ -1,12 +1,10 @@
 package com.cas.circuit.element;
 
-import static com.cas.circuit.util.Util.getCurrentDText;
-import static com.cas.circuit.util.Util.getVoltageText;
-
 import java.util.Map;
 import java.util.function.Function;
 
 import com.cas.circuit.component.Terminal;
+import com.cas.circuit.util.Util;
 
 public class WireElm extends ResistorElm {
 
@@ -15,7 +13,7 @@ public class WireElm extends ResistorElm {
 
 	public WireElm() {
 		super();
-		resistance = defaultResistance;
+		resistance = WireElm.defaultResistance;
 	}
 
 	public WireElm(int r) {
@@ -28,23 +26,23 @@ public class WireElm extends ResistorElm {
 
 	@Override
 	void calculateCurrent() {
-		if (!ideal) {
+		if (!WireElm.ideal) {
 			super.calculateCurrent();
 		}
 	}
 
 	@Override
 	public void stamp() {
-		if (ideal) {
-			sim.stampVoltageSource(nodes[0], nodes[1], voltSource, 0);
+		if (WireElm.ideal) {
+			CircuitElm.sim.stampVoltageSource(nodes[0], nodes[1], voltSource, 0);
 		} else {
-			sim.stampResistor(nodes[0], nodes[1], resistance);
+			CircuitElm.sim.stampResistor(nodes[0], nodes[1], resistance);
 		}
 	}
 
 	@Override
 	public int getVoltageSourceCount() {
-		if (ideal) {
+		if (WireElm.ideal) {
 			return 1;
 		} else {
 			return super.getVoltageSourceCount();
@@ -54,13 +52,13 @@ public class WireElm extends ResistorElm {
 	@Override
 	void buildInfo() {
 		info.add("wire");
-		info.add(String.format("I = %s", getCurrentDText(getCurrent())));
-		info.add(String.format("V = %s", getVoltageText(volts[0])));
+		info.add(String.format("I = %s", Util.getCurrentDText(getCurrent())));
+		info.add(String.format("V = %s", Util.getVoltageText(volts[0])));
 	}
 
 	@Override
 	public double getPower() {
-		if (ideal) {
+		if (WireElm.ideal) {
 			return 0;
 		} else {
 			return super.getPower();
@@ -69,7 +67,7 @@ public class WireElm extends ResistorElm {
 
 	@Override
 	public double getVoltageDiff() {
-		if (ideal) {
+		if (WireElm.ideal) {
 			return volts[0];
 		} else {
 			return super.getVoltageDiff();
@@ -78,6 +76,6 @@ public class WireElm extends ResistorElm {
 
 	@Override
 	public boolean isWire() {
-		return ideal;
+		return WireElm.ideal;
 	}
 }

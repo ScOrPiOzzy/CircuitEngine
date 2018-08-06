@@ -138,7 +138,7 @@ public class TestRelay {
 		wire.bind(dc_0);
 		wire.bind(com1);
 
-//		
+//
 		wire = new Wire();
 		wire.bind(ac_0);
 		wire.bind(sw_0);

@@ -12,7 +12,7 @@ public class RowInfo {
 	public static final int ROW_EQUAL = 2; // value is equal to another value 等效数据
 
 	private int nodeEq;
-	private int type = ROW_NORMAL;
+	private int type = RowInfo.ROW_NORMAL;
 	private int mapCol;
 	private int mapRow;
 

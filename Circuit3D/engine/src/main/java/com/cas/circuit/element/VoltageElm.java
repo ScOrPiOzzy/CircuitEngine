@@ -1,14 +1,10 @@
 package com.cas.circuit.element;
 
-import static com.cas.circuit.util.Util.getCurrentText;
-import static com.cas.circuit.util.Util.getUnitText;
-import static com.cas.circuit.util.Util.getVoltageText;
-import static java.lang.Math.PI;
-
 import java.util.Map;
 import java.util.function.Function;
 
 import com.cas.circuit.component.Terminal;
+import com.cas.circuit.util.Util;
 
 public class VoltageElm extends CircuitElm {
 	static final int FLAG_COS = 2;
@@ -48,30 +44,30 @@ public class VoltageElm extends CircuitElm {
 	}
 
 	public double triangleFunc(double x) {
-		if (x < PI) {
-			return x * (2 / PI) - 1;
+		if (x < Math.PI) {
+			return x * (2 / Math.PI) - 1;
 		}
-		return 1 - (x - PI) * (2 / PI);
+		return 1 - (x - Math.PI) * (2 / Math.PI);
 	}
 
 	@Override
 	public void stamp() {
-		if (waveform == WF_DC) {
-			sim.stampVoltageSource(nodes[0], nodes[1], voltSource, getVoltage());
+		if (waveform == VoltageElm.WF_DC) {
+			CircuitElm.sim.stampVoltageSource(nodes[0], nodes[1], voltSource, getVoltage());
 		} else {
-			sim.stampVoltageSource(nodes[0], nodes[1], voltSource);
+			CircuitElm.sim.stampVoltageSource(nodes[0], nodes[1], voltSource);
 		}
 	}
 
 	@Override
 	public void doStep() {
-		if (waveform != WF_DC) {
-			sim.updateVoltageSource(nodes[0], nodes[1], voltSource, getVoltage());
+		if (waveform != VoltageElm.WF_DC) {
+			CircuitElm.sim.updateVoltageSource(nodes[0], nodes[1], voltSource, getVoltage());
 		}
 	}
 
 	public double getVoltage() {
-		double w = 2 * PI * sim.getTimer() * frequency + phaseShift;
+		double w = 2 * Math.PI * CircuitElm.sim.getTimer() * frequency + phaseShift;
 
 		switch (waveform) {
 		case WF_DC:
@@ -79,13 +75,13 @@ public class VoltageElm extends CircuitElm {
 		case WF_AC:
 			return Math.sin(w) * maxVoltage + bias;
 		case WF_SQUARE:
-			return bias + ((w % (2 * PI) > (2 * PI * dutyCycle)) ? -maxVoltage : maxVoltage);
+			return bias + ((w % (2 * Math.PI) > (2 * Math.PI * dutyCycle)) ? -maxVoltage : maxVoltage);
 		case WF_TRIANGLE:
-			return bias + triangleFunc(w % (2 * PI)) * maxVoltage;
+			return bias + triangleFunc(w % (2 * Math.PI)) * maxVoltage;
 		case WF_SAWTOOTH:
-			return bias + (w % (2 * PI)) * (maxVoltage / PI) - maxVoltage;
+			return bias + (w % (2 * Math.PI)) * (maxVoltage / Math.PI) - maxVoltage;
 		case WF_PULSE:
-			return ((w % (2 * PI)) < 1) ? maxVoltage + bias : bias;
+			return ((w % (2 * Math.PI)) < 1) ? maxVoltage + bias : bias;
 		default:
 			return 0;
 		}
@@ -130,21 +126,21 @@ public class VoltageElm extends CircuitElm {
 			info.add(0, "triangle gen");
 			break;
 		}
-		info.add(String.format("I = %s", getCurrentText(getCurrent())));
-		info.add(String.format(((this instanceof RailElm) ? "V = %s" : "Vd = %s"), getVoltageText(getVoltageDiff())));
+		info.add(String.format("I = %s", Util.getCurrentText(getCurrent())));
+		info.add(String.format(((this instanceof RailElm) ? "V = %s" : "Vd = %s"), Util.getVoltageText(getVoltageDiff())));
 
-		if (waveform != WF_DC && waveform != WF_VAR) {
-			info.add(String.format("f = %s", getUnitText(frequency, "Hz")));
-			info.add(String.format("Vmax = ", getVoltageText(maxVoltage)));
+		if (waveform != VoltageElm.WF_DC && waveform != VoltageElm.WF_VAR) {
+			info.add(String.format("f = %s", Util.getUnitText(frequency, "Hz")));
+			info.add(String.format("Vmax = ", Util.getVoltageText(maxVoltage)));
 			if (bias != 0) {
-				info.add(String.format("Voff = %s", getVoltageText(bias)));
+				info.add(String.format("Voff = %s", Util.getVoltageText(bias)));
 			} else if (frequency > 500) {
-				info.add(String.format("wavelength = %s", getUnitText(2.9979e8 / frequency, "m")));
+				info.add(String.format("wavelength = %s", Util.getUnitText(2.9979e8 / frequency, "m")));
 			}
-			info.add(String.format("P = %s", getUnitText(getPower(), "W")));
+			info.add(String.format("P = %s", Util.getUnitText(getPower(), "W")));
 		}
 		if (getCurrent() != 0) {
-			info.add(String.format("R = %s", getUnitText(getVoltageDiff() / getCurrent(), "")));
+			info.add(String.format("R = %s", Util.getUnitText(getVoltageDiff() / getCurrent(), "")));
 		}
 	}
 

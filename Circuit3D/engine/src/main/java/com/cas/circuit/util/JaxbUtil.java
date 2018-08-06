@@ -24,7 +24,7 @@ public class JaxbUtil {
 	 * @return
 	 */
 	public static String convertToXml(Object obj) {
-		return convertToXml(obj, "UTF-8");
+		return JaxbUtil.convertToXml(obj, "UTF-8");
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class JaxbUtil {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T converyToJavaBean(URL url, Class<T> c) {
-		LOG.info("解析文件路径{}, 目标对象类型{}", url, c);
+		JaxbUtil.LOG.info("解析文件路径{}, 目标对象类型{}", url, c);
 		T t = null;
 		try {
 			JAXBContext context = JAXBContext.newInstance(c);
@@ -67,7 +67,7 @@ public class JaxbUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		LOG.info("解析完成: {}" , t);
+		JaxbUtil.LOG.info("解析完成: {}", t);
 
 		return t;
 	}
@@ -80,7 +80,7 @@ public class JaxbUtil {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T converyToJavaBean(String xml, Class<T> c) {
-		LOG.info("解析文件内容\r\n{}, \r\n目标对象类型{}", xml, c);
+		JaxbUtil.LOG.info("解析文件内容\r\n{}, \r\n目标对象类型{}", xml, c);
 		T t = null;
 		try {
 			JAXBContext context = JAXBContext.newInstance(c);

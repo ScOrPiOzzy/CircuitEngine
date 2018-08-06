@@ -18,5 +18,6 @@
 	<Params>
 		<shell>RT28N-32X_03,RT28N-32X_00</shell>
 		<reset>1</reset>
+		<effectLoc>0.0, 0.046203613, 0.006931305</effectLoc>
 	</Params>
 </ElecCompDef>

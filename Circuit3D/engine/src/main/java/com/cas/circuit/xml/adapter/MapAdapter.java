@@ -24,7 +24,7 @@ public class MapAdapter extends XmlAdapter<MapAdapter.AdaptedMap, Map<String, St
 
 	public static class AdaptedMap {
 		@XmlAnyElement
-		public List<Element> elements = new ArrayList<Element>();
+		public List<Element> elements = new ArrayList<>();
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class MapAdapter extends XmlAdapter<MapAdapter.AdaptedMap, Map<String, St
 
 	@Override
 	public Map<String, String> unmarshal(AdaptedMap adaptedMap) throws Exception {
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, String> map = new HashMap<>();
 		for (Element element : adaptedMap.elements) {
 			map.put(element.getLocalName(), element.getTextContent());
 		}

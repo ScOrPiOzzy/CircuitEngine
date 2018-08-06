@@ -24,7 +24,7 @@ public class TerminalMapAdapter extends XmlAdapter<Terminal[], Map<String, Termi
 
 	@Override
 	public Map<String, Terminal> unmarshal(Terminal[] beans) throws Exception {
-		Map<String, Terminal> map = new HashMap<String, Terminal>();
+		Map<String, Terminal> map = new HashMap<>();
 		for (Terminal bean : beans) {
 			map.put(bean.getId(), bean);
 		}
