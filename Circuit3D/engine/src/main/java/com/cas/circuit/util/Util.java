@@ -1,5 +1,6 @@
 package com.cas.circuit.util;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 
 import lombok.extern.slf4j.Slf4j;
@@ -237,6 +238,27 @@ public class Util {
 
 	public static int sign(int x) {
 		return (x < 0) ? -1 : (x == 0) ? 0 : 1;
+	}
+
+//	将一个数取舍位一个单位数的整数倍
+	public static float round(float num, int bit, int unit) {
+//		0.01534562343
+		BigDecimal bigNum = new BigDecimal(num);
+//		整数位
+//		0015.34562343
+//		0015
+		int i = bigNum.movePointRight(bit).intValue();
+//		
+		int mod = i % unit;
+		int half = unit / 2;
+
+		if (mod > half && mod > 0) {
+			i = (i / unit + 1) * unit;
+		} else if (mod < half && mod < 0) {
+			i = (i / unit - 1) * unit;
+		}
+
+		return new BigDecimal(i).movePointLeft(bit).floatValue();
 	}
 
 }

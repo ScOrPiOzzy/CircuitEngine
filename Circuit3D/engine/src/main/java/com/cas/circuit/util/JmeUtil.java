@@ -1,21 +1,289 @@
 package com.cas.circuit.util;
 
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.jme3.asset.AssetManager;
+import com.jme3.bounding.BoundingBox;
+import com.jme3.collision.CollisionResult;
+import com.jme3.collision.CollisionResults;
 import com.jme3.material.MatParam;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.BlendMode;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Matrix3f;
 import com.jme3.math.Quaternion;
+import com.jme3.math.Ray;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.VertexBuffer;
+import com.jme3.scene.VertexBuffer.Type;
+import com.jme3.scene.debug.WireBox;
+import com.jme3.scene.shape.Cylinder;
+import com.jme3.scene.shape.Line;
+import com.jme3.scene.shape.Sphere;
+import com.jme3.util.BufferUtils;
 
+import jme3tools.optimize.GeometryBatchFactory;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public final class JmeUtil {
 
 	public static final Vector3f UNIT_XY = new Vector3f(1, 1, 0);
 	public static final Vector3f UNIT_XZ = new Vector3f(1, 0, 1);
 	public static final Vector3f UNIT_YZ = new Vector3f(0, 1, 1);
+
+	/**
+	 * Get a context point on spatial from cursor position.
+	 * @param spatial the spatial.
+	 * @return the contact point or null.
+	 */
+	@Nullable
+	public static Vector3f getContactPointFromCursor(@Nonnull final Spatial spatial, @Nonnull final Camera camera, @Nonnull Vector2f point) {
+		final CollisionResult collision = getCollisionFromCursor(spatial, camera, point);
+		return collision == null ? null : collision.getContactPoint();
+	}
+
+	@Nullable
+	public static Geometry getNodeFromCursor(@Nonnull final Spatial spatial, @Nonnull final Camera camera, @Nonnull Vector2f point) {
+		@Nullable
+		CollisionResult collision = getCollisionFromCursor(spatial, camera, point);
+		return collision == null ? null : collision.getGeometry();
+	}
+
+	/**
+	 * Get a collision on spatial from screen position.
+	 * @param spatial
+	 * @param camera
+	 * @param point
+	 * @param filter
+	 * @return the collision or null.
+	 */
+	@Nullable
+	public static CollisionResult getCollisionFromCursor( //
+			@Nonnull final Spatial spatial, //
+			@Nonnull final Camera camera, //
+			@Nonnull Vector2f point) {
+		Vector3f origin = camera.getWorldCoordinates(point, 0.0f);
+		Vector3f direction = camera.getWorldCoordinates(point, 0.3f);
+		direction.subtractLocal(origin).normalizeLocal();
+
+		Ray ray = new Ray();
+		ray.setOrigin(origin);
+		ray.setDirection(direction);
+
+		CollisionResults results = new CollisionResults();
+
+//		spatial.updateModelBound();
+		spatial.collideWith(ray, results);
+
+		if (results.size() == 0) {
+			return null;
+		}
+
+//		for (CollisionResult collisionResult : results) {
+//			if (collisionResult.getGeometry().getCullHint() == CullHint.Always) {
+//				continue;
+//			}
+//			return collisionResult;
+//		}
+
+		return results.getClosestCollision();
+	}
+
+	public static String getSpatailPath(Spatial sp, Node parent) {
+		StringBuffer buf = new StringBuffer();
+		getSpatailPath0(sp, parent, buf);
+		return buf.toString();
+	}
+
+	private static void getSpatailPath0(Spatial sp, Node parent, StringBuffer buf) {
+		if (sp == null) {
+			return;
+		}
+		if (sp == parent) {
+			return;
+		}
+		buf.insert(0, sp.getName());
+
+		if (sp.getParent() != parent) {
+			buf.insert(0, "-");
+		}
+		getSpatailPath0(sp.getParent(), parent, buf);
+	}
+
+	public static Spatial findByPath(Node elevatorNode, String mdlPath) {
+		String[] nameList = mdlPath.split("-");
+		String name = null;
+		Node node = elevatorNode;
+		try {
+			for (int i = 0; i < nameList.length; i++) {
+				name = nameList[i];
+				node = (Node) node.getChild(name);
+			}
+		} catch (Exception e) {
+			node = null;
+			e.printStackTrace();
+			return null;
+		}
+		return node;
+	}
+
+	/**
+	 * 创建球体
+	 */
+	public static Geometry getSphere(AssetManager assetManager, int sample, float radius, ColorRGBA color) {
+		Geometry ballMod = new Geometry("ball", new Sphere(sample, sample, radius));
+
+		Material ballMat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+		ballMat.setColor("Diffuse", color);
+		ballMat.setFloat("Shininess", 10f);
+		ballMat.setColor("Specular", ColorRGBA.White);
+		ballMat.setBoolean("UseMaterialColors", true);
+		ballMod.setMaterial(ballMat);
+		return ballMod;
+	}
+
+	public static void updateWiringBox(Geometry boxGeo, Spatial ref) {
+		WireBox box = (WireBox) boxGeo.getMesh();
+		BoundingBox bound = ((BoundingBox) ref.getWorldBound());
+		boxGeo.setLocalTranslation(bound.getCenter());
+		box.updatePositions(bound.getXExtent(), bound.getYExtent(), bound.getZExtent());
+	}
+
+	public static Geometry getWiringBox(AssetManager assetManager, Spatial spatial) {
+		BoundingBox bound = ((BoundingBox) spatial.getWorldBound());
+		return getWiringBox(assetManager, bound.getCenter(), bound.getExtent(null));
+	}
+
+	public static Geometry getWiringBox(AssetManager assetManager, Vector3f center, Vector3f ext) {
+		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+		mat.setColor("Color", new ColorRGBA(1F, 1F, 1F, 1F));
+		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+		mat.getAdditionalRenderState().setDepthWrite(true);
+		mat.getAdditionalRenderState().setWireframe(true);
+
+		WireBox mesh = new WireBox(ext.x, ext.y, ext.z);
+		Geometry ballMod = new Geometry("WiringBox", mesh);
+		ballMod.setMaterial(mat);
+		ballMod.setLocalTranslation(center);
+		return ballMod;
+	}
+
+	public static ColorRGBA convert(javafx.scene.paint.Color color) {
+		ColorRGBA colorRGBA = new ColorRGBA();
+		colorRGBA.set((float) color.getRed(), (float) color.getGreen(), (float) color.getBlue(), (float) color.getOpacity());
+//		colorRGBA.set(color.r, g, b, a);
+		return colorRGBA;
+	}
+
+	/**
+	 * 获取Mesh line的真实的Start点，预设
+	 * @param line com.jme3.scene.shape.Line
+	 */
+	public static Vector3f getLineStart(Line line) {
+		VertexBuffer position = line.getBuffer(Type.Position);
+		float[] arr = BufferUtils.getFloatArray((FloatBuffer) position.getDataReadOnly());
+		return new Vector3f(arr[0], arr[1], arr[2]);
+	}
+
+	/**
+	 * 获取Mesh line的真实的End点
+	 * @param line com.jme3.scene.shape.Line
+	 */
+	public static Vector3f getLineEnd(Line line) {
+		VertexBuffer position = line.getBuffer(Type.Position);
+		float[] arr = BufferUtils.getFloatArray((FloatBuffer) position.getDataReadOnly());
+		return new Vector3f(arr[3], arr[4], arr[5]);
+	}
+
+	public static Geometry createLineGeo(AssetManager assetManager, Mesh line, ColorRGBA color) {
+		Geometry geom = new Geometry("TempWire", line);
+
+		Material ballMat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+		ballMat.setColor("Diffuse", color);
+		ballMat.setFloat("Shininess", 10f);
+		ballMat.setColor("Specular", ColorRGBA.White);
+		ballMat.setBoolean("UseMaterialColors", true);
+//		ballMat.getAdditionalRenderState().setLineWidth(width);
+		geom.setMaterial(ballMat);
+		return geom;
+	}
+
+	// 使用Cylinder
+	public static Geometry createCylinderLine(AssetManager assetManager, List<Vector3f> pointList, float radius, ColorRGBA color) {
+
+		Material ballMat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+		ballMat.setColor("Diffuse", color);
+		ballMat.setFloat("Shininess", 10f);
+		ballMat.setColor("Specular", ColorRGBA.White);
+		ballMat.setBoolean("UseMaterialColors", true);
+//		ballMat.getAdditionalRenderState().setLineWidth(width);
+		Node ret = new Node();
+
+//		List<Geometry> realLineList = new ArrayList<>();
+//		两点之间穿件一条线
+//		为了方便，将pointList集合转换为List<Vector3f[]>, Vector3f[]表示线段的两点
+		List<Vector3f[]> lineList = new ArrayList<>();
+		for (int i = 0; i < pointList.size() - 1; i++) {
+			lineList.add(new Vector3f[2]);
+		}
+		for (int i = 0; i < pointList.size() - 1; i++) {
+			lineList.get(i)[0] = pointList.get(i);
+		}
+		for (int i = 0; i < pointList.size() - 1; i++) {
+			lineList.get(i)[1] = pointList.get(i + 1);
+		}
+
+		lineList.forEach(line -> {
+			// 获取导线起始点和方向
+			Vector3f start = line[0];
+			Vector3f end = line[1];
+			Vector3f lineDir = end.subtract(start);
+			// 创建一段导线实体模型width / 500
+			log.debug("线段半径:{} ,起点：{}, 中点：{}, 长度：{} ", radius, start, end, start.distance(end));
+			Cylinder mesh = new Cylinder(6, 6, radius, start.distance(end));
+			Geometry real = createLineGeo(assetManager, mesh, color);
+			// 设置导线坐标
+			real.setLocalTranslation(start.add(end.subtract(start).mult(0.5f)));
+			// 设置导线旋转量。
+			Matrix3f rotation = new Matrix3f();
+			// 注意：Cylinder默认是水平方向的，任取X或Z轴作为参考。计算与导线方向lineDir的夹角
+			rotation.fromAngleAxis(lineDir.angleBetween(Vector3f.UNIT_Z), lineDir.cross(Vector3f.UNIT_Z));
+			real.setLocalRotation(rotation);
+			real.setMaterial(ballMat);
+//			realLineList.add(real);
+			ret.attachChild(real);
+		});
+
+		pointList.forEach(point -> {
+			Geometry real = getSphere(assetManager, 6, radius, color);
+			real.setLocalTranslation(point);
+			real.setMaterial(ballMat);
+//			realLineList.add(real);
+			ret.attachChild(real);
+		});
+
+//		Mesh outMesh = new Mesh();
+//		GeometryBatchFactory.mergeGeometries(realLineList, outMesh);
+//		Geometry ret = new Geometry("wireGeo", outMesh);
+
+		GeometryBatchFactory.optimize(ret);
+
+//		批处理后实际就是一个Geometry
+		return (Geometry) ret.getChild(0);
+	}
 
 	/**
 	 * 模型半透明，模型材质必须含有Diffuse
