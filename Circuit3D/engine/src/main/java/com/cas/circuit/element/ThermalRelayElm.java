@@ -97,13 +97,13 @@ public class ThermalRelayElm extends RelayElmEx {
 //			System.out.println("on");
 			if (!lock) {
 				lock = true;
-				button.absorbed();
+				button.on();
 			}
 		} else {
 //			System.out.println("off");
 			d_position = 0;
 			if (lock) {
-				button.unstuck();
+				button.off();
 				lock = false;
 			}
 		}

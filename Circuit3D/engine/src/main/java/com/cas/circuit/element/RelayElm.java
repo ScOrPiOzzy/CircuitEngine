@@ -179,7 +179,7 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 			}
 		} else if ((delta == 0 && coilCurrent == delta) || (delta > -1e-10 && delta < 1e-10)) {
 			if (lock) {
-				button.unstuck();
+				button.off();
 				Optional.ofNullable(light).ifPresent(l -> CircuitElm.sim.enqueue2jme(l::closeLight));
 				lock = false;
 			}
@@ -189,7 +189,7 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 			d_position = 1;
 			if (!lock) {
 				lock = true;
-				button.absorbed();
+				button.on();
 				Optional.ofNullable(light).ifPresent(l -> CircuitElm.sim.enqueue2jme(l::openLight));
 			}
 		}

@@ -15,6 +15,7 @@ import com.jme3.material.MatParam;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.BlendMode;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
@@ -431,6 +432,25 @@ public final class JmeUtil {
 				Float.parseFloat(arr[3])//
 		);
 
+		return result;
+	}
+
+	public static Quaternion parseDegree(String value) {
+		if (value == null) {
+			return null;
+		}
+		
+		value = trim(value);
+		String[] arr = value.split(",");
+		
+		Quaternion result = new Quaternion(//
+				new float[] {
+						Float.parseFloat(arr[0]) * FastMath.DEG_TO_RAD, //
+						Float.parseFloat(arr[1]) * FastMath.DEG_TO_RAD, //
+						Float.parseFloat(arr[2]) * FastMath.DEG_TO_RAD//
+				}
+		);
+		
 		return result;
 	}
 
