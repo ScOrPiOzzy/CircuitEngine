@@ -116,11 +116,11 @@ public class Terminal implements Savable {
 //			if (c > 380) {
 //				System.out.println(name + Math.abs(c));
 //			}
-			if (Math.abs(c) > 1) {
-				JmeUtil.color(spatial, new ColorRGBA(1, 0, 0, (float) (Math.abs(c) / maxV)), true);
-			} else {
-				JmeUtil.uncolor(spatial);
-			}
+//			if (Math.abs(c) > 1) {
+//				JmeUtil.color(spatial, new ColorRGBA(1, 0, 0, (float) (Math.abs(c) / maxV)), true);
+//			} else {
+//				JmeUtil.uncolor(spatial);
+//			}
 		}
 	}
 

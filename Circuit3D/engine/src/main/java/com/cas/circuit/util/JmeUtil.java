@@ -13,6 +13,7 @@ import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.material.MatParam;
 import com.jme3.material.Material;
+import com.jme3.material.MaterialDef;
 import com.jme3.material.RenderState.BlendMode;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
@@ -356,6 +357,12 @@ public final class JmeUtil {
 			}
 
 			Material colorMat = mat.clone();
+			MaterialDef def = colorMat.getMaterialDef();
+			try {
+				def.addTechniqueDef(mat.getActiveTechnique().getDef());
+			} catch (Exception e) {
+//				e.printStackTrace();
+			}
 			MatParam diffuseParam = colorMat.getParam("Diffuse");
 			if (diffuseParam != null) {
 				colorMat.setColor("Diffuse", color);
@@ -439,18 +446,16 @@ public final class JmeUtil {
 		if (value == null) {
 			return null;
 		}
-		
+
 		value = trim(value);
 		String[] arr = value.split(",");
-		
+
 		Quaternion result = new Quaternion(//
-				new float[] {
-						Float.parseFloat(arr[0]) * FastMath.DEG_TO_RAD, //
+				new float[] { Float.parseFloat(arr[0]) * FastMath.DEG_TO_RAD, //
 						Float.parseFloat(arr[1]) * FastMath.DEG_TO_RAD, //
 						Float.parseFloat(arr[2]) * FastMath.DEG_TO_RAD//
-				}
-		);
-		
+				});
+
 		return result;
 	}
 
