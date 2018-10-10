@@ -32,15 +32,24 @@ public class WireProxy {
 	@XmlJavaTypeAdapter(value = Vector3fAdapter.class)
 	private List<Vector3f> pointList = new ArrayList<>();
 
+	/**
+	 * 线号
+	 */
 	@XmlAttribute
 	private String number;
 
 	@XmlAttribute
-	@XmlJavaTypeAdapter(value = ColorRGBAAdapter.class)
-	private ColorRGBA color = ColorRGBA.Black;
+//	@XmlJavaTypeAdapter(value = ColorRGBAAdapter.class)
+	private String color;// = ColorRGBA.Black;
 
 	@XmlAttribute
 	private Float width;
+
+	/**
+	 * 导线半径
+	 */
+	@XmlAttribute
+	private String radius;
 
 	@XmlTransient
 	private BitmapText tagNode;
@@ -81,11 +90,11 @@ public class WireProxy {
 		this.pointList = pointList;
 	}
 
-	public ColorRGBA getColor() {
+	public String getColor() {
 		return color;
 	}
 
-	public void setColor(ColorRGBA color) {
+	public void setColor(String color) {
 		this.color = color;
 	}
 
@@ -111,6 +120,14 @@ public class WireProxy {
 
 	public void setTagNode(BitmapText tag) {
 		this.tagNode = tag;
+	}
+
+	public String getRadius() {
+		return radius;
+	}
+
+	public void setRadius(String radius) {
+		this.radius = radius;
 	}
 
 }
