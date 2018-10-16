@@ -7,12 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.alibaba.fastjson.JSON;
@@ -20,19 +18,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cas.circuit.ISwitch;
 import com.cas.circuit.util.JmeUtil;
-import com.cas.circuit.xml.adapter.BooleanIntAdapter;
-import com.cas.circuit.xml.adapter.FloatArrayAdapter;
 import com.cas.circuit.xml.adapter.MapAdapter;
-import com.cas.circuit.xml.adapter.StringArrayAdapter;
-import com.cas.circuit.xml.adapter.UnsignedAxisAdapter;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.Savable;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
-import jme3tools.navigation.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -135,6 +127,9 @@ public class ControlIO implements Savable {
 				JSONObject json = (JSONObject) obj;
 				String mdlName = json.getString("mdlName");
 				Spatial sp = parant.getChild(mdlName);
+				if (sp == null) {
+					return;
+				}
 				String location = json.getString("location");
 				if (location != null) {
 					sp.setLocalTranslation(JmeUtil.parseVector3f(location));

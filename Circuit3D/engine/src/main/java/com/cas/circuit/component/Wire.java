@@ -44,6 +44,8 @@ public class Wire implements Savable {
 
 	private WireProxy proxy;
 
+	private boolean broken;
+	
 	public Wire() {
 	}
 

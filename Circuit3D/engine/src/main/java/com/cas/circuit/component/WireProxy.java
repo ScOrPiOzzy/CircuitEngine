@@ -9,10 +9,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.cas.circuit.xml.adapter.ColorRGBAAdapter;
 import com.cas.circuit.xml.adapter.Vector3fAdapter;
 import com.jme3.font.BitmapText;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 
 @XmlAccessorType(XmlAccessType.NONE)
@@ -42,18 +40,18 @@ public class WireProxy {
 //	@XmlJavaTypeAdapter(value = ColorRGBAAdapter.class)
 	private String color;// = ColorRGBA.Black;
 
-	@XmlAttribute
-	private Float width;
-
 	/**
 	 * 导线半径
 	 */
 	@XmlAttribute
 	private String radius;
+	
+	@XmlAttribute
+	private boolean broken;
 
 	@XmlTransient
 	private BitmapText tagNode;
-
+	
 	public String getComp1Uuid() {
 		return comp1Uuid;
 	}
@@ -98,14 +96,6 @@ public class WireProxy {
 		this.color = color;
 	}
 
-	public Float getWidth() {
-		return width;
-	}
-
-	public void setWidth(Float width) {
-		this.width = width;
-	}
-
 	public List<Vector3f> getPointList() {
 		return pointList;
 	}
@@ -116,6 +106,8 @@ public class WireProxy {
 
 	public void setNumber(String number) {
 		this.number = number;
+//		同步显示
+		this.tagNode.setText(number);
 	}
 
 	public void setTagNode(BitmapText tag) {
@@ -130,4 +122,11 @@ public class WireProxy {
 		this.radius = radius;
 	}
 
+	public boolean isBroken() {
+		return broken;
+	}
+
+	public void setBroken(boolean broken) {
+		this.broken = broken;
+	}
 }
