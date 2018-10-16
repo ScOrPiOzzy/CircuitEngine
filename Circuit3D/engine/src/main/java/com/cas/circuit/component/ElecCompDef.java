@@ -20,6 +20,7 @@ import com.cas.circuit.ISwitch;
 import com.cas.circuit.control.MotorControl;
 import com.cas.circuit.element.CircuitElm;
 import com.cas.circuit.element.MotorElm;
+import com.cas.circuit.vo.Pair;
 import com.cas.circuit.xml.CircuitExchange;
 import com.cas.circuit.xml.adapter.MapAdapter;
 import com.cas.circuit.xml.adapter.TerminalMapAdapter;
@@ -99,6 +100,8 @@ public class ElecCompDef implements Savable {
 	private ElecCompProxy proxy;
 
 	private Map<String, CircuitElm> circuitElmMap = new HashMap<>();
+	private List<Pair> coilList;
+	private List<Pair> contactorList;
 
 	public ElecCompDef() {
 	}
@@ -214,6 +217,39 @@ public class ElecCompDef implements Savable {
 
 	public void reset() {
 		circuitElmMap.values().forEach(elm -> elm.reset());
+	}
+
+	/**
+	 * 获取线圈集合
+	 */
+	public List<Pair> getCoilList() {
+		if (coilList == null) {
+			coilList = new ArrayList<>();
+			circuitElmMap.values().forEach(c -> {
+				coilList.addAll(c.getCoilList());
+			});
+		}
+		return coilList;
+	}
+
+	/**
+	 * 获取触点集合
+	 */
+	public List<Pair> getContactorList() {
+		if (contactorList == null) {
+			contactorList = new ArrayList<>();
+			circuitElmMap.values().forEach(c -> {
+				contactorList.addAll(c.getContactorList());
+			});
+		}
+		return contactorList;
+	}
+
+	/**
+	 * @param pair
+	 */
+	public void setBroken(Pair pair) {
+		
 	}
 
 	@Override

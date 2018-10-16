@@ -49,6 +49,7 @@ public class CircuitExchange {
 			Constructor<?> c = clazz.getDeclaredConstructor(new Class[] { Function.class, Map.class });
 			circuitElm = (CircuitElm) c.newInstance(f, params);
 			elecCompDef.putCircuitElm(id, circuitElm);
+			circuitElm.setId(id);
 			circuitElm.setElecCompDef(elecCompDef);
 		} catch (Exception e) {
 			e.printStackTrace();

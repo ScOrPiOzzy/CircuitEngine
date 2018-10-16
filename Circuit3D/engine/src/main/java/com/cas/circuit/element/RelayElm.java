@@ -67,7 +67,7 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 
 		value = params.get("posts");
 		if (value == null) {
-			throw new RuntimeException("继电器配置有错");
+			throw new RuntimeException("继电器配置有错, 缺少posts标签");
 		}
 		String[] arr = value.split("\\|");
 		List<List<Terminal>> termGroupedList = new ArrayList<>(arr.length);

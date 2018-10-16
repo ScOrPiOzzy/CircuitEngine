@@ -1,5 +1,6 @@
 package com.cas.circuit.element;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -8,6 +9,7 @@ import com.cas.circuit.CirSim;
 import com.cas.circuit.component.ElecCompDef;
 import com.cas.circuit.component.Terminal;
 import com.cas.circuit.util.Util;
+import com.cas.circuit.vo.Pair;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +21,10 @@ public abstract class CircuitElm {
 	public static double currentMult, powerMult;
 	static CirSim sim;
 
+//	元器件ID
+	@Setter
+	private String id;
+	
 	// nodes数组， 数组索引对应post的编号， 值对应节点node[CircuitNode]在集合nodeList[Vector]中的索引
 	int nodes[], voltSource;
 	int dx, dy, dsign;
@@ -214,4 +220,20 @@ public abstract class CircuitElm {
 		return "CircuitElm [term1=" + term1 + ", term2=" + term2 + "]";
 	}
 
+	/**
+	 * 获取是线圈的连接头
+	 */
+	public List<Pair> getCoilList() {
+		List<Pair> result = new ArrayList<>();
+		result.add(new Pair(id, term1, term2));
+		return result;
+	}
+	
+	/**
+	 * 获取是触点的连接头
+	 */
+	public List<Pair> getContactorList() {
+		List<Pair> result = new ArrayList<>();
+		return result;
+	}
 }
