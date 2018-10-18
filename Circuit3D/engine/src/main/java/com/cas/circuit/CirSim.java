@@ -538,6 +538,9 @@ public class CirSim implements Runnable {
 		isoElectricTerminalMap.get(group).add(terminal);
 
 		terminal.getWires().stream().filter(w -> !passedWire.contains(w)).forEach(wire -> {
+			if (wire.isBroken()) {
+				return;
+			}
 			if (wire.getTerm1() == terminal) {
 				findTerminal(wire.getTerm2(), group);
 			} else {
@@ -1004,11 +1007,11 @@ public class CirSim implements Runnable {
 	public void enqueue2jme(Runnable e) {
 		app.enqueue(e);
 	}
-	
+
 	public void addBroken(CircuitElm elm, ParticleEffect effect) {
 		circuit.addElecCompEffect(elm, effect);
 	}
-	
+
 	public void removeBroken(CircuitElm elm) {
 		circuit.removeElecCompEffect(elm);
 	}
