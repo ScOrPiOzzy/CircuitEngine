@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+import com.cas.circuit.IBroken;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.Savable;
@@ -25,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 @Slf4j
 @XmlAccessorType(XmlAccessType.NONE)
-public class Wire implements Savable {
+public class Wire implements Savable, IBroken {
 	@XmlAttribute
 	private String mark;
 	@XmlAttribute
@@ -45,7 +46,7 @@ public class Wire implements Savable {
 	private WireProxy proxy;
 
 	private boolean broken;
-	
+
 	public Wire() {
 	}
 
@@ -145,6 +146,30 @@ public class Wire implements Savable {
 	@Override
 	public void read(JmeImporter im) throws IOException {
 		// nothing to read
+	}
+
+	@Override
+	public void setBroken(boolean broken) {
+		this.broken = broken;
+		if (proxy != null) {
+			proxy.setBroken(broken);
+		}
+	}
+
+	@Override
+	public String getName() {
+		return "导线";
+	}
+
+	@Override
+	public String getDesc() {
+		if (term1 == null || term2 == null) {
+			return null;
+		} else {
+			ElecCompDef def1 = term1.getElecCompDef();
+			ElecCompDef def2 = term2.getElecCompDef();
+			return String.format("导线：%s%s 端子头【%s】 ←→ %s%s 端子头【%s】", def1.getName(), def1.getModel(), term1.getName(), def2.getName(), def2.getModel(), term2.getName());
+		}
 	}
 
 }
