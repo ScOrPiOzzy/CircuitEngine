@@ -12,7 +12,7 @@ public class ResistorElm extends CircuitElm {
 	public ResistorElm() {
 	}
 
-	public ResistorElm(int r) {
+	public ResistorElm(double r) {
 		resistance = r;
 	}
 

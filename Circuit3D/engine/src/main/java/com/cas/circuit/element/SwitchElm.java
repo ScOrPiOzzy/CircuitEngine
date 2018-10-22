@@ -1,5 +1,7 @@
 package com.cas.circuit.element;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -7,6 +9,8 @@ import com.cas.circuit.ISwitch;
 import com.cas.circuit.component.ControlIO;
 import com.cas.circuit.component.Terminal;
 import com.cas.circuit.util.Util;
+import com.cas.circuit.vo.Pair;
+import com.cas.circuit.vo.Pair.Type;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -95,4 +99,12 @@ public class SwitchElm extends CircuitElm implements ISwitch {
 	public boolean isWire() {
 		return true;
 	}
+
+	@Override
+	public List<Pair> getContactorList() {
+		List<Pair> postList = new ArrayList<>();
+		postList.add(new Pair(id, term1, term2, position == 0 ? Type.NC : Type.NO));
+		return postList;
+	}
+
 }

@@ -224,16 +224,13 @@ public abstract class CircuitElm {
 	 * 获取是线圈的连接头
 	 */
 	public List<Pair> getCoilList() {
-		List<Pair> result = new ArrayList<>();
-//		result.add(new Pair(id, term1, term2));
-		return result;
+		return new ArrayList<>();
 	}
 	
 	/**
 	 * 获取是触点的连接头
 	 */
 	public List<Pair> getContactorList() {
-		List<Pair> result = new ArrayList<>();
-		return result;
+		return new ArrayList<>();
 	}
 }
