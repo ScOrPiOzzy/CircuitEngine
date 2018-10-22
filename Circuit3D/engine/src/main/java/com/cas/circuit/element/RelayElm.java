@@ -12,6 +12,8 @@ import com.cas.circuit.component.ControlIO;
 import com.cas.circuit.component.LightIO;
 import com.cas.circuit.component.Terminal;
 import com.cas.circuit.util.Util;
+import com.cas.circuit.vo.Pair;
+import com.cas.circuit.vo.Pair.Type;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -266,4 +268,22 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 	public void setLight(LightIO light) {
 		this.light = light;
 	}
+
+	@Override
+	public List<Pair> getCoilList() {
+		List<Pair> coilList = new ArrayList<>();
+		coilList.add(new Pair(id, posts.get(nCoil1), posts.get(nCoil2), Type.COIL));
+		return coilList;
+	}
+
+	@Override
+	public List<Pair> getContactorList() {
+		List<Pair> postList = new ArrayList<>();
+		for (int i = 0; i < poleCount; i++) {
+			postList.add(new Pair(id, posts.get(i * pairs), posts.get(i * pairs + 1), Type.NC));
+			postList.add(new Pair(id, posts.get(i * pairs), posts.get(i * pairs + 2), Type.NO));
+		}
+		return postList;
+	}
+
 }

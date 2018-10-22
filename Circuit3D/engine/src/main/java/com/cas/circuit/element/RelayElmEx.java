@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.cas.circuit.component.Terminal;
+import com.cas.circuit.vo.Pair;
+import com.cas.circuit.vo.Pair.Type;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -111,4 +113,21 @@ public class RelayElmEx extends RelayElm {
 			}
 		}
 	}
+
+	@Override
+	public List<Pair> getContactorList() {
+		List<Pair> postList = new ArrayList<>();
+
+//		NC
+		for (int p = 0; p != flag; p++) {
+			postList.add(new Pair(id, posts.get(p * pairs), posts.get(p * pairs + 1), Type.NC));
+		}
+
+//		NO
+		for (int p = flag; p != poleCount; p++) {
+			postList.add(new Pair(id, posts.get(p * pairs), posts.get(p * pairs + 1), Type.NO));
+		}
+		return postList;
+	}
+
 }

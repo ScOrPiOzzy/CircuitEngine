@@ -23,7 +23,7 @@ public abstract class CircuitElm {
 
 //	元器件ID
 	@Setter
-	private String id;
+	String id;
 	
 	// nodes数组， 数组索引对应post的编号， 值对应节点node[CircuitNode]在集合nodeList[Vector]中的索引
 	int nodes[], voltSource;
@@ -225,7 +225,7 @@ public abstract class CircuitElm {
 	 */
 	public List<Pair> getCoilList() {
 		List<Pair> result = new ArrayList<>();
-		result.add(new Pair(id, term1, term2));
+//		result.add(new Pair(id, term1, term2));
 		return result;
 	}
 	

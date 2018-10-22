@@ -14,11 +14,17 @@ public class Pair implements IBroken {
 	private String id;
 	private Terminal term1;
 	private Terminal term2;
+	private Type type;
 
-	public Pair(String id, Terminal term1, Terminal term2) {
+	public enum Type {
+		NO, NC, COIL;
+	}
+
+	public Pair(String id, Terminal term1, Terminal term2, Type type) {
 		this.id = id;
 		this.term1 = term1;
 		this.term2 = term2;
+		this.type = type;
 	}
 
 	@Override
