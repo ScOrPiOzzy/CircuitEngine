@@ -153,8 +153,8 @@ public class Wire implements Savable, IBroken {
 	}
 
 	@Override
-	public void setBroken(boolean broken) {
-		this.broken = broken;
+	public void setBroken(BrokenState state) {
+		this.broken = BrokenState.OPEN == state;
 		if (proxy != null) {
 			proxy.setBroken(broken);
 		}
@@ -163,6 +163,7 @@ public class Wire implements Savable, IBroken {
 	@Override
 	public String getName() {
 		return "导线";
+		
 	}
 
 	@Override
@@ -172,8 +173,13 @@ public class Wire implements Savable, IBroken {
 		} else {
 			ElecCompDef def1 = term1.getElecCompDef();
 			ElecCompDef def2 = term2.getElecCompDef();
-			return String.format("导线：%s%s 端子头【%s】 ←→ %s%s 端子头【%s】", def1.getName(), def1.getModel(), term1.getName(), def2.getName(), def2.getModel(), term2.getName());
+			return String.format("导线：%s%s 端子头【%s】 ←→ %s%s 端子头【%s】导线断开", def1.getName(), def1.getModel(), term1.getName(), def2.getName(), def2.getModel(), term2.getName());
 		}
 	}
 
+	public void setCorrected(boolean corrected) {
+		this.broken = false;
+		proxy.setBroken(broken);
+		proxy.setCorrected(corrected);
+	}
 }

@@ -48,7 +48,10 @@ public class WireProxy {
 	
 	@XmlAttribute
 	private boolean broken;
-
+	
+	@XmlAttribute
+	private boolean corrected;
+	
 	@XmlTransient
 	private BitmapText tagNode;
 	
@@ -128,5 +131,9 @@ public class WireProxy {
 
 	public void setBroken(boolean broken) {
 		this.broken = broken;
+	}
+
+	public void setCorrected(boolean corrected) {
+		this.corrected = corrected;
 	}
 }

@@ -55,7 +55,7 @@ public enum CirSim implements Runnable {
 	@Setter
 	private Application app;
 	@Setter
-	private ICircuitEffect circuit;
+	private ICircuitEffect circuitEffect;
 
 	private ConcurrentLinkedQueue<Runnable> queue = new ConcurrentLinkedQueue<>();
 	private List<Runnable> cycleBeginListenrs = new ArrayList<>();
@@ -1039,11 +1039,11 @@ public enum CirSim implements Runnable {
 	}
 
 	public void addBroken(CircuitElm elm, ParticleEffect effect) {
-		circuit.addElecCompEffect(elm, effect);
+		circuitEffect.addElecCompEffect(elm, effect);
 	}
 
 	public void removeBroken(CircuitElm elm) {
-		circuit.removeElecCompEffect(elm);
+		circuitEffect.removeElecCompEffect(elm);
 	}
 
 }
