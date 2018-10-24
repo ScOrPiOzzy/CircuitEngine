@@ -1,5 +1,7 @@
 package com.cas.circuit.component;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -9,6 +11,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.cas.circuit.xml.adapter.MapAdapter;
 import com.cas.circuit.xml.adapter.QuaternionAdapter;
 import com.cas.circuit.xml.adapter.Vector3fAdapter;
 import com.jme3.font.BitmapText;
@@ -39,7 +42,15 @@ public class ElecCompProxy {
 	@XmlAttribute
 	@XmlJavaTypeAdapter(value = QuaternionAdapter.class)
 	private Quaternion rotation = Quaternion.ZERO;
-
+	
+	@XmlElement(name = "Brokens")
+	@XmlJavaTypeAdapter(value = MapAdapter.class)
+	private Map<String, String> brokens = new HashMap<>();
+	
+	@XmlElement(name = "Corrected")
+	@XmlJavaTypeAdapter(value = MapAdapter.class)
+	private Map<String, String> correcteds = new HashMap<>();
+	
 	@XmlTransient
 	private BitmapText tagNode;
 
@@ -96,4 +107,12 @@ public class ElecCompProxy {
 		this.tagNode = tag;
 	}
 
+	public Map<String, String> getBrokens() {
+		return brokens;
+	}
+	
+	public Map<String, String> getCorrecteds() {
+		return correcteds;
+	}
+	
 }

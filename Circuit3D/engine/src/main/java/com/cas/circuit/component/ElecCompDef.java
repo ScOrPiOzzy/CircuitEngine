@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.cas.circuit.IBroken.BrokenState;
 import com.cas.circuit.ILight;
 import com.cas.circuit.ISwitch;
 import com.cas.circuit.control.MotorControl;
@@ -249,7 +250,24 @@ public class ElecCompDef implements Savable {
 	 * @param pair
 	 */
 	public void setBroken(Pair pair) {
-		
+		if (proxy == null) {
+			return;
+		}
+		BrokenState state = pair.getState();
+		String key = pair.getKey("Broken");
+		if (state != BrokenState.NORMAL) {
+			proxy.getBrokens().put(key, state.name());
+		} else if (proxy.getBrokens().containsKey(key)) {
+			proxy.getBrokens().remove(key);
+		}
+	}
+
+	public void setCorrected(Pair pair) {
+		if (proxy == null) {
+			return;
+		}
+		String key = pair.getKey("Corrected");
+		proxy.getCorrecteds().put(key, pair.getState().name());
 	}
 
 	@Override
