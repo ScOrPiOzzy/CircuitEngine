@@ -70,8 +70,7 @@ public class TestCircuit {
 		resis7.setPostPoint(0, f);
 		resis7.setPostPoint(1, b);
 
-		CirSim sim = new CirSim();
-
+		CirSim sim = CirSim.ins;
 		sim.addCircuitElm(elm1);
 		sim.addCircuitElm(resis1);
 		sim.addCircuitElm(resis2);
@@ -82,8 +81,6 @@ public class TestCircuit {
 		sim.addCircuitElm(resis7);
 
 		sim.needAnalyze();
-
-		CircuitElm.initClass(sim);
 
 		sim.updateCircuit();
 
@@ -114,22 +111,16 @@ public class TestCircuit {
 //		preapreThreePhase(elmList);
 //		preapreRail(elmList);
 
-		CirSim sim = new CirSim();
+		CirSim sim = CirSim.ins;
 		prepareWheatstoneBridge(sim);
 
+		sim.addCycleDownlistener(() -> {
+			System.out.println(sim.getCircuitElm(8).getCurrent());
+		});
 		sim.needAnalyze();
 
-		CircuitElm.initClass(sim);
-
 		ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
-		pool.scheduleAtFixedRate(() -> {
-			sim.updateCircuit();
-//			elmList.forEach(e -> {
-//				String[] info = new String[10];
-//				e.getInfo(info);
-//				System.out.println(e.getClass() + ":" + Arrays.toString(info));
-//			});
-		}, 10, 10, TimeUnit.MILLISECONDS);
+		pool.scheduleAtFixedRate(sim, 0, (long) (1 / CirSim.TPF / 10), TimeUnit.NANOSECONDS);
 	}
 
 	void preapreThreePhase(Vector<CircuitElm> elmList) {
@@ -208,7 +199,7 @@ public class TestCircuit {
 	}
 
 	void prepareWheatstoneBridge(CirSim sim) {
-		VoltageElm elm1 = new VoltageElm(1);
+		VoltageElm elm1 = new VoltageElm(0);
 		Terminal elm1_0 = new Terminal("elm1_0");
 		Terminal elm1_1 = new Terminal("elm1_1");
 		elm1.setPostPoint(0, elm1_0);
@@ -255,6 +246,12 @@ public class TestCircuit {
 		Terminal resis7_1 = new Terminal("resis7_1");
 		resis7.setPostPoint(0, resis7_0);
 		resis7.setPostPoint(1, resis7_1);
+
+		ResistorElm voltMeter = new ResistorElm(1E6);
+		Terminal black = new Terminal("black");
+		Terminal red = new Terminal("red");
+		voltMeter.setPostPoint(0, black);
+		voltMeter.setPostPoint(1, red);
 
 //		===============
 //		电源-电阻1
@@ -307,6 +304,15 @@ public class TestCircuit {
 		wire.bind(elm1_1);
 		wire.bind(resis7_0);
 
+//	电表 - 
+		wire = new Wire();
+		wire.bind(black);
+		wire.bind(resis1_1);
+//	电表 - 
+		wire = new Wire();
+		wire.bind(red);
+		wire.bind(resis3_1);
+
 		sim.addCircuitElm(elm1);
 		sim.addCircuitElm(resis1);
 		sim.addCircuitElm(resis2);
@@ -315,5 +321,6 @@ public class TestCircuit {
 		sim.addCircuitElm(resis5);
 		sim.addCircuitElm(resis6);
 		sim.addCircuitElm(resis7);
+		sim.addCircuitElm(voltMeter);
 	}
 }

@@ -122,8 +122,7 @@ public class TestMotorStar {
 	}
 
 	private void startTest() {
-		CirSim sim = new CirSim();
-		CircuitElm.initClass(sim);
+		CirSim sim = CirSim.ins;
 
 		prepareCircuit(sim);
 
