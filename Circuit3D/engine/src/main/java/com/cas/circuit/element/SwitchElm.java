@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.cas.circuit.CirSim;
 import com.cas.circuit.ISwitch;
 import com.cas.circuit.component.ControlIO;
 import com.cas.circuit.component.Terminal;
@@ -57,7 +58,7 @@ public class SwitchElm extends CircuitElm implements ISwitch {
 	@Override
 	public void stamp() {
 		if (position == 0) {
-			CircuitElm.sim.stampVoltageSource(nodes[0], nodes[1], voltSource, 0);
+			CirSim.ins.stampVoltageSource(nodes[0], nodes[1], voltSource, 0);
 		}
 	}
 
@@ -72,7 +73,7 @@ public class SwitchElm extends CircuitElm implements ISwitch {
 		if (position >= posCount) {
 			position = 0;
 		}
-		CircuitElm.sim.needAnalyze();
+		CirSim.ins.needAnalyze();
 	}
 
 	@Override

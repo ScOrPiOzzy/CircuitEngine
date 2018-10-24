@@ -3,6 +3,7 @@ package com.cas.circuit.element;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.cas.circuit.CirSim;
 import com.cas.circuit.component.Terminal;
 import com.cas.circuit.util.Util;
 
@@ -53,21 +54,21 @@ public class VoltageElm extends CircuitElm {
 	@Override
 	public void stamp() {
 		if (waveform == VoltageElm.WF_DC) {
-			CircuitElm.sim.stampVoltageSource(nodes[0], nodes[1], voltSource, getVoltage());
+			CirSim.ins.stampVoltageSource(nodes[0], nodes[1], voltSource, getVoltage());
 		} else {
-			CircuitElm.sim.stampVoltageSource(nodes[0], nodes[1], voltSource);
+			CirSim.ins.stampVoltageSource(nodes[0], nodes[1], voltSource);
 		}
 	}
 
 	@Override
 	public void doStep() {
 		if (waveform != VoltageElm.WF_DC) {
-			CircuitElm.sim.updateVoltageSource(nodes[0], nodes[1], voltSource, getVoltage());
+			CirSim.ins.updateVoltageSource(nodes[0], nodes[1], voltSource, getVoltage());
 		}
 	}
 
 	public double getVoltage() {
-		double w = 2 * Math.PI * CircuitElm.sim.getTimer() * frequency + phaseShift;
+		double w = 2 * Math.PI * CirSim.ins.getTimer() * frequency + phaseShift;
 
 		switch (waveform) {
 		case WF_DC:

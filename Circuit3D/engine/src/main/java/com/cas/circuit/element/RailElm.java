@@ -1,5 +1,7 @@
 package com.cas.circuit.element;
 
+import com.cas.circuit.CirSim;
+
 public class RailElm extends VoltageElm {
 
 	public RailElm(int wf) {
@@ -21,16 +23,16 @@ public class RailElm extends VoltageElm {
 	@Override
 	public void stamp() {
 		if (waveform == VoltageElm.WF_DC) {
-			CircuitElm.sim.stampVoltageSource(0, nodes[0], voltSource, getVoltage());
+			CirSim.ins.stampVoltageSource(0, nodes[0], voltSource, getVoltage());
 		} else {
-			CircuitElm.sim.stampVoltageSource(0, nodes[0], voltSource);
+			CirSim.ins.stampVoltageSource(0, nodes[0], voltSource);
 		}
 	}
 
 	@Override
 	public void doStep() {
 		if (waveform != VoltageElm.WF_DC) {
-			CircuitElm.sim.updateVoltageSource(0, nodes[0], voltSource, getVoltage());
+			CirSim.ins.updateVoltageSource(0, nodes[0], voltSource, getVoltage());
 		}
 	}
 

@@ -3,6 +3,7 @@ package com.cas.circuit.element;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.cas.circuit.CirSim;
 import com.cas.circuit.component.Terminal;
 import com.cas.circuit.util.Util;
 
@@ -10,9 +11,11 @@ public class ResistorElm extends CircuitElm {
 	public double resistance = 100;
 
 	public ResistorElm() {
+		super();
 	}
 
 	public ResistorElm(double r) {
+		super();
 		resistance = r;
 	}
 
@@ -30,7 +33,7 @@ public class ResistorElm extends CircuitElm {
 
 	@Override
 	public void stamp() {
-		CircuitElm.sim.stampResistor(nodes[0], nodes[1], resistance);
+		CirSim.ins.stampResistor(nodes[0], nodes[1], resistance);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+import com.cas.circuit.CirSim;
 import com.cas.circuit.ILight;
 import com.cas.circuit.ISwitch;
 import com.cas.circuit.component.ControlIO;
@@ -153,12 +154,12 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 	@Override
 	public void stamp() {
 		// resistor from coil post 1 to coil post 2
-		CircuitElm.sim.stampResistor(nodes[nCoil1], nodes[nCoil2], coilR);
+		CirSim.ins.stampResistor(nodes[nCoil1], nodes[nCoil2], coilR);
 
 		for (int p = 0; p != poleCount; p++) {
-			CircuitElm.sim.stampNonLinear(nodes[RelayElm.COM + p * pairs]);
-			CircuitElm.sim.stampNonLinear(nodes[RelayElm.NC + p * pairs]);
-			CircuitElm.sim.stampNonLinear(nodes[RelayElm.NO + p * pairs]);
+			CirSim.ins.stampNonLinear(nodes[RelayElm.COM + p * pairs]);
+			CirSim.ins.stampNonLinear(nodes[RelayElm.NC + p * pairs]);
+			CirSim.ins.stampNonLinear(nodes[RelayElm.NO + p * pairs]);
 		}
 	}
 
@@ -182,7 +183,7 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 		} else if ((delta == 0 && coilCurrent == delta) || (delta > -1e-10 && delta < 1e-10)) {
 			if (lock) {
 				button.off();
-				Optional.ofNullable(light).ifPresent(l -> CircuitElm.sim.enqueue2jme(l::closeLight));
+				Optional.ofNullable(light).ifPresent(l -> CirSim.ins.enqueue2jme(l::closeLight));
 				lock = false;
 			}
 		}
@@ -192,7 +193,7 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 			if (!lock) {
 				lock = true;
 				button.on();
-				Optional.ofNullable(light).ifPresent(l -> CircuitElm.sim.enqueue2jme(l::openLight));
+				Optional.ofNullable(light).ifPresent(l -> CirSim.ins.enqueue2jme(l::openLight));
 			}
 		}
 
@@ -209,8 +210,8 @@ public class RelayElm extends CircuitElm implements ISwitch, ILight {
 	@Override
 	public void doStep() {
 		for (int p = 0; p != poleCount; p++) {
-			CircuitElm.sim.stampResistor(nodes[RelayElm.COM + p * pairs], nodes[RelayElm.NC + p * pairs], i_position == 0 ? r_on : r_off);
-			CircuitElm.sim.stampResistor(nodes[RelayElm.COM + p * pairs], nodes[RelayElm.NO + p * pairs], i_position == 1 ? r_on : r_off);
+			CirSim.ins.stampResistor(nodes[RelayElm.COM + p * pairs], nodes[RelayElm.NC + p * pairs], i_position == 0 ? r_on : r_off);
+			CirSim.ins.stampResistor(nodes[RelayElm.COM + p * pairs], nodes[RelayElm.NO + p * pairs], i_position == 1 ? r_on : r_off);
 		}
 	}
 

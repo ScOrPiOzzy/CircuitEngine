@@ -4,15 +4,13 @@ public class Inductor {
 	public static final int FLAG_BACK_EULER = 2;
 	private int nodes[];
 	private int flags;
-	private CirSim sim;
 
 	private double inductance;
 	private double compResistance;
 	private double current;
 	private double curSourceValue;
 
-	public Inductor(CirSim s) {
-		sim = s;
+	public Inductor() {
 		nodes = new int[2];
 	}
 
@@ -44,9 +42,9 @@ public class Inductor {
 		} else {// backward euler
 			compResistance = inductance / CirSim.TPF;
 		}
-		sim.stampResistor(nodes[0], nodes[1], compResistance);
-		sim.stampRightSide(nodes[0]);
-		sim.stampRightSide(nodes[1]);
+		CirSim.ins.stampResistor(nodes[0], nodes[1], compResistance);
+		CirSim.ins.stampRightSide(nodes[0]);
+		CirSim.ins.stampRightSide(nodes[1]);
 	}
 
 	public boolean nonLinear() {
@@ -71,6 +69,6 @@ public class Inductor {
 	}
 
 	public void doStep(double voltdiff) {
-		sim.stampCurrentSource(nodes[0], nodes[1], curSourceValue);
+		CirSim.ins.stampCurrentSource(nodes[0], nodes[1], curSourceValue);
 	}
 }

@@ -66,12 +66,12 @@ public class ThermalRelayElm extends RelayElmEx {
 	public void stamp() {
 //		电热片电阻
 		for (int i = nCoil1, j = 0; i < posts.size(); i += 2, j++) {
-			CircuitElm.sim.stampResistor(nodes[nCoil1 + j * 2], nodes[nCoil1 + j * 2 + 1], resistance);
+			CirSim.ins.stampResistor(nodes[nCoil1 + j * 2], nodes[nCoil1 + j * 2 + 1], resistance);
 		}
 
 		for (int p = 0; p != poleCount; p++) {
-			CircuitElm.sim.stampNonLinear(nodes[p * pairs]);
-			CircuitElm.sim.stampNonLinear(nodes[p * pairs + 1]);
+			CirSim.ins.stampNonLinear(nodes[p * pairs]);
+			CirSim.ins.stampNonLinear(nodes[p * pairs + 1]);
 		}
 	}
 

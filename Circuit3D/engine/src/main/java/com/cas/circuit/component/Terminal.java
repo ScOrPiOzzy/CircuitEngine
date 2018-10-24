@@ -112,7 +112,8 @@ public class Terminal implements Savable {
 		if (c > maxV) {
 			maxV = c;
 		}
-		if (spatial != null) {
+//		System.out.println(getName() + ": "+maxV);
+//		if (spatial != null) {
 //			if (c > 380) {
 //				System.out.println(name + Math.abs(c));
 //			}
@@ -121,7 +122,7 @@ public class Terminal implements Savable {
 //			} else {
 //				JmeUtil.uncolor(spatial);
 //			}
-		}
+//		}
 	}
 
 	public boolean notInternal() {

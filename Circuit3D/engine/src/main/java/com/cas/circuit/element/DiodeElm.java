@@ -19,7 +19,7 @@ public class DiodeElm extends CircuitElm {
 
 	public DiodeElm(Function<String, Terminal> f, Map<String, String> params) {
 		super(f, params);
-		diode = new Diode(CircuitElm.sim);
+		diode = new Diode();
 		fwdrop = defaultdrop;
 		zvoltage = 0;
 		setup();

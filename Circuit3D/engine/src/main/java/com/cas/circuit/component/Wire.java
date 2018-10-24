@@ -50,6 +50,10 @@ public class Wire implements Savable, IBroken {
 	public Wire() {
 	}
 
+	public Wire(boolean internal) {
+		this.internal = internal;
+	}
+
 	public Wire(Terminal term1, Terminal term2) {
 		bind(term1);
 		bind(term2);

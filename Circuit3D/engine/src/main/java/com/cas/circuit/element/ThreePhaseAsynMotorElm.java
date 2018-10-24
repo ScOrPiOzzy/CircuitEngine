@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.cas.circuit.CirSim;
 import com.cas.circuit.component.Terminal;
 import com.cas.circuit.util.Util;
 
@@ -66,9 +67,9 @@ public class ThreePhaseAsynMotorElm extends MotorElm {
 	@Override
 	public void stamp() {
 		// resistor from coil post 1 to coil post 2
-		CircuitElm.sim.stampResistor(nodes[0], nodes[3], coilR);
-		CircuitElm.sim.stampResistor(nodes[1], nodes[4], coilR);
-		CircuitElm.sim.stampResistor(nodes[2], nodes[5], coilR);
+		CirSim.ins.stampResistor(nodes[0], nodes[3], coilR);
+		CirSim.ins.stampResistor(nodes[1], nodes[4], coilR);
+		CirSim.ins.stampResistor(nodes[2], nodes[5], coilR);
 	}
 
 	@Override

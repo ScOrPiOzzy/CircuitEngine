@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import com.cas.circuit.CirSim;
 import com.cas.circuit.component.ElecCompDef;
 import com.cas.circuit.component.Terminal;
 import com.cas.circuit.util.Util;
@@ -19,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class CircuitElm {
 	public static double voltageRange = 5;
 	public static double currentMult, powerMult;
-	static CirSim sim;
 
 //	元器件ID
 	@Setter
@@ -39,10 +37,6 @@ public abstract class CircuitElm {
 	@Setter
 	@Getter
 	protected ElecCompDef elecCompDef;
-
-	public static void initClass(CirSim s) {
-		CircuitElm.sim = s;
-	}
 
 	protected CircuitElm() {
 		allocNodes();

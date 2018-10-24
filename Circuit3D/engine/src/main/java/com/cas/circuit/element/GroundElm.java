@@ -1,5 +1,6 @@
 package com.cas.circuit.element;
 
+import com.cas.circuit.CirSim;
 import com.cas.circuit.util.Util;
 
 public class GroundElm extends CircuitElm {
@@ -17,7 +18,7 @@ public class GroundElm extends CircuitElm {
 
 	@Override
 	public void stamp() {
-		CircuitElm.sim.stampVoltageSource(0, nodes[0], voltSource, 0);
+		CirSim.ins.stampVoltageSource(0, nodes[0], voltSource, 0);
 	}
 
 	@Override

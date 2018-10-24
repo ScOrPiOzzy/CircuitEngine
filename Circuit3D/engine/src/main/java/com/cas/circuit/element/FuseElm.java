@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+import com.cas.circuit.CirSim;
 import com.cas.circuit.ILight;
 import com.cas.circuit.component.LightIO;
 import com.cas.circuit.component.Terminal;
@@ -36,9 +37,9 @@ public class FuseElm extends ResistorElm implements ILight {
 		if (q > Math.abs(ratedCurrent) * 1.5) {
 			resistance = broken;
 			Optional.ofNullable(light).ifPresent(l -> {
-				CircuitElm.sim.enqueue2jme(l::openLight);
+				CirSim.ins.enqueue2jme(l::openLight);
 			});
-			CircuitElm.sim.enqueue2jme(() -> CircuitElm.sim.addBroken(FuseElm.this, ParticleEffect.Smoke));
+			CirSim.ins.enqueue2jme(() -> CirSim.ins.addBroken(FuseElm.this, ParticleEffect.Smoke));
 		}
 	}
 
@@ -47,9 +48,9 @@ public class FuseElm extends ResistorElm implements ILight {
 		super.reset();
 		resistance = normal;
 		Optional.ofNullable(light).ifPresent(l -> {
-			CircuitElm.sim.enqueue2jme(l::closeLight);
+			CirSim.ins.enqueue2jme(l::closeLight);
 		});
-		CircuitElm.sim.enqueue2jme(() -> CircuitElm.sim.removeBroken(FuseElm.this));
+		CirSim.ins.enqueue2jme(() -> CirSim.ins.removeBroken(FuseElm.this));
 	}
 
 }

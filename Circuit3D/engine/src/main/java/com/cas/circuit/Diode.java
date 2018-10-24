@@ -2,10 +2,8 @@ package com.cas.circuit;
 
 public class Diode {
 	int nodes[];
-	CirSim sim;
 
-	public Diode(CirSim s) {
-		sim = s;
+	public Diode() {
 		nodes = new int[2];
 	}
 
@@ -60,7 +58,7 @@ public class Diode {
 				// (1/vt = slope of load line)
 				vnew = vt * Math.log(vnew / vt);
 			}
-			sim.setConverged(false);
+			CirSim.ins.setConverged(false);
 			// System.out.println(vnew + " " + oo + " " + vold);
 		} else if (vnew < 0 && zoffset != 0) {
 			// for Zener breakdown, use the same logic but translate the values
@@ -81,7 +79,7 @@ public class Diode {
 				} else {
 					vnew = vt * Math.log(vnew / vt);
 				}
-				sim.setConverged(false);
+				CirSim.ins.setConverged(false);
 			}
 			vnew = -(vnew + zoffset);
 		}
@@ -91,14 +89,14 @@ public class Diode {
 	public void stamp(int n0, int n1) {
 		nodes[0] = n0;
 		nodes[1] = n1;
-		sim.stampNonLinear(nodes[0]);
-		sim.stampNonLinear(nodes[1]);
+		CirSim.ins.stampNonLinear(nodes[0]);
+		CirSim.ins.stampNonLinear(nodes[1]);
 	}
 
 	public void doStep(double voltdiff) {
 		// used to have .1 here, but needed .01 for peak detector
 		if (Math.abs(voltdiff - lastvoltdiff) > .01) {
-			sim.setConverged(false);
+			CirSim.ins.setConverged(false);
 		}
 		voltdiff = limitStep(voltdiff, lastvoltdiff);
 		lastvoltdiff = voltdiff;
@@ -112,8 +110,8 @@ public class Diode {
 			}
 			double geq = vdcoef * leakage * eval;
 			double nc = (eval - 1) * leakage - geq * voltdiff;
-			sim.stampConductance(nodes[0], nodes[1], geq);
-			sim.stampCurrentSource(nodes[0], nodes[1], nc);
+			CirSim.ins.stampConductance(nodes[0], nodes[1], geq);
+			CirSim.ins.stampCurrentSource(nodes[0], nodes[1], nc);
 		} else {
 			// Zener diode
 
@@ -125,8 +123,8 @@ public class Diode {
 
 			double nc = leakage * (Math.exp(voltdiff * vdcoef) - Math.exp((-voltdiff - zoffset) * vdcoef) - 1) + geq * (-voltdiff);
 
-			sim.stampConductance(nodes[0], nodes[1], geq);
-			sim.stampCurrentSource(nodes[0], nodes[1], nc);
+			CirSim.ins.stampConductance(nodes[0], nodes[1], geq);
+			CirSim.ins.stampCurrentSource(nodes[0], nodes[1], nc);
 		}
 	}
 

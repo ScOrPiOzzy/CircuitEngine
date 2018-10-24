@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.cas.circuit.CirSim;
 import com.cas.circuit.component.Terminal;
 import com.cas.circuit.vo.Pair;
 import com.cas.circuit.vo.Pair.Type;
@@ -70,11 +71,11 @@ public class RelayElmEx extends RelayElm {
 	@Override
 	public void stamp() {
 		// resistor from coil post 1 to coil post 2
-		CircuitElm.sim.stampResistor(nodes[nCoil1], nodes[nCoil2], coilR);
+		CirSim.ins.stampResistor(nodes[nCoil1], nodes[nCoil2], coilR);
 
 		for (int p = 0; p != poleCount; p++) {
-			CircuitElm.sim.stampNonLinear(nodes[p * pairs]);
-			CircuitElm.sim.stampNonLinear(nodes[p * pairs + 1]);
+			CirSim.ins.stampNonLinear(nodes[p * pairs]);
+			CirSim.ins.stampNonLinear(nodes[p * pairs + 1]);
 		}
 	}
 
@@ -82,12 +83,12 @@ public class RelayElmEx extends RelayElm {
 	public void doStep() {
 //		NC
 		for (int p = 0; p != flag; p++) {
-			CircuitElm.sim.stampResistor(nodes[p * pairs], nodes[p * pairs + 1], i_position == 0 ? r_on : r_off);
+			CirSim.ins.stampResistor(nodes[p * pairs], nodes[p * pairs + 1], i_position == 0 ? r_on : r_off);
 		}
 
 //		NO
 		for (int p = flag; p != poleCount; p++) {
-			CircuitElm.sim.stampResistor(nodes[p * pairs], nodes[p * pairs + 1], i_position == 1 ? r_on : r_off);
+			CirSim.ins.stampResistor(nodes[p * pairs], nodes[p * pairs + 1], i_position == 1 ? r_on : r_off);
 		}
 	}
 

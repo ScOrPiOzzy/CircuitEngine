@@ -25,7 +25,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class CirSim implements Runnable {
+public enum CirSim implements Runnable {
+	ins;
 
 	@Getter
 	private double timer;
@@ -51,19 +52,14 @@ public class CirSim implements Runnable {
 	@Setter
 	private boolean converged;
 
+	@Setter
 	private Application app;
-
+	@Setter
 	private ICircuitEffect circuit;
 
-	private ConcurrentLinkedQueue<Runnable> enqueue = new ConcurrentLinkedQueue<>();
-
-	public CirSim() {
-	}
-
-	public CirSim(Application app, ICircuitEffect circuit) {
-		this.app = app;
-		this.circuit = circuit;
-	}
+	private ConcurrentLinkedQueue<Runnable> queue = new ConcurrentLinkedQueue<>();
+	private List<Runnable> cycleBeginListenrs = new ArrayList<>();
+	private List<Runnable> cycleDownListenrs = new ArrayList<>();
 
 	public void updateCircuit() {
 		try {
@@ -966,14 +962,38 @@ public class CirSim implements Runnable {
 		analyzeFlag = true;
 	}
 
+	public void addCycleBeginlistener(Runnable listener) {
+		cycleBeginListenrs.add(listener);
+	}
+
+	public void removeCycleBeginlistener(Runnable listener) {
+		cycleBeginListenrs.remove(listener);
+	}
+
+	public void addCycleDownlistener(Runnable listener) {
+		cycleDownListenrs.add(listener);
+	}
+
+	public void removeCycleDownlistener(Runnable listener) {
+		cycleDownListenrs.remove(listener);
+	}
+
 	public void addCircuitElm(CircuitElm elm) {
-		enqueue.add(() -> {
+		if (elm == null) {
+			return;
+		}
+		queue.add(() -> {
+			System.out.println("attach elm: " + elm);
 			this.elmList.add(elm);
 		});
 	}
 
 	public void removeCircuitElm(CircuitElm elm) {
-		enqueue.add(() -> {
+		if (elm == null) {
+			return;
+		}
+		queue.add(() -> {
+			System.out.println("detach elm: " + elm);
 			this.elmList.remove(elm);
 		});
 	}
@@ -990,16 +1010,26 @@ public class CirSim implements Runnable {
 		try {
 //			电路运算的时间间隔0.01毫秒
 			runQueuedTasks();
+
+//			电路运算周期开始
+			cycleBeginListenrs.forEach(l -> l.run());
+
 			updateCircuit();
+
+//			电路运算周期开始
+			cycleDownListenrs.forEach(l -> l.run());
+
 			timer += CirSim.TPF;
+
 		} catch (Exception e) {
+			e.printStackTrace();
 			CirSim.log.error(e.getMessage());
 		}
 	}
 
 	public void runQueuedTasks() {
 		Runnable task;
-		while ((task = enqueue.poll()) != null) {
+		while ((task = queue.poll()) != null) {
 			task.run();
 		}
 	}

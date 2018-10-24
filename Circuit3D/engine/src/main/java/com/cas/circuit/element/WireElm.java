@@ -3,6 +3,7 @@ package com.cas.circuit.element;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.cas.circuit.CirSim;
 import com.cas.circuit.component.Terminal;
 import com.cas.circuit.util.Util;
 
@@ -34,9 +35,9 @@ public class WireElm extends ResistorElm {
 	@Override
 	public void stamp() {
 		if (WireElm.ideal) {
-			CircuitElm.sim.stampVoltageSource(nodes[0], nodes[1], voltSource, 0);
+			CirSim.ins.stampVoltageSource(nodes[0], nodes[1], voltSource, 0);
 		} else {
-			CircuitElm.sim.stampResistor(nodes[0], nodes[1], resistance);
+			CirSim.ins.stampResistor(nodes[0], nodes[1], resistance);
 		}
 	}
 
