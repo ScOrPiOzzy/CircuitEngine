@@ -18,7 +18,16 @@ public interface IBroken {
 
 	public void setBroken(BrokenState state);
 	
-	public String getName();
+	/**
+	 * 故障记录保存键
+	 * @return
+	 */
+	public String getKey();
 	
+	public String getName();
+	/**
+	 * 设置的故障的描述
+	 * @return
+	 */
 	public String getDesc();
 }

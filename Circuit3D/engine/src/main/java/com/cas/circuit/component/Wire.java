@@ -161,6 +161,17 @@ public class Wire implements Savable, IBroken {
 	}
 
 	@Override
+	public String getKey() {
+		if (term1 == null || term2 == null) {
+			return null;
+		} else {
+			ElecCompDef def1 = term1.getElecCompDef();
+			ElecCompDef def2 = term2.getElecCompDef();
+			return String.format("elecComp:%s%s term:%s-elecComp:%s%s term:%s", def1.getName(), def1.getModel(), term1.getName(), def2.getName(), def2.getModel(), term2.getName());
+		}
+	}
+	
+	@Override
 	public String getName() {
 		return "导线";
 		

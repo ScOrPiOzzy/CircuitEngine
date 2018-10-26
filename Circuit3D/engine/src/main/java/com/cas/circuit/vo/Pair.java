@@ -28,6 +28,16 @@ public class Pair implements IBroken {
 		this.type = type;
 	}
 
+	@Override
+	public String getKey() {
+		return getKey("Key");
+	}
+
+	/**
+	 * 保存文件的标签名
+	 * @param key (Broken 故障设置的标签名前缀；Corrected 考核记录排故的标签名前缀)
+	 * @return
+	 */
 	public String getKey(String key) {
 		return String.format("%s-%s-%s", key, term1.getId(), term2.getId()).replaceAll("/", "_");
 	}
