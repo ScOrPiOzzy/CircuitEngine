@@ -46,7 +46,7 @@ public class Base {
 		return false;
 	}
 
-	public boolean isUseable(ElecCompDef elecCompDef) {
+	public boolean isUsed(ElecCompDef elecCompDef) {
 		int type = elecCompDef.getRelyOn().getType();
 		if (RelyOn.RELY_ON_TYPE_PLUG == type) {
 			return this.relyOnPlug != null;
