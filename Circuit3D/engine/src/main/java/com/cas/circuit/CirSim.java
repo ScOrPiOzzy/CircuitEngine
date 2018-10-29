@@ -58,6 +58,7 @@ public enum CirSim implements Runnable {
 	private ICircuitEffect circuitEffect;
 
 	private ConcurrentLinkedQueue<Runnable> queue = new ConcurrentLinkedQueue<>();
+	private List<Runnable> analyzeListenrs = new ArrayList<>();
 	private List<Runnable> cycleBeginListenrs = new ArrayList<>();
 	private List<Runnable> cycleDownListenrs = new ArrayList<>();
 
@@ -65,7 +66,6 @@ public enum CirSim implements Runnable {
 		try {
 			if (analyzeFlag) {
 				analyzeCircuit();
-				analyzeFlag = false;
 			}
 			runCircuit();
 		} catch (Exception e) {
@@ -73,8 +73,7 @@ public enum CirSim implements Runnable {
 			analyzeFlag = true;
 			return;
 		}
-
-		elmList.forEach(CircuitElm::printInfo);
+//		elmList.forEach(CircuitElm::printInfo);
 	}
 
 	private CircuitNode getCircuitNode(int n) {
@@ -962,6 +961,14 @@ public enum CirSim implements Runnable {
 		analyzeFlag = true;
 	}
 
+	public void addAnalyzelistener(Runnable listener) {
+		analyzeListenrs.add(listener);
+	}
+
+	public void removeAnalyzelistener(Runnable listener) {
+		analyzeListenrs.remove(listener);
+	}
+
 	public void addCycleBeginlistener(Runnable listener) {
 		cycleBeginListenrs.add(listener);
 	}
@@ -983,7 +990,7 @@ public enum CirSim implements Runnable {
 			return;
 		}
 		queue.add(() -> {
-			System.out.println("attach elm: " + elm);
+			log.debug("attach elm: %s", elm);
 			this.elmList.add(elm);
 		});
 	}
@@ -993,7 +1000,7 @@ public enum CirSim implements Runnable {
 			return;
 		}
 		queue.add(() -> {
-			System.out.println("detach elm: " + elm);
+			log.debug("detach elm: %s", elm);
 			this.elmList.remove(elm);
 		});
 	}
@@ -1021,6 +1028,11 @@ public enum CirSim implements Runnable {
 
 			timer += CirSim.TPF;
 
+			if (analyzeFlag) {
+				analyzeFlag = false;
+//				监听电路变化
+				analyzeListenrs.forEach(l -> l.run());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			CirSim.log.error(e.getMessage());
