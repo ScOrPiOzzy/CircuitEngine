@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.cas.circuit.component.Terminal;
 import com.cas.circuit.component.Wire;
@@ -32,7 +33,7 @@ public enum CirSim implements Runnable {
 	private double timer;
 	public static final double TPF = 1e-6;
 
-	private boolean analyzeFlag;
+	private AtomicBoolean analyzeFlag = new AtomicBoolean(true);
 
 	private String stopMessage;
 
@@ -64,13 +65,13 @@ public enum CirSim implements Runnable {
 
 	public void updateCircuit() {
 		try {
-			if (analyzeFlag) {
+			if (analyzeFlag.get()) {
 				analyzeCircuit();
 			}
 			runCircuit();
 		} catch (Exception e) {
 			e.printStackTrace();
-			analyzeFlag = true;
+			analyzeFlag.set(true);
 			return;
 		}
 //		elmList.forEach(CircuitElm::printInfo);
@@ -646,7 +647,7 @@ public enum CirSim implements Runnable {
 	private void stop(String s, CircuitElm ce) {
 		stopMessage = s;
 		circuitMatrix = null;
-		analyzeFlag = false;
+		analyzeFlag.set(false);
 		CirSim.log.error("stop msg : 元器件错误{}->{}", ce, stopMessage);
 		throw new RuntimeException(s);
 	}
@@ -958,7 +959,9 @@ public enum CirSim implements Runnable {
 	}
 
 	public void needAnalyze() {
-		analyzeFlag = true;
+		queue.add(() -> {
+			analyzeFlag.set(true);
+		});
 	}
 
 	public void addAnalyzelistener(Runnable listener) {
@@ -1028,8 +1031,7 @@ public enum CirSim implements Runnable {
 
 			timer += CirSim.TPF;
 
-			if (analyzeFlag) {
-				analyzeFlag = false;
+			if (analyzeFlag.getAndSet(false)) {
 //				监听电路变化
 				analyzeListenrs.forEach(l -> l.run());
 			}
