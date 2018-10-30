@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -15,6 +16,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.cas.circuit.IBroken.BrokenState;
 import com.cas.circuit.ILight;
 import com.cas.circuit.ISwitch;
@@ -29,6 +32,7 @@ import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.Savable;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -163,7 +167,6 @@ public class ElecCompDef implements Savable {
 				s.setLight(l);
 			}
 		});
-
 	}
 
 	public void bindModel(Node spatial) {
@@ -187,6 +190,16 @@ public class ElecCompDef implements Savable {
 				((MotorElm) elm).setControl(control);
 			}
 		});
+
+		// 模型绑定认知名称
+		Map<String, String> recongnizeMap = JSONObject.parseObject(getParam("name"), new TypeReference<Map<String, String>>() {});
+		if (recongnizeMap == null) {
+			return;
+		}
+		for (Entry<String, String> recongnize : recongnizeMap.entrySet()) {
+			Spatial child = spatial.getChild(recongnize.getKey());
+			child.setUserData("recongnize", recongnize.getValue());
+		}
 	}
 
 	/**
