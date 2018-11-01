@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -44,6 +46,11 @@ import lombok.extern.slf4j.Slf4j;
 @XmlRootElement(name = "ElecCompDef")
 public class ElecCompDef implements Savable {
 	public static final String PARAM_KEY_SHELL = "shell";
+	public static final String PARAM_KEY_NAME = "name";
+	/**
+	 * 元器件的一些粒子效果的位置
+	 */
+	public static final String PARAM_KEY_EFFECT_LOC = "effectLoc";
 	@XmlAttribute
 	private String name;
 	@XmlAttribute
@@ -192,7 +199,7 @@ public class ElecCompDef implements Savable {
 		});
 
 		// 模型绑定认知名称
-		Map<String, String> recongnizeMap = JSONObject.parseObject(getParam("name"), new TypeReference<Map<String, String>>() {});
+		Map<String, String> recongnizeMap = JSONObject.parseObject(getParam(PARAM_KEY_NAME), new TypeReference<Map<String, String>>() {});
 		if (recongnizeMap == null) {
 			return;
 		}
@@ -209,12 +216,22 @@ public class ElecCompDef implements Savable {
 		return terminalMap.get(key);
 	}
 
-	public String getParam(String key) {
-		return getParam(key, null);
+	public @Nullable String getParam(String key) {
+		String value = params.get(key);
+		if (value == null) {
+			log.error("元器件{}中没有定义key为{}的参数", name, key);
+		}
+		return value;
 	}
 
-	public String getParam(String key, String def) {
-		return params.getOrDefault(key, def);
+	public @Nonnull String getParam(String key, @Nonnull String def) {
+		String value = params.get(key);
+		if (value == null) {
+			log.warn("元器件{}中没有定义key为'{}'的参数, 将使用默认值:'{}'", name, key, def);
+		} else {
+			value = def;
+		}
+		return value;
 	}
 
 	public void update() {

@@ -1053,11 +1053,11 @@ public enum CirSim implements Runnable {
 	}
 
 	public void addBroken(CircuitElm elm, ParticleEffect effect) {
-		circuitEffect.addElecCompEffect(elm, effect);
+		circuitEffect.setElecCompParticleEffect(elm, effect);
 	}
 
 	public void removeBroken(CircuitElm elm) {
-		circuitEffect.removeElecCompEffect(elm);
+		circuitEffect.setElecCompParticleEffect(elm, null);
 	}
 
 }
