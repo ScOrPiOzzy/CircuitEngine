@@ -132,8 +132,7 @@ public class ControlIO implements Savable {
 				}
 				String location = json.getString("location");
 				if (location != null) {
-//					FIXME
-					sp.setLocalTranslation(JmeUtil.parseVector3f(location).mult(100));
+					sp.setLocalTranslation(JmeUtil.parseVector3f(location));
 				}
 				String rotation = json.getString("rotation");
 				if (rotation != null) {
