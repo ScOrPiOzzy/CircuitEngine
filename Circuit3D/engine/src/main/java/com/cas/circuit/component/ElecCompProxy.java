@@ -76,7 +76,9 @@ public class ElecCompProxy {
 	public void setTagName(String tagName) {
 		this.tagName = tagName;
 //		同步显示
-		this.tagNode.setText(tagName);
+		if(tagNode != null) {
+			tagNode.setText(tagName);
+		}
 	}
 
 	public String getBaseUuid() {

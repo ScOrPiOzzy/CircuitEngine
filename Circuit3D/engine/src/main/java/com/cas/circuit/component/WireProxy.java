@@ -45,16 +45,16 @@ public class WireProxy {
 	 */
 	@XmlAttribute
 	private String radius;
-	
+
 	@XmlAttribute
 	private boolean broken;
-	
+
 	@XmlAttribute
 	private boolean corrected;
-	
+
 	@XmlTransient
 	private BitmapText tagNode;
-	
+
 	public String getComp1Uuid() {
 		return comp1Uuid;
 	}
@@ -110,7 +110,9 @@ public class WireProxy {
 	public void setNumber(String number) {
 		this.number = number;
 //		同步显示
-		this.tagNode.setText(number);
+		if (tagNode != null) {
+			tagNode.setText(number);
+		}
 	}
 
 	public void setTagNode(BitmapText tag) {
