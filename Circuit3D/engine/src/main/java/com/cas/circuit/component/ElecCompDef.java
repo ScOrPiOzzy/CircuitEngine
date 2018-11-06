@@ -213,9 +213,8 @@ public class ElecCompDef implements Savable {
 	public @Nonnull String getParam(String key, @Nonnull String def) {
 		String value = params.get(key);
 		if (value == null) {
-			log.warn("元器件{}中没有定义key为'{}'的参数, 将使用默认值:'{}'", name, key, def);
-		} else {
 			value = def;
+			log.warn("元器件{}中没有定义key为'{}'的参数, 将使用默认值:'{}'", name, key, def);
 		}
 		return value;
 	}
